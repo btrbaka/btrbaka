@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<label for="url">Server URL:</label>
+  <input type="text" id="url" name="url"><br><br>
+  <label for="usrnm">Username:</label>
+  <input type="text" id="usrnm" name="usrnm"><br><br>
+  <label for="pswd">Password:</label>
+  <input type="password" id="pswd" name="pswd"><br><br>
+  <label for="rfrsh">Refresh token (optional):</label>
+  <input type="password" id="rfrsh" name="rfrsh"><br><br>
+  <button type="button" onclick="loginFunc()">Login</button><br><br>
+  <input type="checkbox" id="debugmode" name="debugmode" value="debugmode">
+  <label for="debugmode"> Debug mode</label><br>
+  <script>
+    async function loginFunc() {
+    urlbox = document.getElementById("url");
+    usrnmbox = document.getElementById("usrnm");
+    pswdbox = document.getElementById("pswd");
+    rfrshbox = document.getElementById("rfrsh");
+    url = urlbox.value;
+
+    if (url.startsWith("https") == true) {
+      url = `${url}/`;
+    } else {
+      url = `https://${url}/`;
+    } 
+    
+    usrnm = usrnmbox.value;
+    pswd = pswdbox.value;
+    rfrsh = rfrshbox.value;
+    console.log(url);
+    console.log(usrnm);
+    console.log(pswd);
+
+    head = {"Content-Type": "application/x-www-form-urlencoded"}
+    if (rfrsh != "") {
+      body = `client_id=ANDR&grant_type=refresh_token&refresh_token=${rfrsh}`
+    }
+    body = `client_id=ANDR&grant_type=password&username=${usrnm}&password=${pswd}`
+    var response = await fetch(`${url}api/login/`, {
+    method: "POST",
+    headers: head,
+    body: body
+  })
+
+  var responseJson = await response.json()
+  token = responseJson.access_token
+  refresh = responseJson.refresh_token
+  console.log(token);
+  if (document.getElementById('debugmode').checked) {
+          alert(token);
+  }
+  if (token.startsWith("undef") == false) {
+  localStorage.setItem("url", url)
+  localStorage.setItem("token", token)
+  localStorage.setItem("refresh", refresh)
+  }
+}
+
+  </script>
+<br>
+<a href="grades.html">grades</a>
+</body>
+</html>
