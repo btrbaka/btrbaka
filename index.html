@@ -6,7 +6,8 @@
     <title>Document</title>
 </head>
 <body onload="javascript:refreshlogin()">
-<label for="url">Server URL:</label>
+<div>
+  <label for="url">Server URL:</label>
   <input type="text" id="url" name="url"><br><br>
   <label for="usrnm">Username:</label>
   <input type="text" id="usrnm" name="usrnm"><br><br>
@@ -17,6 +18,7 @@
   <button type="button" onclick="loginFunc()">Login</button><br><br>
   <input type="checkbox" id="debugmode" name="debugmode" value="debugmode">
   <label for="debugmode"> Debug mode</label><br>
+</div>
   <script>
     async function loginFunc() {
     urlbox = document.getElementById("url");
@@ -24,7 +26,7 @@
     pswdbox = document.getElementById("pswd");
     rfrshbox = document.getElementById("rfrsh");
     url = urlbox.value;
-
+    now = new Date();
     if (url.startsWith("https") == true) {
       url = `${url}/`;
     } else {
@@ -57,13 +59,20 @@
           alert(token);
   }
   if (token.startsWith("undef") == false) {
+  expirytime = now.getTime()
+  localStorage.setItem("expirytime", expirytime)
   localStorage.setItem("url", url)
   localStorage.setItem("token", token)
   localStorage.setItem("refresh", refresh)
+
   }
 }
 
 async function refreshlogin() {
+    now = new Date(); 
+    currenttime = now.getTime()
+    expirytime = localStorage.getItem("expirytime")
+    if(currenttime > expirytime) {
     refresh = localStorage.getItem("refresh")
     url = localStorage.getItem("url")
     head = {"Content-Type": "application/x-www-form-urlencoded"}
@@ -76,12 +85,14 @@ async function refreshlogin() {
   var responseJson = await response.json()
   token = responseJson.access_token
   refresh = responseJson.refresh_token
-  console.log(token);
-  alert(token);
+  console.log(token);  
+  expirytime = now.getTime()
   if (token.startsWith("undef") == false) {
+  localStorage.setItem("expirytime", expirytime)
   localStorage.setItem("token", token)
   localStorage.setItem("refresh", refresh)
   }
+}
 }
   </script>
 <br>
