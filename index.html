@@ -6,7 +6,9 @@
     <title>Document</title>
 </head>
 <body onload="javascript:refreshlogin()">
-<div>
+<div> 
+  <details>
+  <summary>Login</summary>
   <label for="url">Server URL:</label>
   <input type="text" id="url" name="url"><br><br>
   <label for="usrnm">Username:</label>
@@ -18,6 +20,7 @@
   <button type="button" onclick="loginFunc()">Login</button><br><br>
   <input type="checkbox" id="debugmode" name="debugmode" value="debugmode">
   <label for="debugmode"> Debug mode</label><br>
+ </details>
 </div>
   <script>
     async function loginFunc() {
