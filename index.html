@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body onload="javascript:refreshlogin()">
 <label for="url">Server URL:</label>
   <input type="text" id="url" name="url"><br><br>
   <label for="usrnm">Username:</label>
@@ -63,6 +63,26 @@
   }
 }
 
+async function refreshlogin() {
+    refresh = localStorage.getItem("refresh")
+    url = localStorage.getItem("url")
+    head = {"Content-Type": "application/x-www-form-urlencoded"}
+    body = `client_id=ANDR&grant_type=refresh_token&refresh_token=${refresh}`
+    var response = await fetch(`${url}api/login/`, {
+    method: "POST",
+    headers: head,
+    body: body
+  })
+  var responseJson = await response.json()
+  token = responseJson.access_token
+  refresh = responseJson.refresh_token
+  console.log(token);
+  alert(token);
+  if (token.startsWith("undef") == false) {
+  localStorage.setItem("token", token)
+  localStorage.setItem("refresh", refresh)
+  }
+}
   </script>
 <br>
 <a href="grades.html">grades</a>

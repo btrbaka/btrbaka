@@ -4,21 +4,64 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    #marksList>h2>span {
+      font-size: small;
+      font-weight: 400;
+    }
+    #marksList>h2 {
+      background-color: aliceblue;
+    }
+  </style>
 </head>
 <body>
   <button type="button" onclick="getgrades()">Get grades</button><br><br>
+  <div id="marksList"></div>
+  
   <script>
-       async function getgrades() {
-       token = localStorage.getItem("token");
-       url = localStorage.getItem("url");
-       head = {"Content-Type": "application/x-www-form-urlencoded", "Authorization": `Bearer ${token}`}
-       var response = await fetch(`${url}api/3/marks/`, {
-    method: "GET",
-    headers: head
-  })
-  var responseJson = await response.json()
-  document.write(JSON.stringify(responseJson));
-}
+    async function getgrades() {
+      token = localStorage.getItem("token");
+      url = localStorage.getItem("url");
+      head = {"Content-Type": "application/x-www-form-urlencoded", "Authorization": `Bearer ${token}`}
+      var response = await fetch(`${url}api/3/marks/`, {
+        method: "GET",
+        headers: head
+      })
+      var responseJson = await response.json()
+      // document.write(JSON.stringify(responseJson));
+      var response = Object.values(responseJson);
+      var listDiv = document.getElementById('marksList');
+      iterator = response.values();
+      for (const value of iterator) {
+        console.log(value);
+      }
+
+      // meoowwwwww nyaaaaa
+      for (let i = 0; i < response[0].length; i++) {
+        const subjectElement = document.createElement("h2");
+        subjectElement.innerHTML = 
+          response[0][i].Subject.Name + 
+          "<br><span> Average grade: " + 
+          response[0][i].AverageText + 
+          ", </span>" + 
+          "<span> Temporary grade: " + 
+          response[0][i].TemporaryMark + 
+          "</span>";
+        listDiv.appendChild(subjectElement);
+        const subjectGrades = document.createElement("details")
+        subjectGrades.innerHTML = "<summary>Tap to see grades</summary>"
+        listDiv.appendChild(subjectGrades);
+        for (let j = response[0][i].Marks.length - 1; j >= 0; j--) {
+          const subjectGradesItem = document.createElement("li");
+          subjectGradesItem.innerHTML = 
+            response[0][i].Marks[j].MarkText + " - Weight: " +
+            response[0][i].Marks[j].Weight + " - " +
+            response[0][i].Marks[j].Caption;
+
+          subjectGrades.appendChild(subjectGradesItem);
+        }
+      }
+    }
   </script>
 </body>
 </html>
