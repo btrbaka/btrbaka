@@ -7,99 +7,98 @@
 </head>
 <body onload="javascript:refreshlogin()">
 <div> 
-  <details>
-  <summary>Login</summary>
-  <label for="url">Server URL:</label>
-  <input type="text" id="url" name="url"><br><br>
-  <label for="usrnm">Username:</label>
-  <input type="text" id="usrnm" name="usrnm"><br><br>
-  <label for="pswd">Password:</label>
-  <input type="password" id="pswd" name="pswd"><br><br>
-  <label for="rfrsh">Refresh token (optional):</label>
-  <input type="password" id="rfrsh" name="rfrsh"><br><br>
-  <button type="button" onclick="loginFunc()">Login</button><br><br>
-  <input type="checkbox" id="debugmode" name="debugmode" value="debugmode">
-  <label for="debugmode"> Debug mode</label><br>
- </details>
+    <details>
+        <summary>Login</summary>
+        <label for="url">Server URL:</label>
+        <input type="text" id="url" name="url"><br><br>
+        <label for="usrnm">Username:</label>
+        <input type="text" id="usrnm" name="usrnm"><br><br>
+        <label for="pswd">Password:</label>
+        <input type="password" id="pswd" name="pswd"><br><br>
+        <label for="rfrsh">Refresh token (optional):</label>
+        <input type="password" id="rfrsh" name="rfrsh"><br><br>
+        <button type="button" onclick="loginFunc()">Login</button><br><br>
+        <input type="checkbox" id="debugmode" name="debugmode" value="debugmode">
+        <label for="debugmode"> Debug mode</label><br>
+    </details>
 </div>
-  <script>
-    async function loginFunc() {
-    urlbox = document.getElementById("url");
-    usrnmbox = document.getElementById("usrnm");
-    pswdbox = document.getElementById("pswd");
-    rfrshbox = document.getElementById("rfrsh");
-    url = urlbox.value;
-    now = new Date();
-    if (url.startsWith("https") == true) {
-      url = `${url}/`;
-    } else {
-      url = `https://${url}/`;
-    } 
+    <script>
+        async function loginFunc() {
+            urlbox = document.getElementById("url");
+            usrnmbox = document.getElementById("usrnm");
+            pswdbox = document.getElementById("pswd");
+            rfrshbox = document.getElementById("rfrsh");
+            url = urlbox.value;
+            now = new Date();
+            if (url.startsWith("https") == true) {
+                url = `${url}/`;
+            } else {
+                url = `https://${url}/`;
+            } 
     
-    usrnm = usrnmbox.value;
-    pswd = pswdbox.value;
-    rfrsh = rfrshbox.value;
-    console.log(url);
-    console.log(usrnm);
-    console.log(pswd);
+            usrnm = usrnmbox.value;
+            pswd = pswdbox.value;
+            rfrsh = rfrshbox.value;
+            console.log(url);
+            console.log(usrnm);
+            console.log(pswd);
 
-    head = {"Content-Type": "application/x-www-form-urlencoded"}
-    if (rfrsh != "") {
-      body = `client_id=ANDR&grant_type=refresh_token&refresh_token=${rfrsh}`
-    }
-    body = `client_id=ANDR&grant_type=password&username=${usrnm}&password=${pswd}`
-    var response = await fetch(`${url}api/login/`, {
-    method: "POST",
-    headers: head,
-    body: body
-  })
+            head = {"Content-Type": "application/x-www-form-urlencoded"}
+            if (rfrsh != "") {
+                body = `client_id=ANDR&grant_type=refresh_token&refresh_token=${rfrsh}`
+            }
+            body = `client_id=ANDR&grant_type=password&username=${usrnm}&password=${pswd}`
+            var response = await fetch(`${url}api/login/`, {
+                method: "POST",
+                headers: head,
+                body: body
+            })
 
-  var responseJson = await response.json()
-  token = responseJson.access_token
-  refresh = responseJson.refresh_token
-  console.log(token);
-  if (document.getElementById('debugmode').checked) {
-          alert(token);
-  }
-  if (token.startsWith("undef") == false) {
-  expirytime = now.getTime()
-  localStorage.setItem("expirytime", expirytime)
-  localStorage.setItem("url", url)
-  localStorage.setItem("token", token)
-  localStorage.setItem("refresh", refresh)
+            var responseJson = await response.json()
+            token = responseJson.access_token
+            refresh = responseJson.refresh_token
+            console.log(token);
+            if (document.getElementById('debugmode').checked) {
+                alert(token);
+            }
+            if (token.startsWith("undef") == false) {
+                expirytime = now.getTime()
+                localStorage.setItem("expirytime", expirytime)
+                localStorage.setItem("url", url)
+                localStorage.setItem("token", token)
+                localStorage.setItem("refresh", refresh)
+            }
+        }
 
-  }
-}
-
-async function refreshlogin() {
-    now = new Date(); 
-    currenttime = now.getTime()
-    expirytime = localStorage.getItem("expirytime")
-    if(currenttime > expirytime) {
-    refresh = localStorage.getItem("refresh")
-    url = localStorage.getItem("url")
-    head = {"Content-Type": "application/x-www-form-urlencoded"}
-    body = `client_id=ANDR&grant_type=refresh_token&refresh_token=${refresh}`
-    var response = await fetch(`${url}api/login/`, {
-    method: "POST",
-    headers: head,
-    body: body
-  })
-  var responseJson = await response.json()
-  token = responseJson.access_token
-  refresh = responseJson.refresh_token
-  console.log(token);  
-  expirytime = now.getTime()
-  if (token.startsWith("undef") == false) {
-  localStorage.setItem("expirytime", expirytime)
-  localStorage.setItem("token", token)
-  localStorage.setItem("refresh", refresh)
-  }
-}
-}
-  </script>
-<br>
-<a href="grades.html">grades</a><br>
-<a href="schedule.html">schedule</a>
+        async function refreshlogin() {
+            now = new Date(); 
+            currenttime = now.getTime()
+            expirytime = localStorage.getItem("expirytime")
+            if(currenttime > expirytime) {
+                refresh = localStorage.getItem("refresh")
+                url = localStorage.getItem("url")
+                head = {"Content-Type": "application/x-www-form-urlencoded"}
+                body = `client_id=ANDR&grant_type=refresh_token&refresh_token=${refresh}`
+                var response = await fetch(`${url}api/login/`, {
+                    method: "POST",
+                    headers: head,
+                    body: body
+                })
+                var responseJson = await response.json()
+                token = responseJson.access_token
+                refresh = responseJson.refresh_token
+                console.log(token);  
+                expirytime = now.getTime()
+                if (token.startsWith("undef") == false) {
+                    localStorage.setItem("expirytime", expirytime)
+                    localStorage.setItem("token", token)
+                    localStorage.setItem("refresh", refresh)
+                }
+            }
+        }
+    </script>
+    <br>
+    <a href="grades.html">grades</a><br>
+    <a href="schedule.html">schedule</a>
 </body>
 </html>
