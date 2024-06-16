@@ -4,24 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>btrbaka: homepage</title>
+    <style>
+        .main a {
+            display: block;
+            background-color: aliceblue;
+            padding: 1em;
+            margin: 1em;
+            color: black;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body onload="javascript:refreshlogin()">
-<div> 
-    <details>
-        <summary>Login</summary>
-        <label for="url">Server URL:</label>
-        <input type="text" id="url" name="url"><br><br>
-        <label for="usrnm">Username:</label>
-        <input type="text" id="usrnm" name="usrnm"><br><br>
-        <label for="pswd">Password:</label>
-        <input type="password" id="pswd" name="pswd"><br><br>
-        <label for="rfrsh">Refresh token (optional):</label>
-        <input type="password" id="rfrsh" name="rfrsh"><br><br>
-        <button type="button" onclick="loginFunc()">Login</button><br><br>
-        <input type="checkbox" id="debugmode" name="debugmode" value="debugmode">
-        <label for="debugmode"> Debug mode</label><br>
-    </details>
-</div>
+    <div> 
+        <details>
+            <summary>Login</summary>
+            <label for="url">Server URL:</label>
+            <input type="text" id="url" name="url"><br><br>
+            <label for="usrnm">Username:</label>
+            <input type="text" id="usrnm" name="usrnm"><br><br>
+            <label for="pswd">Password:</label>
+            <input type="password" id="pswd" name="pswd"><br><br>
+            <label for="rfrsh">Refresh token (optional):</label>
+            <input type="password" id="rfrsh" name="rfrsh"><br><br>
+            <button type="button" onclick="loginFunc()">Login</button><br><br>
+            <input type="checkbox" id="debugmode" name="debugmode" value="debugmode">
+            <label for="debugmode"> Debug mode</label><br>
+        </details>
+    </div>
+    <br>
+    <div class="main">
+        <a href="grades.html">grades</a>
+        <a href="schedule.html">schedule</a>
+    </div>
     <script>
         async function loginFunc() {
             urlbox = document.getElementById("url");
@@ -97,8 +112,5 @@
             }
         }
     </script>
-    <br>
-    <a href="grades.html">grades</a><br>
-    <a href="schedule.html">schedule</a>
 </body>
 </html>

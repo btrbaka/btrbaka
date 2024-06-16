@@ -12,11 +12,29 @@
         #marksList>h2 {
         background-color: aliceblue;
         }
+        details, summary {
+            padding: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        summary {
+            user-select: none;
+        }
+        .back {
+            padding: 1em;
+            background-color: pink;
+            margin: 1em;
+            display: block;
+            color: black;
+            text-decoration: none;
+        }
+        li {
+            list-style-type: none;
+        }
     </style>
 </head>
 <body onload="javascript:getgrades()">
     <div id="marksList"></div>
-  
+    <a href="/" class="back">Go back</a>
     <script>
         async function getgrades() {
             token = localStorage.getItem("token");
@@ -48,7 +66,7 @@
                 "</span>";
             listDiv.appendChild(subjectElement);
             const subjectGrades = document.createElement("details")
-            subjectGrades.innerHTML = "<summary>Tap to see grades</summary>"
+            subjectGrades.innerHTML = "<summary>Tap to see grades... (" + response[0][i].Marks.length + ")</summary>";
             listDiv.appendChild(subjectGrades);
             for (let j = response[0][i].Marks.length - 1; j >= 0; j--) {
                 const subjectGradesItem = document.createElement("li");
@@ -62,6 +80,5 @@
         }
     }
     </script>
-    <button type="button" onclick="getgrades()">Refresh grades</button><br><br>
 </body>
 </html>
