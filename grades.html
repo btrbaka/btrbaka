@@ -56,13 +56,25 @@
         // meoowwwwww nyaaaaa
         for (let i = 0; i < response[0].length; i++) {
             const subjectElement = document.createElement("h2");
+            let averagegrade;
+            let temporarygrade;
+            if (response[0][i].AverageText == null || response[0][i].AverageText == " ") {
+                averagegrade = "N/A";
+            } else {
+                averagegrade = response[0][i].AverageText;
+            }
+            if (response[0][i].TemporaryMark == null || response[0][i].TemporaryMark == " ") {
+                temporarygrade = "N/A";
+            } else {
+                temporarygrade = response[0][i].TemporaryMark;
+            }
             subjectElement.innerHTML = 
                 response[0][i].Subject.Name + 
                 "<br><span> Average grade: " + 
-                response[0][i].AverageText + 
+                averagegrade + 
                 ", </span>" + 
                 "<span> Temporary grade: " + 
-                response[0][i].TemporaryMark + 
+                temporarygrade + 
                 "</span>";
             listDiv.appendChild(subjectElement);
             const subjectGrades = document.createElement("details")
