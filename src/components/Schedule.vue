@@ -1,7 +1,3 @@
-<script setup>
-import Spinner from './Spinner.vue';
-</script>
-
 <template>
     <div id="schedule"></div>
 </template>
