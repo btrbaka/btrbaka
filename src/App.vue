@@ -1,11 +1,23 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import { ref } from 'vue'
+
+let clicks = 0
+
+function nicemusic() {
+    clicks++;
+    console.log(clicks);
+    if (clicks == 21) {
+        window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank').focus();
+        return clicks = 0;
+    }
+}
 </script>
 
 <template>
     <header>
         <div class="sticky">
-            <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+            <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" @click="nicemusic" />
 
             <div class="wrapper">
                 <nav>
