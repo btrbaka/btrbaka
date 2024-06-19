@@ -35,7 +35,7 @@ export default {
             const scheduleTimeHeader = document.createElement("tr");
             scheduleTable.appendChild(scheduleTimeHeader);
             
-            const scheduleEmptyCell = document.createElement("th");
+            const scheduleEmptyCell = document.createElement("td");
             scheduleEmptyCell.classList.add("timetable-days")
             scheduleTimeHeader.appendChild(scheduleEmptyCell); // empty cell
             for (let k = 0; k < response[0].length; k++) {
@@ -113,16 +113,17 @@ td {
     border: 2px solid var(--color-background-mute);
 }
 
-th {
-    font-weight: bold;
-    background-color: var(--color-background-soft);
-}
-
 th,
 td {
     vertical-align: top;
     padding: 0.5em;
     min-width: min-content;
+}
+
+th {
+    font-weight: bold;
+    background-color: var(--color-background-soft);
+    min-width: 7em;
 }
 
 table tr td:first-child {
