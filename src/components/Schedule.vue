@@ -41,7 +41,7 @@ export default {
             for (let k = 0; k < response[0].length; k++) {
                 const timeCell = document.createElement("th");
                 timeCell.innerHTML =
-                    (k + 1) + ".<br><span class='timerange'>" +
+                    (k + 1) + ".<span class='timerange'>" +
                     response[0][k].BeginTime + " - " +
                     response[0][k].EndTime + "</span>";
                 scheduleTimeHeader.appendChild(timeCell);
@@ -122,6 +122,7 @@ th,
 td {
     vertical-align: top;
     padding: 0.5em;
+    min-width: min-content;
 }
 
 table tr td:first-child {
