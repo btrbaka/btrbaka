@@ -20,8 +20,12 @@ export default {
                     method: "POST",
                     headers: head,
                     body: body
-                })
+                }) 
                 var responseJson = await response.json()
+                console.log(response.ok)
+                if(response.ok == false) {
+                    alert("Login failure. Refresh token expired? Go to the Account page to refresh your login.")
+                } else {
                 let token = responseJson.access_token
                 refresh = responseJson.refresh_token
                 console.log(token);  
@@ -31,6 +35,7 @@ export default {
                     localStorage.setItem("token", token)
                     localStorage.setItem("refresh", refresh)
                 }
+            }
             }
         }
     }

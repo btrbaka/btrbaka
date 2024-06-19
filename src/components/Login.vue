@@ -22,6 +22,10 @@
 <script>
 
 export default {
+    mounted() {
+        const urlbox = document.getElementById("url");
+        urlbox.value = localStorage.getItem("url").slice(0, -1);
+    },
     methods: {
         async loginFunc() {
             const urlbox = document.getElementById("url");
@@ -55,6 +59,11 @@ export default {
             })
 
             var responseJson = await response.json()
+            console.log(response.ok)
+                if(response.ok == false) {
+                    alert("Login failure. Wrong password? Try again.")
+                } else {
+                    alert("Logged in successfully!");
             let token = responseJson.access_token
             let refresh = responseJson.refresh_token
             console.log(token);
@@ -69,6 +78,7 @@ export default {
                 localStorage.setItem("refresh", refresh)
             }
         }
+    }
     }
 }
 
