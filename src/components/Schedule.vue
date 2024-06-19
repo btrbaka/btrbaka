@@ -34,8 +34,10 @@ export default {
 
             const scheduleTimeHeader = document.createElement("tr");
             scheduleTable.appendChild(scheduleTimeHeader);
-
-            scheduleTimeHeader.appendChild(document.createElement("th")); // empty cell
+            
+            const scheduleEmptyCell = document.createElement("th");
+            scheduleEmptyCell.classList.add("timetable-days")
+            scheduleTimeHeader.appendChild(scheduleEmptyCell); // empty cell
             for (let k = 0; k < response[0].length; k++) {
                 const timeCell = document.createElement("th");
                 timeCell.innerHTML =
@@ -103,10 +105,17 @@ export default {
 .timerange {
     font-weight: normal;
     font-size: smaller;
+    display: block;
+    min-width: max-content;
 }
 
 td {
     border: 2px solid var(--color-background-mute);
+}
+
+th {
+    font-weight: bold;
+    background-color: var(--color-background-soft);
 }
 
 th,
@@ -126,6 +135,7 @@ table {
 
 .timetable-days {
     background-color: var(--color-background-mute);
-    overflow-x: visible;
+    position: sticky;
+    left: -1px;
 }
 </style>
