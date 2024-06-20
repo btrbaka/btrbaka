@@ -75,14 +75,7 @@ export default {
                     localStorage.setItem("url", url)
                     localStorage.setItem("token", token)
                     localStorage.setItem("refresh", refresh)
-                    let head = { "Content-Type": "application/x-www-form-urlencoded", "Authorization": `Bearer ${token}` }
-                    var response = await fetch(`${url}api/3/user`, {
-                        method: "GET",
-                        headers: head
-                    })
-                    var responseJson = await response.json()
-                    let schoolName = responseJson.SchoolOrganizationName
-                    alert(`Successfully logged into ${schoolName}`);
+                    alert(`Successfully logged in!`);
                 }
             }
         }
