@@ -7,6 +7,8 @@
   --vt-c-black-soft: rgb(42, 36, 51);
   --vt-c-black-mute: rgb(53, 46, 64);
 
+  --vt-c-blacker: rgba(26, 24, 33, 0.8);
+
   --vt-c-indigo: rgb(19, 25, 30);
 
   --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
@@ -22,6 +24,11 @@
   --btr-a: rgb(123, 218, 239);
   --btr-at: rgba(118, 213, 213, 0.2);
   --btr-ad: rgb(120, 190, 190);
+  --btr-gradient: linear-gradient(350deg, rgb(196, 194, 227) 0%, rgb(223, 223, 253) 35%, rgba(240,248,255,1) 100%);
+
+  --section-gap: 160px;
+
+  --rounded-common: 0.75em;
 }
 
 :root {
@@ -29,13 +36,13 @@
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
 
+  --color-background-darker: var(--vt-c-white-mute);
+
   --color-border: var(--vt-c-divider-light-2);
   --color-border-hover: var(--vt-c-divider-light-1);
 
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
-
-  --section-gap: 160px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -43,6 +50,8 @@
     --color-background: var(--vt-c-black);
     --color-background-soft: var(--vt-c-black-soft);
     --color-background-mute: var(--vt-c-black-mute);
+
+    --color-background-darker: var(--vt-c-blacker);
 
     --color-border: var(--vt-c-divider-dark-2);
     --color-border-hover: var(--vt-c-divider-dark-1);

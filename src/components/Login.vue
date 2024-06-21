@@ -11,6 +11,8 @@
     <label for="rfrsh">Refresh token (optional):</label>
     <input type="password" id="rfrsh" name="rfrsh">
 
+    <p id="loginstatuselem"></p>
+
     <button type="button" @click="loginFunc">Login</button>
 
     <div>
@@ -58,6 +60,8 @@ export default {
                 body: body
             })
 
+            const loginstatus = document.getElementById("loginstatuselem")
+
             var responseJson = await response.json()
             console.log(response.ok)
             if (response.ok == false) {
@@ -77,6 +81,7 @@ export default {
                     localStorage.setItem("refresh", refresh)
                     alert(`Successfully logged in!`);
                 }
+                loginstatus.innerHTML = "Successfully logged in!"
             }
         }
     }
@@ -89,9 +94,10 @@ button {
     margin: 1em;
     padding: 1em;
     background-color: var(--btr-ad);
+    color: var(--vt-c-indigo);
     border: none;
     cursor: pointer;
-    border-radius: 0.5em;
+    border-radius: var(--rounded-common);
     transition: all 0.1s ease-out;
 }
 

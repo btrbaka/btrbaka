@@ -84,10 +84,12 @@ export default {
 }
 
 #marksList>h2 {
-    background-color: aliceblue;
+    background: aliceblue;
+    background: var(--btr-gradient);
     color: black;
-    padding: 0.5em;
+    padding: 0.5em 1em;
     font-weight: bold;
+    border-radius: var(--rounded-common);
 }
 
 #marksList {
