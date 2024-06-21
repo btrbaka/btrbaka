@@ -1,5 +1,20 @@
+<script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const refreshPage = () => {
+    router.go();
+};
+</script>
+
 <template>
-    <div class=“btn-container”><button id="back" v-on:click="this.lessIForgotTheWordDate()"><</button><button id="forward" v-on:click="refreshPage">Current</button><button id="forward" v-on:click="this.advanceDate()">></button></div>
+    <p id="currentweek">Viewing current week</p>
+    <div class="btn-container">
+        <button @click="lessIForgotTheWordDate">Previous</button>
+        <button @click="currentDate">Current</button>
+        <button @click="advanceDate">Next</button>
+    </div>
     <div id="schedule"></div>
 </template>
 
@@ -94,6 +109,7 @@ export default {
                             scheduleRow.appendChild(scheduleRowItem);
                         }
                     }
+                    //document.getElementById("currentweek").innerHTML = "Viewing current week"
                 }
             }
         },
@@ -103,6 +119,7 @@ export default {
             unix = unix - 608400000
             this.killChildren();
             this.getschedule(unix);
+            document.getElementById("currentweek").innerHTML = "Viewing previous week"
         },
         async advanceDate() {
             let now = new Date();
@@ -110,23 +127,23 @@ export default {
             unix = unix + 608400000
             this.killChildren();
             this.getschedule(unix);
+            document.getElementById("currentweek").innerHTML = "Viewing next week"
         },
-        async killChildren () {
+        async currentDate() {
+            let now = new Date();
+            let unix = now.getTime();
+            this.killChildren();
+            this.getschedule(unix);
+            document.getElementById("currentweek").innerHTML = "Viewing current week"
+        },
+        async killChildren() {
             var sched = document.getElementById('schedule');
             while (sched.firstChild) sched.removeChild(sched.firstChild);
         }
     }
 }
 </script>
-<script setup>
-import { useRouter } from 'vue-router';
 
-const router = useRouter();
-
-const refreshPage = () => {
-  router.go(); 
-};
-</script>
 <style>
 #schedule {
     overflow-x: scroll;
@@ -177,20 +194,33 @@ table {
 }
 
 .btn-container {
-display: flex;
+    display: flex;
+    margin: 1em 0;
+    width: 100%;
 }
-button {
-    position: relative;
+
+.btn-container button {
     justify-content: center;
     align-items: center;
     text-align: center;
-    color:white;
+    color: var(--color-text);
     border: 1px solid var(--color-border);
-    border-radius: var(--rounded-common);
-        width: 30%;
-        height: 100%;
-        background-color: var(--color-background-soft);
-        border-radius: var(--rounded-common);
+    background-color: var(--color-background-soft);
+    padding: 1em;
+    flex: 1 1 0;
+    transition: all 0.1s ease-out;
+    cursor: pointer;
 }
 
+.btn-container button:hover {
+    background-color: var(--btr-at);
+}
+
+.btn-container button:first-child {
+    border-radius: var(--rounded-common) 0 0 var(--rounded-common);
+}
+
+.btn-container button:last-child {
+    border-radius: 0 var(--rounded-common) var(--rounded-common) 0;
+}
 </style>
