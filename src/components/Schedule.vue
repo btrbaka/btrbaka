@@ -1,16 +1,18 @@
 <template>
+    <div class=“btn-container”><button id="back" v-on:click="this.lessIForgotTheWordDate()"><</button><button id="forward" v-on:click="refreshPage">Current</button><button id="forward" v-on:click="this.advanceDate()">></button></div>
     <div id="schedule"></div>
 </template>
 
 <script>
 export default {
     mounted() {
-        this.getschedule();
+        let now = new Date();
+        let unix = now.getTime();
+        this.getschedule(unix);
     },
     methods: {
-        async getschedule() {
-            let now = new Date()
-            const today = now.toISOString().split('T')[0]
+        async getschedule(now) {
+            const today = new Date(parseInt(now)).toISOString().split('T')[0]
             const token = localStorage.getItem("token");
             const url = localStorage.getItem("url");
             if (localStorage.getItem("url") == null) {
@@ -32,7 +34,6 @@ export default {
                     for (const value of iterator) {
                         console.log(value);
                     }
-
                     const scheduleTable = document.createElement("table");
                     scheduleTable.innerHTML =
                         "<tr>";
@@ -95,11 +96,37 @@ export default {
                     }
                 }
             }
+        },
+        async lessIForgotTheWordDate() {
+            let now = new Date();
+            let unix = now.getTime();
+            unix = unix - 608400000
+            this.killChildren();
+            this.getschedule(unix);
+        },
+        async advanceDate() {
+            let now = new Date();
+            let unix = now.getTime();
+            unix = unix + 608400000
+            this.killChildren();
+            this.getschedule(unix);
+        },
+        async killChildren () {
+            var sched = document.getElementById('schedule');
+            while (sched.firstChild) sched.removeChild(sched.firstChild);
         }
     }
 }
 </script>
+<script setup>
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
+
+const refreshPage = () => {
+  router.go(); 
+};
+</script>
 <style>
 #schedule {
     overflow-x: scroll;
@@ -148,4 +175,22 @@ table {
     position: sticky;
     left: -1px;
 }
+
+.btn-container {
+display: flex;
+}
+button {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color:white;
+    border: 1px solid var(--color-border);
+    border-radius: var(--rounded-common);
+        width: 30%;
+        height: 100%;
+        background-color: var(--color-background-soft);
+        border-radius: var(--rounded-common);
+}
+
 </style>

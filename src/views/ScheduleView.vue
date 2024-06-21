@@ -21,4 +21,5 @@ import Schedule from '../components/Schedule.vue'
         width: 100%;
     }
 }
+
 </style>
