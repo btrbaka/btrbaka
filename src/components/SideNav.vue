@@ -27,6 +27,8 @@ function nicemusic() {
     <button @click="openNav" class="navButton">
         <IconList />
     </button>
+
+    <div id="closeOverlay" @click="closeNav"></div>
 </template>
 
 <script>
@@ -34,9 +36,11 @@ export default {
     methods: {
         openNav() {
             document.getElementById("sideNav").classList.add("opened");
+            document.getElementById("closeOverlay").classList.add("dimmed");
         },
         closeNav() {
             document.getElementById("sideNav").classList.remove("opened");
+            document.getElementById("closeOverlay").classList.remove("dimmed");
         }
     }
 }
@@ -51,9 +55,8 @@ export default {
 #sideNav.opened {
     width: 250px;
 }
-
-body:has(#sideNav.opened)::before {
-    content: "";
+/*body:has(#sideNav.opened)::before*/
+.dimmed {
     position: fixed;
     left: 0;
     top: 0;

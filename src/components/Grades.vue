@@ -164,10 +164,6 @@ span.gradeWeight {
     align-content: center;
 }
 
-span.gradeCaption {
-
-}
-
 li {
     list-style-type: none;
     margin: 0.75rem 0;
