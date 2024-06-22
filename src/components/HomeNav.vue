@@ -28,7 +28,7 @@ import IconTable from './icons/IconTable.vue';
 
 <style scoped>
 .homeNav {
-    margin: 1em;
+    margin: 1em 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
 }

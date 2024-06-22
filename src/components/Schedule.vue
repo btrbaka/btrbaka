@@ -93,6 +93,11 @@ export default {
                                 room = (response[6].find(z => z.Id === response[1][i].Atoms[j].RoomId)).Abbrev;
                             } else {
                                 room = response[1][i].Atoms[j].Change.Description;
+                                if (response[1][i].Atoms[j].Change.ChangeType != "Canceled") {
+                                    scheduleRowItem.classList.add("change-cancel")
+                                } else {
+                                    scheduleRowItem.classList.add("change-other")
+                                }
                             }
 
                             if (response[1][i].Atoms[j].SubjectId == null) {
@@ -112,6 +117,7 @@ export default {
                                 teacher + "<br>" +
                                 room;
                             scheduleRow.appendChild(scheduleRowItem);
+                            
                         }
                     }
                     //document.getElementById("currentweek").innerHTML = "Viewing current week"
@@ -171,6 +177,14 @@ export default {
 .subject {
     font-size: larger;
     font-weight: bold;
+}
+
+.change-cancel {
+    background-color: rgba(255, 137, 137, 0.1);
+}
+
+.change-other {
+    background-color: rgba(160, 255, 160, 0.1);
 }
 
 .timerange {

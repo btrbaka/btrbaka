@@ -21,9 +21,9 @@
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 
-  --btr-a: rgb(123, 218, 239);
-  --btr-at: rgba(118, 213, 213, 0.2);
-  --btr-ad: rgb(120, 190, 190);
+  --btr-a: rgb(188, 243, 255);
+  --btr-at: rgba(200, 253, 253, 0.3);
+  --btr-ad: rgb(141, 191, 191);
   --btr-gradient: linear-gradient(350deg, rgb(196, 194, 227) 0%, rgb(223, 223, 253) 35%, rgba(240,248,255,1) 100%);
 
   --section-gap: 160px;

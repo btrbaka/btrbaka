@@ -116,6 +116,10 @@ export default {
     color: var(--color-text);
     margin: 0 0.35em;
     border-radius: var(--rounded-common);
+    border: 1px solid transparent;
+}
+#sideNav a:hover {
+    border: 1px solid var(--color-border);
 }
 
 #sideNav a.router-link-exact-active {
@@ -124,6 +128,7 @@ export default {
 
 #sideNav a.router-link-exact-active:hover {
     background-color: transparent;
+    border: 1px solid transparent;
 }
 
 #sideNav .close {

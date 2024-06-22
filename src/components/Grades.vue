@@ -101,6 +101,12 @@ export default {
     font-size: 150%;
     border-radius: var(--rounded-common);
     align-items: center;
+    transition: all 0.1s ease-out;
+}
+
+#marksList summary:hover {
+    box-shadow: 0 0 2em var(--btr-at);
+    cursor: pointer;
 }
 
 #marksList summary .subject-title {

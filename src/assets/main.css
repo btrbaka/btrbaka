@@ -12,11 +12,10 @@
     display: none;
 }
 
-a,
-.green {
+a {
     text-decoration: none;
     color: var(--btr-a);
-    transition: 0.4s;
+    transition: 0.2s;
     padding: 3px;
 }
 
