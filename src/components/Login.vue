@@ -26,7 +26,9 @@
 export default {
     mounted() {
         const urlbox = document.getElementById("url");
-        urlbox.value = localStorage.getItem("url").slice(0, -1);
+        if (localStorage.getItem("url") != null) {
+            urlbox.value = localStorage.getItem("url").slice(0, -1);
+        }
     },
     methods: {
         async loginFunc() {
@@ -108,6 +110,10 @@ button:hover {
 [type="text"],
 [type="password"] {
     margin: 1em;
-    padding: 0.5em;
+    padding: 0.75em;
+    border-radius: var(--rounded-common);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-background-mute);
+    color: var(--color-heading);
 }
 </style>

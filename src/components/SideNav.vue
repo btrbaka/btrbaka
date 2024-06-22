@@ -60,7 +60,9 @@ body:has(#sideNav.opened)::before {
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
+    z-index: 7;
+    backdrop-filter: blur(0.25em);
+    -webkit-backdrop-filter: blur(0.25em);
 }
 
 .navButton {
@@ -100,17 +102,17 @@ body:has(#sideNav.opened)::before {
     overflow-x: hidden;
     padding-top: 60px;
     transition: 0.25s;
-    backdrop-filter: blur(2em);
-    -webkit-backdrop-filter: blur(2em);
 }
 
 #sideNav a {
-    padding: 8px 8px 8px 32px;
+    padding: 0.5em 0.5em 0.5em 1em;
     text-decoration: none;
-    font-size: 25px;
+    font-size: 150%;
     display: block;
-    transition: 0.3s;
+    transition: 0.2s;
     color: var(--color-text);
+    margin: 0 0.35em;
+    border-radius: var(--rounded-common);
 }
 
 #sideNav a.router-link-exact-active {

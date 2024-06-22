@@ -7,7 +7,7 @@
   --vt-c-black-soft: rgb(42, 36, 51);
   --vt-c-black-mute: rgb(53, 46, 64);
 
-  --vt-c-blacker: rgba(26, 24, 33, 0.8);
+  --vt-c-blacker: rgba(26, 24, 33);
 
   --vt-c-indigo: rgb(19, 25, 30);
 
@@ -28,7 +28,7 @@
 
   --section-gap: 160px;
 
-  --rounded-common: 0.75em;
+  --rounded-common: 0.75rem;
 }
 
 :root {

@@ -9,11 +9,14 @@ const refreshPage = () => {
 </script>
 
 <template>
-    <p id="currentweek">Viewing current week</p>
-    <div class="btn-container">
-        <button @click="lessIForgotTheWordDate">Previous</button>
-        <button @click="currentDate">Current</button>
-        <button @click="advanceDate">Next</button>
+    <p id="loginstatus"></p>
+    <div id="schedulenav" class="hidden">
+        <p id="currentweek">Viewing current week</p>
+        <div class="btn-container">
+            <button @click="lessIForgotTheWordDate" id="previous">Previous</button>
+            <button @click="currentDate" id="current" class="selected">Current</button>
+            <button @click="advanceDate" id="next">Next</button>
+        </div>
     </div>
     <div id="schedule"></div>
 </template>
@@ -31,8 +34,10 @@ export default {
             const token = localStorage.getItem("token");
             const url = localStorage.getItem("url");
             if (localStorage.getItem("url") == null) {
-                alert("Not logged in! Go to the Account page to log in first.")
+                //alert("Not logged in! Go to the Account page to log in first.")
+                document.getElementById("loginstatus").innerHTML = "Not logged in! Go to the Account page to log in first.";
             } else {
+                document.getElementById("schedulenav").classList.remove("hidden");
                 let head = { "Content-Type": "application/x-www-form-urlencoded", "Authorization": `Bearer ${token}` }
                 var response = await fetch(`${url}api/3/timetable/actual?date=${today}`, {
                     method: "GET",
@@ -120,6 +125,9 @@ export default {
             this.killChildren();
             this.getschedule(unix);
             document.getElementById("currentweek").innerHTML = "Viewing previous week"
+            document.getElementById("previous").classList.add("selected");
+            document.getElementById("current").classList.remove("selected");
+            document.getElementById("next").classList.remove("selected");
         },
         async advanceDate() {
             let now = new Date();
@@ -128,6 +136,9 @@ export default {
             this.killChildren();
             this.getschedule(unix);
             document.getElementById("currentweek").innerHTML = "Viewing next week"
+            document.getElementById("previous").classList.remove("selected");
+            document.getElementById("current").classList.remove("selected");
+            document.getElementById("next").classList.add("selected");
         },
         async currentDate() {
             let now = new Date();
@@ -135,6 +146,9 @@ export default {
             this.killChildren();
             this.getschedule(unix);
             document.getElementById("currentweek").innerHTML = "Viewing current week"
+            document.getElementById("previous").classList.remove("selected");
+            document.getElementById("current").classList.add("selected");
+            document.getElementById("next").classList.remove("selected");
         },
         async killChildren() {
             var sched = document.getElementById('schedule');
@@ -145,6 +159,11 @@ export default {
 </script>
 
 <style>
+#schedulenav {
+    width: 100%;
+    text-align: center;
+}
+
 #schedule {
     overflow-x: scroll;
 }
@@ -213,7 +232,7 @@ table {
 }
 
 .btn-container button:hover {
-    background-color: var(--btr-at);
+    border: 1px solid var(--btr-a);
 }
 
 .btn-container button:first-child {
@@ -222,5 +241,9 @@ table {
 
 .btn-container button:last-child {
     border-radius: 0 var(--rounded-common) var(--rounded-common) 0;
+}
+
+.btn-container .selected {
+    background-color: var(--btr-at);
 }
 </style>
