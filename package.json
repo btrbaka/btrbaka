@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.4.29",
+    "@vue/language-server": "^2.0.22",
+    "typescript": "^5.5.2",
+    "vue": "^3.4.30",
     "vue-router": "^4.4.0",
     "vue3-spinners": "^1.2.2",
     "vuex": "^4.1.0"
