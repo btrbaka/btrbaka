@@ -1,5 +1,5 @@
 <script setup>
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 
@@ -13,8 +13,12 @@ const refreshPage = () => {
     <div id="schedulenav" class="hidden">
         <p id="currentweek">Viewing current week</p>
         <div class="btn-container">
-            <button @click="lessIForgotTheWordDate" id="previous">Previous</button>
-            <button @click="currentDate" id="current" class="selected">Current</button>
+            <button @click="lessIForgotTheWordDate" id="previous">
+                Previous
+            </button>
+            <button @click="currentDate" id="current" class="selected">
+                Current
+            </button>
             <button @click="advanceDate" id="next">Next</button>
         </div>
     </div>
@@ -30,47 +34,62 @@ export default {
     },
     methods: {
         async getschedule(now) {
-            const today = new Date(parseInt(now)).toISOString().split('T')[0]
+            const today = new Date(parseInt(now)).toISOString().split("T")[0];
             const token = localStorage.getItem("token");
             const url = localStorage.getItem("url");
             if (localStorage.getItem("url") == null) {
                 //alert("Not logged in! Go to the Account page to log in first.")
-                document.getElementById("loginstatus").innerHTML = "Not logged in! Go to the Account page to log in first.";
+                document.getElementById("loginstatus").innerHTML =
+                    "Not logged in! Go to the Account page to log in first.";
             } else {
-                document.getElementById("schedulenav").classList.remove("hidden");
-                let head = { "Content-Type": "application/x-www-form-urlencoded", "Authorization": `Bearer ${token}` }
-                var response = await fetch(`${url}api/3/timetable/actual?date=${today}`, {
-                    method: "GET",
-                    headers: head
-                })
-                var responseJson = await response.json()
+                document
+                    .getElementById("schedulenav")
+                    .classList.remove("hidden");
+                let head = {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Authorization: `Bearer ${token}`,
+                };
+                var response = await fetch(
+                    `${url}api/3/timetable/actual?date=${today}`,
+                    {
+                        method: "GET",
+                        headers: head,
+                    },
+                );
+                var responseJson = await response.json();
                 if (response.ok == false) {
-                    alert("Authentication failure. Go to the Home tab to refresh login.")
+                    alert(
+                        "Authentication failure. Go to the Home tab to refresh login.",
+                    );
                 } else {
                     var response = Object.values(responseJson);
-                    var scheduleDiv = document.getElementById('schedule');
+                    var scheduleDiv = document.getElementById("schedule");
 
                     let iterator = response.values();
                     for (const value of iterator) {
                         console.log(value);
                     }
                     const scheduleTable = document.createElement("table");
-                    scheduleTable.innerHTML =
-                        "<tr>";
+                    scheduleTable.innerHTML = "<tr>";
                     scheduleDiv.appendChild(scheduleTable);
 
                     const scheduleTimeHeader = document.createElement("tr");
                     scheduleTable.appendChild(scheduleTimeHeader);
 
                     const scheduleEmptyCell = document.createElement("td");
-                    scheduleEmptyCell.classList.add("timetable-days")
+                    scheduleEmptyCell.classList.add("timetable-days");
                     scheduleTimeHeader.appendChild(scheduleEmptyCell); // empty cell
+
                     for (let k = 0; k < response[0].length; k++) {
                         const timeCell = document.createElement("th");
                         timeCell.innerHTML =
-                            (k + 1) + ".<span class='timerange'>" +
-                            response[0][k].BeginTime + " - " +
-                            response[0][k].EndTime + "</span>";
+                            k +
+                            1 +
+                            ".<span class='timerange'>" +
+                            response[0][k].BeginTime +
+                            " - " +
+                            response[0][k].EndTime +
+                            "</span>";
                         scheduleTimeHeader.appendChild(timeCell);
                     }
 
@@ -79,58 +98,104 @@ export default {
                         scheduleTable.appendChild(scheduleRow);
 
                         const scheduleDay = document.createElement("td");
-                        scheduleDay.classList.add('timetable-days');
-                        const weekday = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-                        scheduleDay.innerHTML = weekday[response[1][i].DayOfWeek - 1];
+                        scheduleDay.classList.add("timetable-days");
+                        const weekday = [
+                            "MON",
+                            "TUE",
+                            "WED",
+                            "THU",
+                            "FRI",
+                            "SAT",
+                            "SUN",
+                        ];
+                        scheduleDay.innerHTML =
+                            weekday[response[1][i].DayOfWeek - 1];
                         scheduleRow.appendChild(scheduleDay);
 
-                        for (let j = 0; j < response[1][i].Atoms.length; j++) {
-                            const scheduleRowItem = document.createElement("td");
-                            let room;
-                            let subject;
-                            let teacher;
-                            if (response[1][i].Atoms[j].Change == null) {
-                                room = (response[6].find(z => z.Id === response[1][i].Atoms[j].RoomId)).Abbrev;
-                            } else {
-                                room = response[1][i].Atoms[j].Change.Description;
-                                if (response[1][i].Atoms[j].Change.ChangeType != "Canceled") {
-                                    scheduleRowItem.classList.add("change-cancel")
+                        if (response[1][i].DayType == "Holiday") {
+                            for (let ii = 0; ii < response[0].length; ii++) {
+                                const scheduleRowItem =
+                                    document.createElement("td");
+                                scheduleRowItem.innerHTML =
+                                    "<span class='subject'>Holiday</span>";
+                                scheduleRowItem.classList.add("holiday");
+                                scheduleRow.appendChild(scheduleRowItem);
+                            }
+                        } else {
+                            for (
+                                let j = 0;
+                                j < response[1][i].Atoms.length;
+                                j++
+                            ) {
+                                const scheduleRowItem =
+                                    document.createElement("td");
+                                let room;
+                                let subject;
+                                let teacher;
+                                if (response[1][i].Atoms[j].Change == null) {
+                                    room = response[6].find(
+                                        (z) =>
+                                            z.Id ===
+                                            response[1][i].Atoms[j].RoomId,
+                                    ).Abbrev;
                                 } else {
-                                    scheduleRowItem.classList.add("change-other")
+                                    room =
+                                        response[1][i].Atoms[j].Change
+                                            .Description;
+                                    if (
+                                        response[1][i].Atoms[j].Change
+                                            .ChangeType != "Canceled"
+                                    ) {
+                                        scheduleRowItem.classList.add(
+                                            "change-cancel",
+                                        );
+                                    } else {
+                                        scheduleRowItem.classList.add(
+                                            "change-other",
+                                        );
+                                    }
                                 }
-                            }
 
-                            if (response[1][i].Atoms[j].SubjectId == null) {
-                                subject = "N/A"
-                            } else {
-                                subject = (response[4].find(x => x.Id === response[1][i].Atoms[j].SubjectId)).Abbrev
+                                if (response[1][i].Atoms[j].SubjectId == null) {
+                                    subject = "N/A";
+                                } else {
+                                    subject = response[4].find(
+                                        (x) =>
+                                            x.Id ===
+                                            response[1][i].Atoms[j].SubjectId,
+                                    ).Abbrev;
+                                }
+                                if (response[1][i].Atoms[j].TeacherId == null) {
+                                    teacher = "N/A";
+                                } else {
+                                    teacher = response[5].find(
+                                        (y) =>
+                                            y.Id ===
+                                            response[1][i].Atoms[j].TeacherId,
+                                    ).Abbrev;
+                                }
+                                scheduleRowItem.innerHTML =
+                                    "<span class='subject'>" +
+                                    subject +
+                                    "</span><br>" +
+                                    teacher +
+                                    "<br>" +
+                                    room;
+                                scheduleRow.appendChild(scheduleRowItem);
                             }
-                            //const subject = response[4].find(x => x.Id === response[1][i].Atoms[j].SubjectId);
-                            if (response[1][i].Atoms[j].TeacherId == null) {
-                                teacher = "N/A"
-                            } else {
-                                teacher = (response[5].find(y => y.Id === response[1][i].Atoms[j].TeacherId)).Abbrev
-                            }
-                            //const teacher = response[5].find(y => y.Id === response[1][i].Atoms[j].TeacherId);
-                            scheduleRowItem.innerHTML =
-                                "<span class='subject'>" + subject + "</span><br>" +
-                                teacher + "<br>" +
-                                room;
-                            scheduleRow.appendChild(scheduleRowItem);
-                            
                         }
                     }
-                    //document.getElementById("currentweek").innerHTML = "Viewing current week"
                 }
             }
         },
         async lessIForgotTheWordDate() {
             let now = new Date();
             let unix = now.getTime();
-            unix = unix - 608400000
+            unix = unix - 608400000;
             this.killChildren();
             this.getschedule(unix);
-            document.getElementById("currentweek").innerHTML = "Viewing previous week"
+            document.getElementById("currentweek").innerHTML =
+                "Viewing previous week";
             document.getElementById("previous").classList.add("selected");
             document.getElementById("current").classList.remove("selected");
             document.getElementById("next").classList.remove("selected");
@@ -138,10 +203,11 @@ export default {
         async advanceDate() {
             let now = new Date();
             let unix = now.getTime();
-            unix = unix + 608400000
+            unix = unix + 608400000;
             this.killChildren();
             this.getschedule(unix);
-            document.getElementById("currentweek").innerHTML = "Viewing next week"
+            document.getElementById("currentweek").innerHTML =
+                "Viewing next week";
             document.getElementById("previous").classList.remove("selected");
             document.getElementById("current").classList.remove("selected");
             document.getElementById("next").classList.add("selected");
@@ -151,17 +217,18 @@ export default {
             let unix = now.getTime();
             this.killChildren();
             this.getschedule(unix);
-            document.getElementById("currentweek").innerHTML = "Viewing current week"
+            document.getElementById("currentweek").innerHTML =
+                "Viewing current week";
             document.getElementById("previous").classList.remove("selected");
             document.getElementById("current").classList.add("selected");
             document.getElementById("next").classList.remove("selected");
         },
         async killChildren() {
-            var sched = document.getElementById('schedule');
+            var sched = document.getElementById("schedule");
             while (sched.firstChild) sched.removeChild(sched.firstChild);
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <style>
@@ -172,6 +239,7 @@ export default {
 
 #schedule {
     overflow-x: scroll;
+    scrollbar-width: thin;
 }
 
 .subject {
@@ -187,6 +255,11 @@ export default {
     background-color: rgba(160, 255, 160, 0.1);
 }
 
+.holiday {
+    background-color: rgba(69, 196, 255, 0.1);
+    text-align: center;
+}
+
 .timerange {
     font-weight: normal;
     font-size: smaller;
@@ -196,6 +269,9 @@ export default {
 
 td {
     border: 2px solid var(--color-background-mute);
+}
+th {
+    border-right: 2px solid var(--color-background-soft);
 }
 
 th,
