@@ -1,89 +1,91 @@
 :root {
-  --vt-c-white: rgb(255, 255, 255);
-  --vt-c-white-soft: rgb(248, 248, 248);
-  --vt-c-white-mute: rgb(242, 242, 242);
+    --vt-c-white: rgb(255, 255, 255);
+    --vt-c-white-soft: rgb(248, 248, 248);
+    --vt-c-white-mute: rgb(242, 242, 242);
 
-  --vt-c-black: rgb(32, 28, 39);
-  --vt-c-black-soft: rgb(42, 36, 51);
-  --vt-c-black-mute: rgb(53, 46, 64);
+    --vt-c-black: rgb(32, 28, 39);
+    --vt-c-black-soft: rgb(42, 36, 51);
+    --vt-c-black-mute: rgb(53, 46, 64);
 
-  --vt-c-blacker: rgba(26, 24, 33);
+    --vt-c-blacker: rgba(26, 24, 33);
 
-  --vt-c-indigo: rgb(19, 25, 30);
+    --vt-c-indigo: rgb(19, 25, 30);
 
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+    --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
+    --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
+    --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
+    --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
 
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+    --vt-c-text-light-1: var(--vt-c-indigo);
+    --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
+    --vt-c-text-dark-1: var(--vt-c-white);
+    --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 
-  --btr-a: rgb(188, 243, 255);
-  --btr-at: rgba(200, 253, 253, 0.3);
-  --btr-ad: rgb(141, 191, 191);
-  --btr-gradient: linear-gradient(350deg, rgb(196, 194, 227) 0%, rgb(223, 223, 253) 35%, rgba(240,248,255,1) 100%);
+    --btr-a: rgb(188, 243, 255);
+    --btr-at: rgba(200, 253, 253, 0.3);
+    --btr-ad: rgb(141, 191, 191);
+    --btr-gradient: linear-gradient(
+        350deg,
+        rgb(196, 194, 227) 0%,
+        rgb(223, 223, 253) 35%,
+        rgba(240, 248, 255, 1) 100%
+    );
+    --btr-ab: #ad71e9;
 
-  --section-gap: 160px;
+    --section-gap: 160px;
 
-  --rounded-common: 0.75rem;
+    --rounded-common: 0.75rem;
 }
 
 :root {
-  --color-background: var(--vt-c-white);
-  --color-background-soft: var(--vt-c-white-soft);
-  --color-background-mute: var(--vt-c-white-mute);
+    --color-background: var(--vt-c-white);
+    --color-background-soft: var(--vt-c-white-soft);
+    --color-background-mute: var(--vt-c-white-mute);
 
-  --color-background-darker: var(--vt-c-white-mute);
+    --color-background-darker: var(--vt-c-white-mute);
 
-  --color-border: var(--vt-c-divider-light-2);
-  --color-border-hover: var(--vt-c-divider-light-1);
+    --color-border: var(--vt-c-divider-light-2);
+    --color-border-hover: var(--vt-c-divider-light-1);
 
-  --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
+    --color-heading: var(--vt-c-text-light-1);
+    --color-text: var(--vt-c-text-light-1);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
+    :root {
+        --color-background: var(--vt-c-black);
+        --color-background-soft: var(--vt-c-black-soft);
+        --color-background-mute: var(--vt-c-black-mute);
 
-    --color-background-darker: var(--vt-c-blacker);
+        --color-background-darker: var(--vt-c-blacker);
 
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
+        --color-border: var(--vt-c-divider-dark-2);
+        --color-border-hover: var(--vt-c-divider-dark-1);
 
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
-  }
+        --color-heading: var(--vt-c-text-dark-1);
+        --color-text: var(--vt-c-text-dark-2);
+    }
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
-  margin: 0;
-  font-weight: normal;
+    box-sizing: border-box;
+    margin: 0;
+    font-weight: normal;
 }
 
 body {
-  min-height: 100vh;
-  color: var(--color-text);
-  background: var(--color-background);
-  transition:
-    color 0.5s,
-    background-color 0.5s;
-  line-height: 1.6;
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    Inter,
-    system-ui;
-  font-size: 15px;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    color: var(--color-text);
+    background: var(--color-background);
+    transition:
+        color 0.5s,
+        background-color 0.5s;
+    line-height: 1.6;
+    font-family: -apple-system, BlinkMacSystemFont, Inter, system-ui;
+    font-size: 15px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }

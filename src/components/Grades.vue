@@ -1,9 +1,10 @@
 <script setup>
-import { render, h, createVNode } from 'vue';
+import { render, h, createVNode } from "vue";
 </script>
 
 <template>
     <p id="loginstatus"></p>
+    <div id="recentList"></div>
     <div id="marksList"></div>
 </template>
 
@@ -18,40 +19,59 @@ export default {
             const url = localStorage.getItem("url");
             if (localStorage.getItem("url") == null) {
                 //alert("Not logged in! Go to the Account page to log in first.")
-                document.getElementById("loginstatus").innerHTML = "Not logged in! Go to the Account page to log in first.";
+                document.getElementById("loginstatus").innerHTML =
+                    "Not logged in! Go to the Account page to log in first.";
             } else {
-                let head = { "Content-Type": "application/x-www-form-urlencoded", "Authorization": `Bearer ${token}` }
+                let head = {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Authorization: `Bearer ${token}`,
+                };
                 var response = await fetch(`${url}api/3/marks/`, {
                     method: "GET",
-                    headers: head
-                })
-                var responseJson = await response.json()
+                    headers: head,
+                });
+                var responseJson = await response.json();
                 if (response.ok == false) {
-                    alert("Authentication failure. Go to the Home tab to refresh login.")
+                    alert(
+                        "Authentication failure. Go to the Home tab to refresh login.",
+                    );
                 } else {
-                    document.getElementById("loginstatus").innerHTML = "Tap on a subject to view grades";
+                    document.getElementById("loginstatus").innerHTML =
+                        "Tap on a subject to view grades";
                     // document.write(JSON.stringify(responseJson));
                     var response = Object.values(responseJson);
-                    var listDiv = document.getElementById('marksList');
+                    var listDiv = document.getElementById("marksList");
                     let iterator = response.values();
                     for (const value of iterator) {
                         console.log(value);
                     }
 
+                    let allgrades = [];
+
                     // meoowwwwww nyaaaaa
                     for (let i = 0; i < response[0].length; i++) {
-                        const subjectContainer = document.createElement("details");
+                        allgrades = allgrades.concat(response[0][i].Marks);
+
+                        const subjectContainer =
+                            document.createElement("details");
                         listDiv.appendChild(subjectContainer);
-                        const subjectElement = document.createElement("summary");
-                        subjectContainer.appendChild(subjectElement)
+                        const subjectElement =
+                            document.createElement("summary");
+                        subjectContainer.appendChild(subjectElement);
                         let averagegrade;
                         let temporarygrade;
-                        if (response[0][i].AverageText == null || response[0][i].AverageText == " ") {
+                        if (
+                            response[0][i].AverageText == null ||
+                            response[0][i].AverageText == " "
+                        ) {
                             averagegrade = "N/A";
                         } else {
                             averagegrade = response[0][i].AverageText;
                         }
-                        if (response[0][i].TemporaryMark == null || response[0][i].TemporaryMark == " ") {
+                        if (
+                            response[0][i].TemporaryMark == null ||
+                            response[0][i].TemporaryMark == " "
+                        ) {
                             temporarygrade = "N/A";
                         } else {
                             temporarygrade = response[0][i].TemporaryMark;
@@ -69,26 +89,75 @@ export default {
                             "<div class='subject-details' id='subjectDetails'>" +
                             response[0][i].Marks.length +
                             " <span>&rsaquo;</span></div>";
-                        const subjectGrades = document.createElement("ul")
+                        const subjectGrades = document.createElement("ul");
                         subjectContainer.appendChild(subjectGrades);
-                        for (let j = response[0][i].Marks.length - 1; j >= 0; j--) {
-                            const subjectGradesItem = document.createElement("li");
+                        for (
+                            let j = response[0][i].Marks.length - 1;
+                            j >= 0;
+                            j--
+                        ) {
+                            const subjectGradesItem =
+                                document.createElement("li");
                             subjectGradesItem.innerHTML =
                                 "<span class='gradeText'>" +
-                                response[0][i].Marks[j].MarkText + 
+                                response[0][i].Marks[j].MarkText +
                                 "</span><span class='gradeWeight'>Weight: " +
-                                response[0][i].Marks[j].Weight + 
+                                response[0][i].Marks[j].Weight +
                                 "</span><span class='gradeCaption'>" +
-                                response[0][i].Marks[j].Caption + "</span>";
+                                response[0][i].Marks[j].Caption +
+                                "</span>";
 
                             subjectGrades.appendChild(subjectGradesItem);
                         }
                     }
+
+                    let recentno = 10;
+                    let recentgrades = allgrades
+                        .sort(function (a, b) {
+                            var c = new Date(a.MarkDate);
+                            var d = new Date(b.MarkDate);
+                            return c - d;
+                        })
+                        .reverse()
+                        .slice(0, recentno);
+                    console.log(recentgrades);
+
+                    let subject;
+
+                    var recentListDiv = document.getElementById("recentList");
+
+                    const recentContainer = document.createElement("details");
+                    recentListDiv.appendChild(recentContainer);
+                    const recentElement = document.createElement("summary");
+                    recentElement.innerHTML =
+                        "<div class='subject-title'>Recent Grades</div><div class='subject-details' id='subjectDetails'><span>&rsaquo;</span></div>";
+                    recentContainer.appendChild(recentElement);
+
+                    const recentGradesElem = document.createElement("ul");
+                    recentContainer.appendChild(recentGradesElem);
+                    for (let l = 0; l < recentgrades.length; l++) {
+                        subject = response[0].find(
+                            (x) => x.Subject.Id === recentgrades[l].SubjectId,
+                        ).Subject.Abbrev;
+                        const recentGradesItem = document.createElement("li");
+                        recentGradesItem.innerHTML =
+                            "<span class='gradeSubject'>" +
+                            subject +
+                            "</span><span class='gradeText'>" +
+                            recentgrades[l].MarkText +
+                            "</span><span class='gradeWeight'>Weight: " +
+                            recentgrades[l].Weight +
+                            "</span><span class='gradeCaption'>" +
+                            recentgrades[l].Caption +
+                            "</span>";
+
+                        recentGradesElem.appendChild(recentGradesItem);
+                    }
                 }
             }
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <style>
@@ -104,12 +173,26 @@ export default {
     transition: all 0.1s ease-out;
 }
 
-#marksList summary:hover {
+#recentList summary {
+    display: flex;
+    background: aliceblue;
+    background: color-mix(in srgb, var(--btr-ab) 65%, aliceblue);
+    color: var(--vt-c-indigo);
+    padding: 0.5em 1em;
+    font-size: 150%;
+    border-radius: var(--rounded-common);
+    align-items: center;
+    transition: all 0.1s ease-out;
+}
+
+#marksList summary:hover,
+#recentList summary:hover {
     box-shadow: 0 0 2em var(--btr-at);
     cursor: pointer;
 }
 
-#marksList summary .subject-title {
+#marksList summary .subject-title,
+#recentList summary .subject-title {
     font-weight: bold;
     max-width: fit-content;
 
@@ -120,7 +203,8 @@ export default {
     }
 }
 
-#marksList summary .subject-details {
+#marksList summary .subject-details,
+#recentList summary .subject-details {
     margin-left: auto;
     font-size: 160%;
     line-height: 0;
@@ -133,9 +217,9 @@ export default {
     }
 }
 
-#marksList {
+#marksList,
+#recentList {
     min-width: 75%;
-    margin-top: 1.5em;
 
     ul {
         padding: 0 0.75rem;
@@ -157,7 +241,7 @@ span.gradeText {
     background-color: var(--color-background-mute);
     color: var(--color-text);
     padding: 0.5em;
-    width: 2em;
+    min-width: 2em;
     text-align: center;
     align-self: stretch;
     align-content: center;
@@ -166,6 +250,15 @@ span.gradeText {
 span.gradeWeight {
     min-width: fit-content;
     background-color: var(--color-background-soft);
+    align-self: stretch;
+    align-content: center;
+}
+
+span.gradeSubject {
+    color: var(--color-text);
+    padding: 0.5em;
+    min-width: 3.25em;
+    text-align: center;
     align-self: stretch;
     align-content: center;
 }
@@ -180,5 +273,9 @@ li {
     span {
         padding: 0.5em;
     }
+}
+
+#loginstatus {
+    margin-bottom: 2rem;
 }
 </style>
