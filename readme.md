@@ -3,6 +3,6 @@
 # btrbaka webapp
 the better baka experience, in a nice little webapp.
 
-</div>![alt text](image.png)
+</div>
 
 ![](/public/btrbakahero.png)
