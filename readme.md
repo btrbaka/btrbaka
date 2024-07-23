@@ -23,7 +23,7 @@ planned:
 
 ### screenshots
 
-| <h3>Home</h3> | <h3>Grades</h3> | <h3>Schedule</h3> |
+| | | |
 | :-: | :-: | :-: | 
 | ![home preview](https://github.com/user-attachments/assets/09770ae7-6006-4892-9565-28e9fcb4fbb1) | ![grades preview](https://github.com/user-attachments/assets/8be661f1-0b99-4c73-a233-0a044f1e0e9f) | ![schedule preview](https://github.com/user-attachments/assets/d8ee8a57-6eaf-429a-a806-36fbf523bc08) |
 
