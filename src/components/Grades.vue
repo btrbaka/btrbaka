@@ -127,6 +127,7 @@ export default {
                     var recentListDiv = document.getElementById("recentList");
 
                     const recentContainer = document.createElement("details");
+                    recentContainer.classList.add("recentdetails");
                     recentListDiv.appendChild(recentContainer);
                     const recentElement = document.createElement("summary");
                     recentElement.innerHTML =
@@ -153,6 +154,19 @@ export default {
 
                         recentGradesElem.appendChild(recentGradesItem);
                     }
+
+                    var localStorageKeyR = "disclosed_recent";
+                    var detailsR = document.querySelector(".recentdetails");
+                    detailsR.addEventListener("toggle", (event) => {
+                        if (detailsR.open) {
+                            localStorage.setItem(localStorageKeyR, true);
+                        } else {
+                            localStorage.removeItem(localStorageKeyR);
+                        }
+                    });
+                    if (localStorage.getItem(localStorageKeyR)) {
+                        detailsR.open = true;
+                    }
                 }
             }
         },
@@ -173,6 +187,10 @@ export default {
     transition: all 0.1s ease-out;
 }
 
+[open] summary {
+    filter: saturate(200%) contrast(120%) hue-rotate(20deg);
+}
+
 #recentList summary {
     display: flex;
     background: aliceblue;
@@ -187,7 +205,7 @@ export default {
 
 #marksList summary:hover,
 #recentList summary:hover {
-    box-shadow: 0 0 2em var(--btr-at);
+    box-shadow: 0 0 0em 0.2em color-mix(in srgb, var(--btr-ab) 30%, #ffffff50);
     cursor: pointer;
 }
 
@@ -230,6 +248,15 @@ details,
 summary {
     padding: 0.5em;
     margin-bottom: 0.5em;
+}
+
+details summary {
+    cursor: pointer;
+    transition: margin 1s ease-out;
+}
+
+details[open] summary {
+    margin-bottom: 1.25em;
 }
 
 summary {
