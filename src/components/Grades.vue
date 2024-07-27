@@ -111,8 +111,9 @@ export default {
                         }
                     }
 
-
-                    let recentno = parseInt(localStorage.getItem("recentGradesAmount"));
+                    let recentno = parseInt(
+                        localStorage.getItem("recentGradesAmount"),
+                    );
                     if (recentno < 5) {
                         recentno = 10;
                     }
@@ -137,12 +138,16 @@ export default {
                     recentElement.innerHTML =
                         "<div class='subject-title'>Recent Grades</div><select name='amount' id='amountbox'><option value='5'>5</option><option value='10'>10</option><option value='15'>15</option><option value='20'>20</option></select><div class='subject-details' id='subjectDetails'><span>&rsaquo;</span></div>";
                     recentContainer.appendChild(recentElement);
-                    document.getElementById('amountbox').value = localStorage.getItem("recentGradesAmount");
-                    var mySelect = document.getElementById('amountbox');
+                    document.getElementById("amountbox").value =
+                        localStorage.getItem("recentGradesAmount");
+                    var mySelect = document.getElementById("amountbox");
                     mySelect.onchange = (event) => {
-                        localStorage.setItem("recentGradesAmount", amountbox.value)
-                        location.reload()
-                    }
+                        localStorage.setItem(
+                            "recentGradesAmount",
+                            amountbox.value,
+                        );
+                        location.reload();
+                    };
 
                     const recentGradesElem = document.createElement("ul");
                     recentContainer.appendChild(recentGradesElem);
@@ -201,6 +206,15 @@ export default {
     filter: saturate(200%) contrast(120%) hue-rotate(20deg);
 }
 
+[open] {
+    background-color: color-mix(
+        in srgb,
+        var(--color-background) 65%,
+        #00000070
+    );
+    border-radius: var(--rounded-common);
+}
+
 #recentList summary {
     display: flex;
     background: aliceblue;
@@ -231,11 +245,10 @@ export default {
     }
 }
 
-#marksList summary .subject-details,
-#recentList summary .subject-details {
+#marksList summary .subject-details {
     margin-left: auto;
     font-size: 160%;
-    line-height: 0;
+    line-height: 1;
     min-width: 1.5em;
     text-align: right;
 
@@ -250,14 +263,42 @@ export default {
     min-width: 75%;
 
     ul {
-        padding: 0 0.75rem;
+        padding: 0 1.25rem;
+    }
+    li span:first-child {
+        border-radius: var(--rounded-uncommon) 0 0 var(--rounded-uncommon);
+    }
+    li {
+        border-radius: var(--rounded-uncommon);
+    }
+}
+
+#recentList select {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    border: none;
+    border-radius: 5rem;
+    padding: 0.25rem 0.1rem 0.25rem 0.75rem;
+    margin: 0 0.5rem 0 auto;
+    font-size: 12pt;
+}
+
+#recentList summary .subject-details {
+    margin-left: 0.1rem;
+    font-size: 160%;
+    line-height: 1;
+    text-align: right;
+
+    span {
+        font-size: 120%;
+        line-height: 0;
     }
 }
 
 details,
 summary {
-    padding: 0.5em;
-    margin-bottom: 0.5em;
+    margin: 0.5em 0 0.5em 0;
+    padding-bottom: 0.5em;
 }
 
 details summary {

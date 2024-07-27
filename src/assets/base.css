@@ -35,6 +35,7 @@
     --section-gap: 160px;
 
     --rounded-common: 0.75rem;
+    --rounded-uncommon: 0.25rem;
 }
 
 :root {
