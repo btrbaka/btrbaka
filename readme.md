@@ -13,7 +13,7 @@ the better baka experience, in a nice little webapp.
 - grades page including recent grades
 - full featured schedule page
 - no legal name in sight
-- PWA; add btrbaka on your homepage as an app!
+- PWA; add btrbaka on your homescreen as an app!
 - faster than b*kaláři
 
 planned:
