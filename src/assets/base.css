@@ -11,10 +11,10 @@
 
     --vt-c-indigo: rgb(19, 25, 30);
 
-    --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-    --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-    --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-    --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+    --vt-c-divider-light-1: rgba(49, 42, 58, 0.29);
+    --vt-c-divider-light-2: rgba(49, 42, 58, 0.12);
+    --vt-c-divider-dark-1: rgba(72, 61, 85, 0.85);
+    --vt-c-divider-dark-2: rgba(72, 61, 85, 0.88);
 
     --vt-c-text-light-1: var(--vt-c-indigo);
     --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
@@ -22,7 +22,7 @@
     --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 
     --btr-a: rgb(188, 243, 255);
-    --btr-at: rgba(200, 253, 253, 0.3);
+    --btr-at: rgba(247, 205, 255, 0.1);
     --btr-ad: rgb(141, 191, 191);
     --btr-gradient: linear-gradient(
         350deg,
@@ -36,6 +36,7 @@
 
     --rounded-common: 0.75rem;
     --rounded-uncommon: 0.25rem;
+    --rounded-rare: 1.75rem;
 }
 
 :root {
@@ -84,7 +85,6 @@ body {
         color 0.5s,
         background-color 0.5s;
     line-height: 1.6;
-    font-family: -apple-system, BlinkMacSystemFont, Inter, system-ui;
     font-size: 15px;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;

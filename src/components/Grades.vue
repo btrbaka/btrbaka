@@ -1,9 +1,14 @@
 <script setup>
 import { render, h, createVNode } from "vue";
+
+import Spinner from "./Spinner.vue";
 </script>
 
 <template>
     <p id="loginstatus"></p>
+
+    <Spinner />
+
     <div id="recentList"></div>
     <div id="marksList"></div>
 </template>
@@ -88,7 +93,7 @@ export default {
                             "</div>" +
                             "<div class='subject-details' id='subjectDetails'>" +
                             response[0][i].Marks.length +
-                            " <span>&rsaquo;</span></div>";
+                            " <span class='chevron'>&rsaquo;</span></div>";
                         const subjectGrades = document.createElement("ul");
                         subjectContainer.appendChild(subjectGrades);
                         for (
@@ -136,7 +141,7 @@ export default {
                     recentListDiv.appendChild(recentContainer);
                     const recentElement = document.createElement("summary");
                     recentElement.innerHTML =
-                        "<div class='subject-title'>Recent Grades</div><select name='amount' id='amountbox'><option value='5'>5</option><option value='10'>10</option><option value='15'>15</option><option value='20'>20</option></select><div class='subject-details' id='subjectDetails'><span>&rsaquo;</span></div>";
+                        "<div class='subject-title'>Recent Grades</div><select name='amount' id='amountbox'><option value='5'>5</option><option value='10'>10</option><option value='15'>15</option><option value='20'>20</option></select><div class='subject-details' id='subjectDetails'><span class='chevron'>&rsaquo;</span></div>";
                     recentContainer.appendChild(recentElement);
                     document.getElementById("amountbox").value =
                         localStorage.getItem("recentGradesAmount");
@@ -183,6 +188,14 @@ export default {
                         detailsR.open = true;
                     }
                 }
+
+                const chevron = document.getElementsByClassName("chevron");
+                for (let asdf = 0; asdf < chevron.length; asdf++) {
+                    chevron[asdf].innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/></svg>`;
+                }
+
+                const spinner = document.getElementsByClassName("spinner");
+                spinner[0].remove();
             }
         },
     },
@@ -247,15 +260,9 @@ export default {
 
 #marksList summary .subject-details {
     margin-left: auto;
-    font-size: 160%;
     line-height: 1;
     min-width: 1.5em;
     text-align: right;
-
-    span {
-        font-size: 120%;
-        line-height: 0;
-    }
 }
 
 #marksList,
@@ -285,14 +292,8 @@ export default {
 
 #recentList summary .subject-details {
     margin-left: 0.1rem;
-    font-size: 160%;
     line-height: 1;
     text-align: right;
-
-    span {
-        font-size: 120%;
-        line-height: 0;
-    }
 }
 
 details,
@@ -339,6 +340,14 @@ span.gradeSubject {
     text-align: center;
     align-self: stretch;
     align-content: center;
+}
+
+.chevron {
+    path {
+        stroke: currentColor;
+        stroke-width: 1.5px;
+        stroke-linejoin: round;
+    }
 }
 
 li {

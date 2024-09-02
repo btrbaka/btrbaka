@@ -94,12 +94,12 @@ export default {
 <style scoped>
 button {
     margin: 1em;
-    padding: 1em;
+    padding: 1em 2em;
     background-color: var(--btr-ad);
     color: var(--vt-c-indigo);
     border: none;
     cursor: pointer;
-    border-radius: var(--rounded-common);
+    border-radius: var(--rounded-rare);
     transition: all 0.1s ease-out;
 }
 
@@ -112,7 +112,7 @@ button:hover {
     margin: 1em;
     padding: 0.75em;
     border-radius: var(--rounded-common);
-    border: 1px solid var(--color-border);
+    border: 3px solid var(--color-border);
     background-color: var(--color-background-mute);
     color: var(--color-heading);
 }

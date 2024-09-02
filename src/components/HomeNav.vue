@@ -40,7 +40,6 @@ import IconTable from './icons/IconTable.vue';
     justify-content: center;
     align-items: center;
     text-align: center;
-    border: 1px solid var(--color-border);
     border-radius: var(--rounded-common);
 
     a {

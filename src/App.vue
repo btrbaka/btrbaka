@@ -1,6 +1,8 @@
 <script setup>
 import { RouterView } from 'vue-router'
 import SideNav from './components/SideNav.vue'
+
+import '@fontsource/poppins';
 </script>
 
 <template>
@@ -10,6 +12,12 @@ import SideNav from './components/SideNav.vue'
 
     <RouterView />
 </template>
+
+<style>
+html, body {
+    font-family: -apple-system, BlinkMacSystemFont, Poppins, system-ui;
+}
+</style>
 
 <style scoped>
 header {

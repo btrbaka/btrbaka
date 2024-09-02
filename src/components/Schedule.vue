@@ -1,6 +1,8 @@
 <script setup>
 import { useRouter } from "vue-router";
 
+import Spinner from "./Spinner.vue";
+
 const router = useRouter();
 
 const refreshPage = () => {
@@ -10,6 +12,9 @@ const refreshPage = () => {
 
 <template>
     <p id="loginstatus"></p>
+    
+    <Spinner />
+
     <div id="schedulenav" class="hidden">
         <p id="currentweek">Viewing current week</p>
         <div class="btn-container">
@@ -186,6 +191,9 @@ export default {
                         }
                     }
                 }
+
+                const spinner = document.getElementsByClassName("spinner");
+                spinner[0].remove();
             }
         },
         async lessIForgotTheWordDate() {
@@ -240,6 +248,7 @@ export default {
 #schedule {
     overflow-x: scroll;
     scrollbar-width: thin;
+    border-radius: var(--rounded-common);
 }
 
 .subject {
@@ -268,11 +277,9 @@ export default {
 }
 
 td {
-    border: 2px solid var(--color-background-mute);
+    box-shadow: inset 0 0 0 1px var(--color-background-mute), 0 0 0 1px var(--color-background-mute);
 }
-th {
-    border-right: 2px solid var(--color-background-soft);
-}
+
 
 th,
 td {
@@ -313,16 +320,17 @@ table {
     align-items: center;
     text-align: center;
     color: var(--color-text);
-    border: 1px solid var(--color-border);
     background-color: var(--color-background-soft);
-    padding: 1em;
+    padding: 1.15em 1.25em;
     flex: 1 1 0;
     transition: all 0.1s ease-out;
     cursor: pointer;
+    border: none;
+    
 }
 
-.btn-container button:hover {
-    border: 1px solid var(--btr-a);
+.btn-container button:not(.selected):hover {
+    box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--btr-a) 100%, #00000000 20%), 0 0 12px var(--btr-at);
 }
 
 .btn-container button:first-child {
@@ -334,6 +342,8 @@ table {
 }
 
 .btn-container .selected {
-    background-color: var(--btr-at);
+    background: color-mix(in srgb, var(--btr-ab) 45%, rgb(153, 157, 161));
+    color: var(--color-background);
+    font-weight: 600;
 }
 </style>
