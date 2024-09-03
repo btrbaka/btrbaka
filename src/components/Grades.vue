@@ -195,7 +195,7 @@ export default {
                 }
 
                 const spinner = document.getElementsByClassName("spinner");
-                spinner[0].remove();
+                spinner[0].classList.add("hidden");
             }
         },
     },

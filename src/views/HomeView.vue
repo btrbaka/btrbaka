@@ -1,6 +1,7 @@
 <script setup>
 import RefreshLogin from '../components/RefreshLogin.vue'
 import HomeNav from '../components/HomeNav.vue'
+import ThemeSwitch from '@/components/ThemeSwitch.vue';
 </script>
 
 <template>
@@ -18,6 +19,7 @@ import HomeNav from '../components/HomeNav.vue'
                 <p>With ❤️ from btrbaka contributors 🏳️‍⚧️🏳️‍🌈</p>
             </div>
             <RefreshLogin />
+            <ThemeSwitch />
         </div>
     </main>
 </template>
@@ -26,9 +28,15 @@ import HomeNav from '../components/HomeNav.vue'
 main {
     text-align: center;
 }
-main .logo { 
+
+main .logo {
     display: block;
 }
+
+.theme-group {
+    justify-content: center;
+}
+
 @media (min-width: 1024px) {
     main {
         min-height: 100vh;
@@ -36,8 +44,13 @@ main .logo {
         align-items: center;
         text-align: left;
     }
+
     main .logo {
         display: none;
+    }
+
+    .theme-group {
+        justify-content: left;
     }
 }
 

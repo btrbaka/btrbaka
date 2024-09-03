@@ -1,7 +1,7 @@
 :root {
-    --vt-c-white: rgb(255, 255, 255);
-    --vt-c-white-soft: rgb(248, 248, 248);
-    --vt-c-white-mute: rgb(242, 242, 242);
+    --vt-c-white: rgb(228, 228, 228);
+    --vt-c-white-soft: rgb(240, 240, 240);
+    --vt-c-white-mute: rgb(250, 250, 250);
 
     --vt-c-black: rgb(32, 28, 39);
     --vt-c-black-soft: rgb(42, 36, 51);
@@ -24,12 +24,10 @@
     --btr-a: rgb(188, 243, 255);
     --btr-at: rgba(247, 205, 255, 0.1);
     --btr-ad: rgb(141, 191, 191);
-    --btr-gradient: linear-gradient(
-        350deg,
-        rgb(196, 194, 227) 0%,
-        rgb(223, 223, 253) 35%,
-        rgba(240, 248, 255, 1) 100%
-    );
+    --btr-gradient: linear-gradient(350deg,
+            rgb(196, 194, 227) 0%,
+            rgb(223, 223, 253) 35%,
+            rgba(240, 248, 255, 1) 100%);
     --btr-ab: #ad71e9;
 
     --section-gap: 160px;
@@ -39,7 +37,22 @@
     --rounded-rare: 1.75rem;
 }
 
-:root {
+:root,
+body.dark {
+    --color-background: var(--vt-c-black);
+    --color-background-soft: var(--vt-c-black-soft);
+    --color-background-mute: var(--vt-c-black-mute);
+
+    --color-background-darker: var(--vt-c-blacker);
+
+    --color-border: var(--vt-c-divider-dark-2);
+    --color-border-hover: var(--vt-c-divider-dark-1);
+
+    --color-heading: var(--vt-c-text-dark-1);
+    --color-text: var(--vt-c-text-dark-2);
+}
+
+body.light {
     --color-background: var(--vt-c-white);
     --color-background-soft: var(--vt-c-white-soft);
     --color-background-mute: var(--vt-c-white-mute);
@@ -51,21 +64,39 @@
 
     --color-heading: var(--vt-c-text-light-1);
     --color-text: var(--vt-c-text-light-1);
+
+    --btr-a: rgb(34, 109, 126);
+    --btr-at: rgba(236, 143, 255, 0.3);
+    --btr-ad: rgb(65, 155, 155);
+    --btr-gradient: linear-gradient(350deg,
+            rgb(176, 173, 223) 0%,
+            rgb(223, 223, 253) 35%,
+            rgba(240, 248, 255, 1) 100%);
+    --btr-ab: #954cdd;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
     :root {
-        --color-background: var(--vt-c-black);
-        --color-background-soft: var(--vt-c-black-soft);
-        --color-background-mute: var(--vt-c-black-mute);
+        --color-background: var(--vt-c-white);
+        --color-background-soft: var(--vt-c-white-soft);
+        --color-background-mute: var(--vt-c-white-mute);
 
-        --color-background-darker: var(--vt-c-blacker);
+        --color-background-darker: var(--vt-c-white-mute);
 
-        --color-border: var(--vt-c-divider-dark-2);
-        --color-border-hover: var(--vt-c-divider-dark-1);
+        --color-border: var(--vt-c-divider-light-2);
+        --color-border-hover: var(--vt-c-divider-light-1);
 
-        --color-heading: var(--vt-c-text-dark-1);
-        --color-text: var(--vt-c-text-dark-2);
+        --color-heading: var(--vt-c-text-light-1);
+        --color-text: var(--vt-c-text-light-1);
+
+        --btr-a: rgb(34, 109, 126);
+        --btr-at: rgba(236, 143, 255, 0.3);
+        --btr-ad: rgb(65, 155, 155);
+        --btr-gradient: linear-gradient(350deg,
+                rgb(176, 173, 223) 0%,
+                rgb(223, 223, 253) 35%,
+                rgba(240, 248, 255, 1) 100%);
+        --btr-ab: #954cdd;
     }
 }
 

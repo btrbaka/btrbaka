@@ -14,6 +14,9 @@
     animation: rotation 1s linear infinite;
     margin: 1em;
 }
+.spinner.hidden {
+    display: none
+}
 
 @keyframes rotation {
     0% {

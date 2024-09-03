@@ -2,7 +2,18 @@
 import { RouterView } from 'vue-router'
 import SideNav from './components/SideNav.vue'
 
+import '@fontsource/inter';
 import '@fontsource/poppins';
+
+
+const themePreference = localStorage.getItem("theme");
+const fontPreference = localStorage.getItem("font");
+
+document.body.classList.add(themePreference);
+
+if (fontPreference === "poppins") {
+    document.body.classList.add("poppins");
+}
 </script>
 
 <template>
@@ -14,8 +25,12 @@ import '@fontsource/poppins';
 </template>
 
 <style>
-html, body {
-    font-family: -apple-system, BlinkMacSystemFont, Poppins, system-ui;
+body {
+    font-family: -apple-system, BlinkMacSystemFont, Inter, system-ui;
+}
+
+body.poppins {
+    font-family: Poppins, system-ui;
 }
 </style>
 

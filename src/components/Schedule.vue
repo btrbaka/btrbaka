@@ -193,7 +193,7 @@ export default {
                 }
 
                 const spinner = document.getElementsByClassName("spinner");
-                spinner[0].remove();
+                spinner[0].classList.add("hidden");
             }
         },
         async lessIForgotTheWordDate() {
@@ -330,7 +330,7 @@ table {
 }
 
 .btn-container button:not(.selected):hover {
-    box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--btr-a) 100%, #00000000 20%), 0 0 12px var(--btr-at);
+    background-color: var(--color-background-mute);
 }
 
 .btn-container button:first-child {
