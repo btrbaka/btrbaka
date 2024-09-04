@@ -26,8 +26,12 @@
 export default {
     mounted() {
         const urlbox = document.getElementById("url");
+        const usrnmbox = document.getElementById("usrnm");
         if (localStorage.getItem("url") != null) {
             urlbox.value = localStorage.getItem("url").slice(0, -1);
+        }
+        if (localStorage.getItem("usrnm") != null) {
+            usrnmbox.value = localStorage.getItem("usrnm");
         }
     },
     methods: {
@@ -79,6 +83,7 @@ export default {
                     let expirytime = now.getTime()
                     localStorage.setItem("expirytime", expirytime)
                     localStorage.setItem("url", url)
+                    localStorage.setItem("usrnm", usrnm)
                     localStorage.setItem("token", token)
                     localStorage.setItem("refresh", refresh)
                     alert(`Successfully logged in!`);
