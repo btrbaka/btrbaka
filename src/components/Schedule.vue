@@ -12,7 +12,7 @@ const refreshPage = () => {
 
 <template>
     <p id="loginstatus"></p>
-    
+
     <Spinner />
 
     <div id="schedulenav" class="hidden">
@@ -88,9 +88,8 @@ export default {
                     for (let k = 0; k < response[0].length; k++) {
                         const timeCell = document.createElement("th");
                         timeCell.innerHTML =
-                            k +
-                            1 +
-                            ".<span class='timerange'>" +
+                            response[0][k].Caption +
+                            "<span class='timerange'>" +
                             response[0][k].BeginTime +
                             " - " +
                             response[0][k].EndTime +
@@ -133,6 +132,8 @@ export default {
                                 j++
                             ) {
                                 const scheduleRowItem =
+                                    document.createElement("td");
+                                const scheduleRowItemEmpty =
                                     document.createElement("td");
                                 let room;
                                 let subject;
@@ -186,6 +187,17 @@ export default {
                                     teacher +
                                     "<br>" +
                                     room;
+
+                                if (j > 0) {
+                                    if (
+                                        response[1][i].Atoms[j - 1].HourId !=
+                                        response[1][i].Atoms[j].HourId - 1
+                                    ) {
+                                        scheduleRow.appendChild(
+                                            scheduleRowItemEmpty,
+                                        );
+                                    }
+                                }
                                 scheduleRow.appendChild(scheduleRowItem);
                             }
                         }
@@ -277,9 +289,10 @@ export default {
 }
 
 td {
-    box-shadow: inset 0 0 0 1px var(--color-background-mute), 0 0 0 1px var(--color-background-mute);
+    box-shadow:
+        inset 0 0 0 1px var(--color-background-mute),
+        0 0 0 1px var(--color-background-mute);
 }
-
 
 th,
 td {
@@ -292,6 +305,10 @@ th {
     font-weight: bold;
     background-color: var(--color-background-soft);
     min-width: 7em;
+
+    box-shadow:
+        inset 0 0 0 1px var(--color-background-soft),
+        0 0 0 1px var(--color-background-soft);
 }
 
 table tr td:first-child {
@@ -326,7 +343,6 @@ table {
     transition: all 0.1s ease-out;
     cursor: pointer;
     border: none;
-    
 }
 
 .btn-container button:not(.selected):hover {
