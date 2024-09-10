@@ -20,6 +20,7 @@ function nicemusic() {
         <RouterLink @click="closeNav" to="/">Home</RouterLink>
         <RouterLink @click="closeNav" to="/grades">Grades</RouterLink>
         <RouterLink @click="closeNav" to="/schedule">Schedule</RouterLink>
+        <RouterLink @click="closeNav" to="/absences">Absences</RouterLink>
         <RouterLink @click="closeNav" to="/account">Account</RouterLink>
         <button @click="closeNav" class="close">&times;</button>
     </div>
