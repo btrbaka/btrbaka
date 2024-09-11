@@ -17,17 +17,21 @@
     --vt-c-divider-dark-2: rgba(72, 61, 85, 0.88);
 
     --vt-c-text-light-1: var(--vt-c-indigo);
-    --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
+    --vt-c-text-light-2: rgba(19, 25, 30, 0.86);
     --vt-c-text-dark-1: var(--vt-c-white);
-    --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+    --vt-c-text-dark-2: rgba(235, 235, 235, 0.74);
 
     --btr-a: rgb(188, 243, 255);
     --btr-at: rgba(247, 205, 255, 0.1);
     --btr-ad: rgb(141, 191, 191);
-    --btr-gradient: linear-gradient(350deg,
-            rgb(196, 194, 227) 0%,
-            rgb(223, 223, 253) 35%,
-            rgba(240, 248, 255, 1) 100%);
+    --btr-gradient: linear-gradient(
+        270deg,
+        rgb(146, 144, 187) 0%,
+        rgba(200, 208, 215, 1) 100%
+    );
+
+    --color-danger: #fc5879;
+
     --btr-ab: #ad71e9;
 
     --section-gap: 160px;
@@ -63,16 +67,19 @@ body.light {
     --color-border-hover: var(--vt-c-divider-light-1);
 
     --color-heading: var(--vt-c-text-light-1);
-    --color-text: var(--vt-c-text-light-1);
+    --color-text: var(--vt-c-text-light-2);
 
     --btr-a: rgb(34, 109, 126);
     --btr-at: rgba(236, 143, 255, 0.3);
     --btr-ad: rgb(65, 155, 155);
-    --btr-gradient: linear-gradient(350deg,
-            rgb(176, 173, 223) 0%,
-            rgb(223, 223, 253) 35%,
-            rgba(240, 248, 255, 1) 100%);
+    --btr-gradient: linear-gradient(
+        90deg,
+        rgb(203, 203, 243) 0%,
+        rgba(240, 248, 255, 1) 100%
+    );
     --btr-ab: #954cdd;
+
+    --color-danger: #911d34;
 }
 
 @media (prefers-color-scheme: light) {
@@ -87,16 +94,19 @@ body.light {
         --color-border-hover: var(--vt-c-divider-light-1);
 
         --color-heading: var(--vt-c-text-light-1);
-        --color-text: var(--vt-c-text-light-1);
+        --color-text: var(--vt-c-text-light-2);
 
         --btr-a: rgb(34, 109, 126);
         --btr-at: rgba(236, 143, 255, 0.3);
         --btr-ad: rgb(65, 155, 155);
-        --btr-gradient: linear-gradient(350deg,
-                rgb(176, 173, 223) 0%,
-                rgb(223, 223, 253) 35%,
-                rgba(240, 248, 255, 1) 100%);
+        --btr-gradient: linear-gradient(
+            90deg,
+            rgb(203, 203, 243) 0%,
+            rgba(240, 248, 255, 1) 100%
+        );
         --btr-ab: #954cdd;
+
+        --color-danger: #911d34;
     }
 }
 

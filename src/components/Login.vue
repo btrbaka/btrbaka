@@ -1,30 +1,35 @@
 <template>
     <label for="url">Server URL:</label>
-    <input type="text" id="url" name="url">
+    <input type="text" id="url" name="url" />
 
     <label for="usrnm">Username:</label>
-    <input type="text" id="usrnm" name="usrnm">
+    <input type="text" id="usrnm" name="usrnm" />
 
     <label for="pswd">Password:</label>
-    <input type="password" id="pswd" name="pswd">
+    <input type="password" id="pswd" name="pswd" />
 
-    <label for="rfrsh">Refresh token (optional):</label>
-    <input type="password" id="rfrsh" name="rfrsh">
+    <label for="rfrsh" id="rfrshlabel">Refresh token (optional):</label>
+    <input type="password" id="rfrsh" name="rfrsh" />
 
     <p id="loginstatuselem"></p>
 
     <button type="button" @click="loginFunc">Login</button>
 
     <div>
-        <input type="checkbox" id="debugmode" name="debugmode" value="debugmode">
+        <input
+            type="checkbox"
+            id="debugmode"
+            name="debugmode"
+            value="debugmode"
+        />
         <label for="debugmode"> Debug mode</label>
     </div>
 </template>
 
 <script>
-
 export default {
     mounted() {
+        // plop url and username in input boxes if saved in localstorage
         const urlbox = document.getElementById("url");
         const usrnmbox = document.getElementById("usrnm");
         if (localStorage.getItem("url") != null) {
@@ -33,6 +38,27 @@ export default {
         if (localStorage.getItem("usrnm") != null) {
             usrnmbox.value = localStorage.getItem("usrnm");
         }
+
+        // if debug mode is on, show refresh token field
+        if (document.getElementById("debugmode").checked != true) {
+            document.getElementById("rfrshlabel").classList.add("hidden");
+            document.getElementById("rfrsh").classList.add("hidden");
+        }
+        document
+            .getElementById("debugmode")
+            .addEventListener("change", function () {
+                if (this.checked != true) {
+                    document
+                        .getElementById("rfrshlabel")
+                        .classList.add("hidden");
+                    document.getElementById("rfrsh").classList.add("hidden");
+                } else {
+                    document
+                        .getElementById("rfrshlabel")
+                        .classList.remove("hidden");
+                    document.getElementById("rfrsh").classList.remove("hidden");
+                }
+            });
     },
     methods: {
         async loginFunc() {
@@ -55,45 +81,44 @@ export default {
             console.log(usrnm);
             console.log(pswd);
 
-            let head = { "Content-Type": "application/x-www-form-urlencoded" }
+            let head = { "Content-Type": "application/x-www-form-urlencoded" };
             if (rfrsh != "") {
-                body = `client_id=ANDR&grant_type=refresh_token&refresh_token=${rfrsh}`
+                body = `client_id=ANDR&grant_type=refresh_token&refresh_token=${rfrsh}`;
             }
-            let body = `client_id=ANDR&grant_type=password&username=${usrnm}&password=${pswd}`
+            let body = `client_id=ANDR&grant_type=password&username=${usrnm}&password=${pswd}`;
             var response = await fetch(`${url}api/login/`, {
                 method: "POST",
                 headers: head,
-                body: body
-            })
+                body: body,
+            });
 
-            const loginstatus = document.getElementById("loginstatuselem")
+            const loginstatus = document.getElementById("loginstatuselem");
 
-            var responseJson = await response.json()
-            console.log(response.ok)
+            var responseJson = await response.json();
+            console.log(response.ok);
             if (response.ok == false) {
-                alert("Login failure. Wrong password? Try again.")
+                alert("Login failure. Wrong password? Try again.");
             } else {
-                let token = responseJson.access_token
-                let refresh = responseJson.refresh_token
+                let token = responseJson.access_token;
+                let refresh = responseJson.refresh_token;
                 console.log(token);
-                if (document.getElementById('debugmode').checked) {
+                if (document.getElementById("debugmode").checked) {
                     alert(token);
                 }
                 if (token.startsWith("undef") == false) {
-                    let expirytime = now.getTime()
-                    localStorage.setItem("expirytime", expirytime)
-                    localStorage.setItem("url", url)
-                    localStorage.setItem("usrnm", usrnm)
-                    localStorage.setItem("token", token)
-                    localStorage.setItem("refresh", refresh)
+                    let expirytime = now.getTime();
+                    localStorage.setItem("expirytime", expirytime);
+                    localStorage.setItem("url", url);
+                    localStorage.setItem("usrnm", usrnm);
+                    localStorage.setItem("token", token);
+                    localStorage.setItem("refresh", refresh);
                     alert(`Successfully logged in!`);
                 }
-                loginstatus.innerHTML = "Successfully logged in!"
+                loginstatus.innerHTML = "Successfully logged in!";
             }
-        }
-    }
-}
-
+        },
+    },
+};
 </script>
 
 <style scoped>

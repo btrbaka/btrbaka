@@ -204,6 +204,7 @@ export default {
                     }
                 }
 
+                // hide spinner after content is loaded
                 const spinner = document.getElementsByClassName("spinner");
                 spinner[0].classList.add("hidden");
             }
@@ -301,7 +302,7 @@ td {
     min-width: min-content;
 }
 
-th {
+#schedule th {
     font-weight: bold;
     background-color: var(--color-background-soft);
     min-width: 7em;

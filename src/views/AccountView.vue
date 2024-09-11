@@ -1,5 +1,5 @@
 <script setup>
-import Login from '../components/Login.vue'
+import Login from "../components/Login.vue";
 </script>
 
 <template>
@@ -14,6 +14,9 @@ import Login from '../components/Login.vue'
     justify-content: center;
     flex-direction: column;
     display: flex;
+}
+.wrap > h1 {
+    margin-bottom: 1.5rem;
 }
 @media (min-width: 1024px) {
     .wrap {

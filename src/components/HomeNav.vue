@@ -1,9 +1,9 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink } from "vue-router";
 
-import Icon123 from './icons/Icon123.vue';
-import IconTable from './icons/IconTable.vue';
-import IconAbsence from './icons/IconAbsence.vue';
+import Icon123 from "./icons/Icon123.vue";
+import IconTable from "./icons/IconTable.vue";
+import IconAbsence from "./icons/IconAbsence.vue";
 </script>
 
 <template>
@@ -39,7 +39,23 @@ import IconAbsence from './icons/IconAbsence.vue';
 .homeNav {
     margin: 1em 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+@media (max-width: 1024px) {
+    .homeNav {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+@media (max-width: 724px) {
+    .homeNav {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (max-width: 364px) {
+    .homeNav {
+        grid-template-columns: 1fr;
+    }
 }
 
 .homeItem {
@@ -56,6 +72,7 @@ import IconAbsence from './icons/IconAbsence.vue';
         height: 100%;
         background-color: var(--color-background-soft);
         border-radius: var(--rounded-common);
+        padding: 0 1.25em;
     }
     a:hover {
         background-color: var(--btr-at);

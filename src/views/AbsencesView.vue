@@ -1,5 +1,5 @@
 <script setup>
-import Absences from '../components/Absences.vue'
+import Absences from "../components/Absences.vue";
 </script>
 
 <template>

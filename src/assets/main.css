@@ -1,15 +1,23 @@
-@import './base.css';
+@import "./base.css";
 
 #app {
     max-width: 1280px;
     width: 100%;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 2rem 1rem;
     font-weight: normal;
 }
 
 .hidden {
     display: none;
+}
+
+.danger {
+    color: var(--color-danger);
+}
+
+h1 {
+    color: var(--color-heading);
 }
 
 a {
