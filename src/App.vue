@@ -1,10 +1,9 @@
 <script setup>
-import { RouterView } from 'vue-router'
-import SideNav from './components/SideNav.vue'
+import { RouterView } from "vue-router";
+import SideNav from "./components/SideNav.vue";
 
-import '@fontsource/inter';
-import '@fontsource/poppins';
-
+import "@fontsource/inter";
+import "@fontsource/poppins";
 
 const themePreference = localStorage.getItem("theme");
 const fontPreference = localStorage.getItem("font");
@@ -32,6 +31,12 @@ body {
 body.poppins {
     font-family: Poppins, system-ui;
 }
+
+input,
+textarea,
+button {
+    font-family: inherit;
+}
 </style>
 
 <style scoped>
@@ -46,7 +51,8 @@ header {
     margin: 0 auto 2rem;
 }
 
-.wrap, main {
+.wrap,
+main {
     margin-bottom: 5.5em;
 }
 
