@@ -12,20 +12,16 @@ the better baka experience, in a nice little webapp.
 - clean home page with everything you need
 - grades page including recent grades
 - full featured schedule page
+- absences
 - no legal name in sight
-- PWA; add btrbaka on your homescreen as an app!
+- PWA; add btrbaka to your homescreen as an app!
 - faster than b*kaláři
-
-planned:
-
-- komens
-- grade predictor
 
 ### screenshots
 
 | | | |
 | :-: | :-: | :-: | 
-| ![home preview](https://github.com/user-attachments/assets/09770ae7-6006-4892-9565-28e9fcb4fbb1) | ![grades preview](https://github.com/user-attachments/assets/8be661f1-0b99-4c73-a233-0a044f1e0e9f) | ![schedule preview](https://github.com/user-attachments/assets/d8ee8a57-6eaf-429a-a806-36fbf523bc08) |
+| ![Screenshot 2024-09-12 at 23-03-02 btrbaka](https://github.com/user-attachments/assets/2eee1198-6e51-411d-80f3-6aa151a1ee57) | ![Screenshot 2024-09-12 at 23-03-17 btrbaka](https://github.com/user-attachments/assets/63b8f9c1-9361-4027-a7c3-79a2d2ab9631) | ![Screenshot 2024-09-12 at 23-03-28 btrbaka](https://github.com/user-attachments/assets/d4ab5e4a-fc3e-4589-9345-094c0f6d0dc3) |
 
 ### want to contribute? is there a bug?
 
