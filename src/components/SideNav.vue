@@ -1,22 +1,31 @@
 <script setup>
-import { RouterLink } from 'vue-router'
-import IconList from './icons/IconList.vue';
+import { RouterLink } from "vue-router";
+import IconList from "./icons/IconList.vue";
 
-let clicks = 0
+let clicks = 0;
 
 function nicemusic() {
     clicks++;
     console.log(clicks);
     if (clicks == 21) {
-        window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank').focus();
-        return clicks = 0;
+        window
+            .open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank")
+            .focus();
+        return (clicks = 0);
     }
 }
 </script>
 
 <template>
     <div id="sideNav" class="mobileNav">
-        <img alt="btrbaka" class="logo" src="@/assets/logo.svg" width="125" height="125" @click="nicemusic" />
+        <img
+            alt="btrbaka"
+            class="logo"
+            src="@/assets/logo.svg"
+            width="125"
+            height="125"
+            @click="nicemusic"
+        />
         <RouterLink @click="closeNav" to="/">Home</RouterLink>
         <RouterLink @click="closeNav" to="/grades">Grades</RouterLink>
         <RouterLink @click="closeNav" to="/schedule">Schedule</RouterLink>
@@ -42,9 +51,9 @@ export default {
         closeNav() {
             document.getElementById("sideNav").classList.remove("opened");
             document.getElementById("closeOverlay").classList.remove("dimmed");
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <style>
@@ -106,6 +115,8 @@ export default {
     overflow-x: hidden;
     padding-top: 60px;
     transition: 0.25s;
+
+    user-select: none;
 }
 
 #sideNav a {

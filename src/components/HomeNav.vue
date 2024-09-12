@@ -40,6 +40,7 @@ import IconAbsence from "./icons/IconAbsence.vue";
     margin: 1em 0;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    user-select: none;
 }
 
 @media (max-width: 1024px) {

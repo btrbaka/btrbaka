@@ -51,9 +51,11 @@ header {
     margin: 0 auto 2rem;
 }
 
-.wrap,
-main {
-    margin-bottom: 5.5em;
+@media (max-width: 1024px) {
+    .wrap,
+    main {
+        margin-bottom: 5.5em;
+    }
 }
 
 @media (min-width: 1024px) {

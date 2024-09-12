@@ -1,5 +1,5 @@
 <script setup>
-import Grades from '../components/Grades.vue'
+import Grades from "../components/Grades.vue";
 </script>
 
 <template>

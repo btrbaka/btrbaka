@@ -1,30 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content="an alternative webapp for bakaláři" />
+        <link rel="shortcut icon" href="/btrbakapride.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <meta content="btrbaka" property="og:title" />
+        <meta
+            content="an alternative webapp for bakaláři"
+            property="og:description"
+        />
+        <meta content="https://btrbaka.gitlab.io/" property="og:url" />
+        <meta
+            content="https://btrbaka.gitlab.io/btrbaka/btrbaka.png"
+            property="og:image"
+        />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <title>btrbaka</title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="description" content="an alternative webapp for bakaláři" />
-    <link rel="shortcut icon" href="/btrbaka.png">
-    <link rel="apple-touch-icon" href="/btrbaka.png">
-    <meta content="btrbaka" property="og:title" />
-    <meta content="an alternative webapp for bakaláři" property="og:description" />
-    <meta content="https://btrbaka.gitlab.io/" property="og:url" />
-    <meta content="https://btrbaka.gitlab.io/btrbaka/btrbaka.png" property="og:image" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>btrbaka</title>
+        <style>
+            html,
+            body {
+                color: var(--color-text);
+                background: var(--color-background);
+            }
+        </style>
+    </head>
 
-    <style>
-        html,
-        body {
-            color: var(--color-text);
-            background: var(--color-background);
-        }
-    </style>
-</head>
-
-<body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-</body>
-
+    <body>
+        <div id="app"></div>
+        <script type="module" src="/src/main.js"></script>
+    </body>
 </html>
