@@ -1,6 +1,7 @@
 <script setup>
 import RefreshLogin from "../components/RefreshLogin.vue";
 import HomeNav from "../components/HomeNav.vue";
+import RandomQuote from "../components/RandomQuote.vue";
 import ThemeSwitch from "@/components/ThemeSwitch.vue";
 </script>
 
@@ -19,7 +20,7 @@ import ThemeSwitch from "@/components/ThemeSwitch.vue";
                 <h1>Welcome to <b>btrbaka</b></h1>
                 <p>Use the 'Account' tab to log in.</p>
                 <p>Navigate to 'Home' to refresh your login token.</p>
-                <blockquote>"Real women test in production"</blockquote>
+                <RandomQuote />
             </div>
             <HomeNav />
             <div class="repo-notice">
