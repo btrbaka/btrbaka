@@ -37,6 +37,13 @@ textarea,
 button {
     font-family: inherit;
 }
+
+details > summary {
+    list-style: none;
+}
+details > summary::-webkit-details-marker {
+    display: none;
+}
 </style>
 
 <style scoped>
