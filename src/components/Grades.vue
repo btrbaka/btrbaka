@@ -217,7 +217,8 @@ export default {
     transition: all 0.1s ease-out;
 }
 
-[open] summary {
+#marksList [open] summary,
+#recentList [open] summary {
     filter: saturate(200%) contrast(120%) hue-rotate(20deg);
 }
 
@@ -306,7 +307,7 @@ summary {
 
 details summary {
     cursor: pointer;
-    transition: margin 1s ease-out;
+    transition: margin 0.1s ease-out;
 }
 
 details[open] summary {

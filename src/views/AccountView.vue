@@ -15,9 +15,6 @@ import Login from "../components/Login.vue";
     flex-direction: column;
     display: flex;
 }
-.wrap > h1 {
-    margin-bottom: 1.5rem;
-}
 @media (min-width: 1024px) {
     .wrap {
         min-height: 100vh;

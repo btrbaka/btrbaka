@@ -72,5 +72,9 @@ header {
     #sideNav {
         display: none;
     }
+
+    .wrap {
+        margin-bottom: 2.5em;
+    }
 }
 </style>

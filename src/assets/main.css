@@ -12,12 +12,30 @@
     display: none;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .danger {
     color: var(--color-danger);
 }
 
+.blue {
+    color: var(--color-blue);
+}
+.green {
+    color: var(--color-green);
+}
+.yellow {
+    color: var(--color-yellow);
+}
+.orange {
+    color: var(--color-orange);
+}
+
 h1 {
     color: var(--color-heading);
+    margin-top: 1rem;
 }
 
 a {
