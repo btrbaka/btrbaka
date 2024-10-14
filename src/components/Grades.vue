@@ -141,7 +141,7 @@ export default {
                     recentListDiv.appendChild(recentContainer);
                     const recentElement = document.createElement("summary");
                     recentElement.innerHTML =
-                        "<div class='subject-title'>Recent Grades</div><select name='amount' id='amountbox'><option value='5'>5</option><option value='10'>10</option><option value='15'>15</option><option value='20'>20</option></select><div class='subject-details' id='subjectDetails'><span class='chevron'>&rsaquo;</span></div>";
+                        "<div class='subject-title'>Recent Grades</div><select name='amount' id='amountbox'><option value='5'>5</option><option value='10'>10</option><option value='15'>15</option><option value='20'>20</option><option value='999'>All</option></select><div class='subject-details' id='subjectDetails'><span class='chevron'>&rsaquo;</span></div>";
                     recentContainer.appendChild(recentElement);
                     document.getElementById("amountbox").value =
                         localStorage.getItem("recentGradesAmount");
