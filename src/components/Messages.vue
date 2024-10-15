@@ -53,8 +53,14 @@ export default {
                     );
                 } else {
                     var response = Object.values(responseJson);
-                    document.getElementById("unreads").innerHTML =
-                        `Unread messages: ${unreadsNumber}`;
+
+                    const unreadsElem = document.getElementById("unreads");
+
+                    if (unreadsNumber == 0) {
+                        unreadsElem.innerHTML = `No unread messages`;
+                    } else {
+                        unreadsElem.innerHTML = `${unreadsNumber} unread messages`;
+                    }
 
                     for (let i = 0; i < response[0].length; i++) {
                         console.log(response[0][i].Text);
@@ -67,9 +73,33 @@ export default {
                         let senderType = response[0][i].RelevantPersonType;
                         let sentDateUnix = Date.parse(response[0][i].SentDate);
                         var sentDate = new Date(sentDateUnix);
-                        const messageContent =
-                            document.createElement("messageContent");
-                        messageContent.innerHTML = `<p>${messageTitle}</p><p>${sentDate.toLocaleString()}</p><br /><p>${messageSender} (${senderType})</p><br /><p>${messageText}</p><hr />`;
+
+                        const messageContent = document.createElement("div");
+
+                        const messageTitleElem = document.createElement("h2");
+                        const messageDateElem = document.createElement("h5");
+                        const messageSenderElem = document.createElement("h4");
+                        const messageProseElem = document.createElement("p");
+
+                        messageContent.classList.add("message-card");
+
+                        messageTitleElem.innerHTML = messageTitle;
+                        messageDateElem.innerHTML = sentDate.toLocaleString();
+                        messageSenderElem.innerHTML =
+                            messageSender + " (" + senderType + ")";
+                        messageProseElem.innerHTML = messageText;
+
+                        messageContent.appendChild(messageTitleElem);
+                        messageContent.appendChild(messageDateElem);
+                        messageContent.appendChild(messageSenderElem);
+                        messageContent.appendChild(messageProseElem);
+
+                        messageProseElem
+                            .querySelectorAll("span")
+                            .forEach((spanElem) => {
+                                spanElem.outerHTML = spanElem.innerHTML;
+                            });
+
                         messagesDiv.appendChild(messageContent);
                     }
                 }
@@ -81,4 +111,32 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.message-card {
+    background-color: var(--color-background-soft);
+    margin: 1rem 0em;
+    border-radius: var(--rounded-common);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 0.25rem 1.5rem #00000015;
+
+    h2 {
+        color: var(--color-heading);
+        font-weight: bold;
+        padding: 1rem 1.25rem 0em;
+        background-color: var(--color-background-mute);
+        border-radius: var(--rounded-common) var(--rounded-common) 0 0;
+    }
+    h5,
+    h4 {
+        padding: 0em 1.25rem;
+        background-color: var(--color-background-mute);
+    }
+    h4 {
+        border-bottom: 1px solid var(--color-border);
+        padding-bottom: 0.5em;
+    }
+    p {
+        padding: 0.75rem 1.25rem 1.25rem;
+    }
+}
+</style>
