@@ -271,15 +271,15 @@ export default {
     font-weight: bold;
 }
 
-.change-cancel {
+#schedule .change-cancel {
     background-color: rgba(255, 137, 137, 0.1);
 }
 
-.change-other {
+#schedule .change-other {
     background-color: rgba(160, 255, 160, 0.1);
 }
 
-.holiday {
+#schedule .holiday {
     background-color: rgba(69, 196, 255, 0.1);
     text-align: center;
 }
