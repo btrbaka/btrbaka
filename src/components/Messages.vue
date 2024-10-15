@@ -15,10 +15,10 @@ import Spinner from "./Spinner.vue";
 <script>
 export default {
     mounted() {
-        this.getabsences();
+        this.getmessages();
     },
     methods: {
-        async getabsences() {
+        async getmessages() {
             const token = localStorage.getItem("token");
             const url = localStorage.getItem("url");
 
