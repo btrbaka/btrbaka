@@ -4,6 +4,7 @@ import { RouterLink } from "vue-router";
 import Icon123 from "./icons/Icon123.vue";
 import IconTable from "./icons/IconTable.vue";
 import IconAbsence from "./icons/IconAbsence.vue";
+import IconMessages from "./icons/IconMessages.vue";
 </script>
 
 <template>
@@ -30,6 +31,14 @@ import IconAbsence from "./icons/IconAbsence.vue";
                     <IconAbsence />
                 </i>
                 <h3>Absences</h3>
+            </RouterLink>
+        </div>
+        <div class="homeItem">
+            <RouterLink to="/messages">
+                <i>
+                    <IconMessages />
+                </i>
+                <h3>Messages</h3>
             </RouterLink>
         </div>
     </div>
