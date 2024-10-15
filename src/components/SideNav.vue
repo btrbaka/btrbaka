@@ -113,6 +113,7 @@ export default {
     top: 0;
     left: 0;
     background-color: var(--color-background-darker);
+    border-right: 1px solid var(--color-background-mute);
     overflow-x: hidden;
     padding-top: 60px;
     transition: 0.25s;

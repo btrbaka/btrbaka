@@ -225,6 +225,7 @@ export default {
 [open] {
     background-color: var(--color-background-darker);
     border-radius: var(--rounded-common);
+    box-shadow: 0 0 0 1px var(--color-background-mute);
 }
 
 #recentList summary {

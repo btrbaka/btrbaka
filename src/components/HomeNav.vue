@@ -82,7 +82,8 @@ import IconMessages from "./icons/IconMessages.vue";
         height: 100%;
         background-color: var(--color-background-soft);
         border-radius: var(--rounded-common);
-        padding: 0 1.25em;
+        border: 1px solid var(--color-border);
+        padding: 0.25em 1.5em;
     }
     a:hover {
         background-color: var(--btr-at);

@@ -262,6 +262,8 @@ export default {
     overflow-x: scroll;
     scrollbar-width: thin;
     border-radius: var(--rounded-common);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-background-soft);
 }
 
 .subject {
@@ -289,14 +291,15 @@ export default {
     min-width: max-content;
 }
 
-td {
+#schedule td {
     box-shadow:
         inset 0 0 0 1px var(--color-background-mute),
         0 0 0 1px var(--color-background-mute);
+    background-color: var(--color-background);
 }
 
-th,
-td {
+#schedule th,
+#schedule td {
     vertical-align: top;
     padding: 0.5em;
     min-width: min-content;
@@ -312,16 +315,16 @@ td {
         0 0 0 1px var(--color-background-soft);
 }
 
-table tr td:first-child {
+#schedule table tr td:first-child {
     text-align: center;
     vertical-align: middle;
 }
 
-table {
+#schedule table {
     border-collapse: collapse;
 }
 
-.timetable-days {
+#schedule .timetable-days {
     background-color: var(--color-background-mute);
     position: sticky;
     left: -1px;
@@ -331,6 +334,11 @@ table {
     display: flex;
     margin: 1em 0;
     width: 100%;
+    padding: 0.35rem;
+    background-color: var(--color-background-soft);
+    border-radius: var(--rounded-rare);
+    gap: 0.35em;
+    border: 1px solid var(--color-background-mute);
 }
 
 .btn-container button {
@@ -339,23 +347,16 @@ table {
     text-align: center;
     color: var(--color-text);
     background-color: var(--color-background-soft);
-    padding: 1.15em 1.25em;
+    padding: 0.85rem 1.25rem;
     flex: 1 1 0;
     transition: all 0.1s ease-out;
     cursor: pointer;
     border: none;
+    border-radius: var(--rounded-rare);
 }
 
 .btn-container button:not(.selected):hover {
     background-color: var(--color-background-mute);
-}
-
-.btn-container button:first-child {
-    border-radius: var(--rounded-common) 0 0 var(--rounded-common);
-}
-
-.btn-container button:last-child {
-    border-radius: 0 var(--rounded-common) var(--rounded-common) 0;
 }
 
 .btn-container .selected {

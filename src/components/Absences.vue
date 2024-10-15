@@ -241,6 +241,33 @@ export default {
 
     table {
         margin: auto;
+        border-collapse: collapse;
+    }
+
+    td,
+    th {
+        vertical-align: top;
+        padding: 0.25em 0.5em;
+        min-width: min-content;
+    }
+}
+
+#absenceslist {
+    border: 1px solid var(--color-background-mute);
+    border-radius: var(--rounded-common);
+    width: 80%;
+
+    tr td:first-child {
+        width: 100%;
+    }
+
+    tr td:last-child {
+        white-space: nowrap;
+    }
+
+    td,
+    th {
+        padding: 0.75em;
     }
 }
 
@@ -254,13 +281,17 @@ export default {
         overflow-x: scroll;
         width: 100%;
     }
+
+    #absenceslist {
+        width: 100%;
+    }
 }
 
 #absenceslist tr:nth-child(even) {
     background-color: color-mix(
         in srgb,
         var(--color-background-soft) 100%,
-        #00000000 75%
+        transparent 75%
     );
 }
 #absenceslist td {

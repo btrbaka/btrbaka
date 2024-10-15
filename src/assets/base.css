@@ -13,8 +13,8 @@
 
     --vt-c-divider-light-1: rgba(49, 42, 58, 0.29);
     --vt-c-divider-light-2: rgba(49, 42, 58, 0.12);
-    --vt-c-divider-dark-1: rgba(72, 61, 85, 0.85);
-    --vt-c-divider-dark-2: rgba(72, 61, 85, 0.88);
+    --vt-c-divider-dark-1: rgba(72, 61, 85, 0.65);
+    --vt-c-divider-dark-2: rgba(72, 61, 85, 0.68);
 
     --vt-c-text-light-1: var(--vt-c-indigo);
     --vt-c-text-light-2: rgba(19, 25, 30, 0.86);

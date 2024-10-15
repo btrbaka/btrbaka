@@ -131,6 +131,7 @@ button {
     cursor: pointer;
     border-radius: var(--rounded-rare);
     transition: all 0.1s ease-out;
+    box-shadow: 0 0.25em 1em #00000015;
 }
 
 button:hover {
@@ -140,9 +141,9 @@ button:hover {
 [type="text"],
 [type="password"] {
     margin: 1em;
-    padding: 0.75em;
+    padding: 1em;
     border-radius: var(--rounded-common);
-    border: 3px solid var(--color-border);
+    border: 1px solid var(--color-border);
     background-color: var(--color-background-mute);
     color: var(--color-heading);
 }
