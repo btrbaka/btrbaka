@@ -62,7 +62,7 @@ export default {
                         unreadsElem.innerHTML = `${unreadsNumber} unread messages`;
                     }
 
-                    for (let i = 0; i < response[0].length; i++) {
+                    for (let i = response[0].length - 1; i >= 0; i--) {
                         console.log(response[0][i].Text);
                         let messageTitle = response[0][i].Title;
                         if (messageTitle == "") {
