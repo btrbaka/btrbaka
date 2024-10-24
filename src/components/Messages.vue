@@ -7,6 +7,15 @@ import Spinner from "./Spinner.vue";
 <template>
     <p id="unreads"></p>
 
+    <div id="messageselector">
+        <div class="btn-container">
+            <button @click="received" id="received" class="selected">
+                Received
+            </button>
+            <button @click="noticeboard" id="noticeboard">Noticeboard</button>
+        </div>
+    </div>
+
     <Spinner />
 
     <div id="messagesDiv"></div>
@@ -21,7 +30,10 @@ export default {
         async getmessages() {
             const token = localStorage.getItem("token");
             const url = localStorage.getItem("url");
-
+            if (localStorage.getItem("messagetype") == null) {
+                localStorage.setItem("messagetype", "received");
+            }
+            var messagetype = localStorage.getItem("messagetype");
             if (localStorage.getItem("url") == null) {
                 document.getElementById("loginstatus").innerHTML =
                     "Not logged in! Go to the Account page to log in first.";
@@ -31,14 +43,14 @@ export default {
                     Authorization: `Bearer ${token}`,
                 };
                 var response = await fetch(
-                    `${url}api/3/komens/messages/received/`,
+                    `${url}api/3/komens/messages/${messagetype}/`,
                     {
                         method: "POST",
                         headers: head,
                     },
                 );
                 var unreads = await fetch(
-                    `${url}api/3/komens/messages/received/unread/`,
+                    `${url}api/3/komens/messages/${messagetype}/unread/`,
                     {
                         method: "GET",
                         headers: head,
@@ -106,6 +118,18 @@ export default {
             }
             const spinner = document.getElementsByClassName("spinner");
             spinner[0].classList.add("hidden");
+        },
+        async killChildren() {
+            var messagesDiv = document.getElementById("messagesDiv");
+            while (messagesDiv.firstChild)
+                messagesDiv.removeChild(messagesDiv.firstChild);
+        },
+        async noticeboard() {
+            localStorage.setItem("messagetype", "noticeboard");
+            this.killChildren();
+            document.getElementById("received").classList.remove("selected");
+            document.getElementById("noticeboard").classList.add("selected");
+            this.getmessages();
         },
     },
 };
