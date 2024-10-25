@@ -131,6 +131,13 @@ export default {
             document.getElementById("noticeboard").classList.add("selected");
             this.getmessages();
         },
+        async received() {
+            localStorage.setItem("messagetype", "received");
+            this.killChildren();
+            document.getElementById("received").classList.add("selected");
+            document.getElementById("noticeboard").classList.remove("selected");
+            this.getmessages();
+        },
     },
 };
 </script>
