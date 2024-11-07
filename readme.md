@@ -31,6 +31,7 @@ please make an issue or PR the change you would like to see <3
 ### licensing
 
 btrbaka under [MIT](https://github.com/btrbaka/btrbaka/blob/main/LICENSE)
+
 made with vuetify and built-in material design icons
 
 ### disclaimer
