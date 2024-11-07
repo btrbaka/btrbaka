@@ -1,51 +1,191 @@
-<script setup>
-import { render, h, createVNode } from "vue";
-
-import Spinner from "./Spinner.vue";
-</script>
-
 <template>
-    <p id="loginstatus"></p>
+    <v-container class="d-flex flex-column justify-center page-container">
+        <p v-if="isRefreshing" class="opacity-50 font-italic">
+            Refreshing login token...
+        </p>
+        <v-tabs v-model="tab" grow class="mb-4">
+            <v-tab v-for="tab in tabs" :key="tab.value" :value="tab.value">
+                {{ tab.text }}
+            </v-tab>
+        </v-tabs>
+        <v-alert v-if="alertVisible" :type="alertType">
+            {{ alertMessage }}
+        </v-alert>
 
-    <Spinner />
-
-    <div id="recentList"></div>
-    <div id="marksList"></div>
+        <v-tabs-window v-model="tab">
+            <v-tabs-window-item key="recent" value="recent">
+                <v-list lines="two" rounded>
+                    <v-list-item v-for="grade in gradesAll" :key="grade">
+                        <v-row class="align-center mb-2 flex-nowrap">
+                            <v-col cols="2" sm="1" class="ms-2 text-center">
+                                <v-list-item-title class="text-h5">{{
+                                    grade.grade
+                                }}</v-list-item-title>
+                            </v-col>
+                            <v-col class="flex-fill">
+                                <p class="font-weight-bold">
+                                    {{ grade.subject }}
+                                </p>
+                                <v-list-item-subtitle>{{
+                                    grade.description
+                                }}</v-list-item-subtitle>
+                            </v-col>
+                            <v-col
+                                cols="4"
+                                class="d-flex bg-surface align-end align-lg-center ga-lg-2 flex-lg-row-reverse flex-column mb-lg-2"
+                            >
+                                <v-chip
+                                    class="mb-2 mb-lg-0"
+                                    color="light-blue"
+                                    prepend-icon="mdi-weight"
+                                >
+                                    {{ grade.weight }}
+                                </v-chip>
+                                <v-list-item-subtitle class="mb-2 mb-lg-0"
+                                    >{{ grade.date }}
+                                </v-list-item-subtitle>
+                            </v-col>
+                        </v-row>
+                        <v-divider></v-divider>
+                    </v-list-item>
+                </v-list>
+            </v-tabs-window-item>
+            <v-tabs-window-item key="subjects" value="subjects">
+                <v-expansion-panels multiple v-model="activePanels">
+                    <v-expansion-panel
+                        v-for="(subject, index) in gradesSubjects"
+                        :key="subject"
+                    >
+                        <v-expansion-panel-title
+                            :color="
+                                activePanels.includes(index)
+                                    ? 'surface-light'
+                                    : ''
+                            "
+                        >
+                            <v-col no-gutters>
+                                <v-row class="text-h5 mb-2">{{
+                                    subject.title
+                                }}</v-row>
+                                <v-row class="text-caption"
+                                    >Average grade: {{ subject.average }}</v-row
+                                >
+                                <v-row class="text-caption"
+                                    >Temporary grade:
+                                    {{ subject.temporary }}</v-row
+                                >
+                            </v-col>
+                            <v-col class="text-right text-h6">{{
+                                subject.content.length
+                            }}</v-col>
+                        </v-expansion-panel-title>
+                        <v-expansion-panel-text class="subject-panel">
+                            <v-list lines="two">
+                                <v-list-item
+                                    v-for="grade in subject.content"
+                                    :key="grade"
+                                >
+                                    <v-row
+                                        class="align-center mb-1 flex-nowrap"
+                                    >
+                                        <v-col
+                                            cols="2"
+                                            sm="1"
+                                            class="ms-2 text-center"
+                                        >
+                                            <v-list-item-title
+                                                class="text-h6"
+                                                >{{
+                                                    grade.grade
+                                                }}</v-list-item-title
+                                            >
+                                        </v-col>
+                                        <v-col class="flex-fill">
+                                            <v-list-item-subtitle>{{
+                                                grade.description
+                                            }}</v-list-item-subtitle>
+                                        </v-col>
+                                        <v-col
+                                            cols="4"
+                                            class="d-flex align-end align-lg-center ga-lg-2 flex-lg-row-reverse flex-column mb-lg-2"
+                                        >
+                                            <v-chip
+                                                class="mb-2 mb-lg-0"
+                                                color="light-blue"
+                                                prepend-icon="mdi-weight"
+                                            >
+                                                {{ grade.weight }}
+                                            </v-chip>
+                                            <v-list-item-subtitle
+                                                class="mb-2 mb-lg-0"
+                                                >{{ grade.date }}
+                                            </v-list-item-subtitle>
+                                        </v-col>
+                                    </v-row>
+                                    <v-divider></v-divider>
+                                </v-list-item>
+                            </v-list>
+                        </v-expansion-panel-text>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+            </v-tabs-window-item>
+        </v-tabs-window>
+    </v-container>
 </template>
 
+<script setup></script>
+
 <script>
+import { useRefreshLogin } from "@/composables/useRefreshLogin";
+const { isRefreshing, refreshLogin } = useRefreshLogin();
+
 export default {
+    data: () => ({
+        alertVisible: false,
+        alertMessage: "Meow",
+        alertType: "info",
+        tab: "recent",
+        tabs: [
+            { value: "recent", text: "Recent", content: [] },
+            {
+                value: "subjects",
+                text: "By Subject",
+                content: [],
+            },
+        ],
+        activePanels: [],
+        gradesSubjects: [],
+        gradesAll: [],
+    }),
     mounted() {
-        this.getgrades();
+        this.getGrades();
     },
     methods: {
-        async getgrades() {
+        async getGrades() {
             const token = localStorage.getItem("token");
             const url = localStorage.getItem("url");
+
             if (localStorage.getItem("url") == null) {
-                //alert("Not logged in! Go to the Account page to log in first.")
-                document.getElementById("loginstatus").innerHTML =
+                this.alertType = "error";
+                this.alertMessage =
                     "Not logged in! Go to the Account page to log in first.";
+                this.showAlert();
             } else {
                 let head = {
                     "Content-Type": "application/x-www-form-urlencoded",
                     Authorization: `Bearer ${token}`,
                 };
-                var response = await fetch(`${url}api/3/marks/`, {
+                let response = await fetch(`${url}api/3/marks/`, {
                     method: "GET",
                     headers: head,
                 });
-                var responseJson = await response.json();
+                let responseJson = await response.json();
                 if (response.ok == false) {
-                    alert(
-                        "Authentication failure. Go to the Home tab to refresh login.",
-                    );
+                    await refreshLogin();
+                    await this.getGrades();
                 } else {
-                    document.getElementById("loginstatus").innerHTML =
-                        "Tap on a subject to view grades";
-                    // document.write(JSON.stringify(responseJson));
-                    var response = Object.values(responseJson);
-                    var listDiv = document.getElementById("marksList");
+                    let response = Object.values(responseJson);
+
                     let iterator = response.values();
                     for (const value of iterator) {
                         console.log(value);
@@ -53,325 +193,112 @@ export default {
 
                     let allgrades = [];
 
-                    // meoowwwwww nyaaaaa
+                    // for loop for each subject definition
                     for (let i = 0; i < response[0].length; i++) {
-                        allgrades = allgrades.concat(response[0][i].Marks);
+                        // pushing all grades from each subject
+                        // into an array to use later
+                        allgrades.push(...response[0][i].Marks);
 
-                        const subjectContainer =
-                            document.createElement("details");
-                        listDiv.appendChild(subjectContainer);
-                        const subjectElement =
-                            document.createElement("summary");
-                        subjectContainer.appendChild(subjectElement);
-                        let averagegrade;
-                        let temporarygrade;
-                        if (
+                        // definition of subject's average and temporary grade
+                        let averagegrade =
                             response[0][i].AverageText == null ||
-                            response[0][i].AverageText == " "
-                        ) {
-                            averagegrade = "N/A";
-                        } else {
-                            averagegrade = response[0][i].AverageText;
-                        }
-                        if (
+                            response[0][i].AverageText.trim() === ""
+                                ? "N/A"
+                                : response[0][i].AverageText;
+
+                        let temporarygrade =
                             response[0][i].TemporaryMark == null ||
-                            response[0][i].TemporaryMark == " "
-                        ) {
-                            temporarygrade = "N/A";
-                        } else {
-                            temporarygrade = response[0][i].TemporaryMark;
-                        }
-                        subjectElement.innerHTML =
-                            "<div class='subject-title'>" +
-                            response[0][i].Subject.Name +
-                            "<br><span> Average grade: " +
-                            averagegrade +
-                            "</span>" +
-                            "<span> Temporary grade: " +
-                            temporarygrade +
-                            "</span>" +
-                            "</div>" +
-                            "<div class='subject-details' id='subjectDetails'><span class='grades-amount'>" +
-                            response[0][i].Marks.length +
-                            "</span><span class='chevron'>&rsaquo;</span></div>";
-                        const subjectGrades = document.createElement("ul");
-                        subjectContainer.appendChild(subjectGrades);
+                            response[0][i].TemporaryMark.trim() === ""
+                                ? "N/A"
+                                : response[0][i].TemporaryMark;
+
+                        // pushing grades into an array for a subject
+                        let subjectGrades = [];
+
                         for (
                             let j = response[0][i].Marks.length - 1;
                             j >= 0;
                             j--
                         ) {
-                            const subjectGradesItem =
-                                document.createElement("li");
-                            subjectGradesItem.innerHTML =
-                                "<span class='gradeText'>" +
-                                response[0][i].Marks[j].MarkText +
-                                "</span><span class='gradeWeight'>Weight: " +
-                                response[0][i].Marks[j].Weight +
-                                "</span><span class='gradeCaption'>" +
-                                response[0][i].Marks[j].Caption +
-                                "</span>";
+                            let unixDate = Date.parse(
+                                response[0][i].Marks[j].MarkDate,
+                            );
+                            let date = new Date(unixDate);
 
-                            subjectGrades.appendChild(subjectGradesItem);
+                            subjectGrades.push({
+                                grade: response[0][i].Marks[j].MarkText,
+                                weight: response[0][i].Marks[j].Weight,
+                                description: response[0][i].Marks[j].Caption,
+                                date: date.toLocaleString(undefined, {
+                                    year: "numeric",
+                                    month: "numeric",
+                                    day: "numeric",
+                                }),
+                            });
                         }
+
+                        // pushing a subject item into "by subject" grades
+                        this.gradesSubjects.push({
+                            title: response[0][i].Subject.Name,
+                            average: averagegrade,
+                            temporary: temporarygrade,
+                            content: subjectGrades,
+                        });
                     }
 
-                    let recentno = parseInt(
-                        localStorage.getItem("recentGradesAmount"),
-                    );
-                    if (recentno < 5) {
-                        recentno = 10;
-                    }
+                    // recent grades definition
                     let recentgrades = allgrades
                         .sort(function (a, b) {
                             var c = new Date(a.MarkDate);
                             var d = new Date(b.MarkDate);
                             return c - d;
                         })
-                        .reverse()
-                        .slice(0, recentno);
+                        .reverse();
                     console.log(recentgrades);
 
                     let subject;
 
-                    var recentListDiv = document.getElementById("recentList");
-
-                    const recentContainer = document.createElement("details");
-                    recentContainer.classList.add("recentdetails");
-                    recentListDiv.appendChild(recentContainer);
-                    const recentElement = document.createElement("summary");
-                    recentElement.innerHTML =
-                        "<div class='subject-title'>Recent Grades</div><select name='amount' id='amountbox'><option value='5'>5</option><option value='10'>10</option><option value='15'>15</option><option value='20'>20</option><option value='999'>All</option></select><div class='subject-details' id='subjectDetails'><span class='chevron'>&rsaquo;</span></div>";
-                    recentContainer.appendChild(recentElement);
-                    document.getElementById("amountbox").value =
-                        localStorage.getItem("recentGradesAmount");
-                    var mySelect = document.getElementById("amountbox");
-                    mySelect.onchange = (event) => {
-                        localStorage.setItem(
-                            "recentGradesAmount",
-                            amountbox.value,
-                        );
-                        location.reload();
-                    };
-
-                    const recentGradesElem = document.createElement("ul");
-                    recentContainer.appendChild(recentGradesElem);
+                    // pushing recent grades
                     for (let l = 0; l < recentgrades.length; l++) {
                         subject = response[0].find(
                             (x) => x.Subject.Id === recentgrades[l].SubjectId,
-                        ).Subject.Abbrev;
-                        const recentGradesItem = document.createElement("li");
-                        recentGradesItem.innerHTML =
-                            "<span class='gradeSubject'>" +
-                            subject +
-                            "</span><span class='gradeText'>" +
-                            recentgrades[l].MarkText +
-                            "</span><span class='gradeWeight'>Weight: " +
-                            recentgrades[l].Weight +
-                            "</span><span class='gradeCaption'>" +
-                            recentgrades[l].Caption +
-                            "</span>";
+                        ).Subject.Name;
 
-                        recentGradesElem.appendChild(recentGradesItem);
-                    }
+                        let unixDate = Date.parse(recentgrades[l].MarkDate);
+                        let date = new Date(unixDate);
 
-                    var localStorageKeyR = "disclosed_recent";
-                    var detailsR = document.querySelector(".recentdetails");
-                    detailsR.addEventListener("toggle", (event) => {
-                        if (detailsR.open) {
-                            localStorage.setItem(localStorageKeyR, true);
-                        } else {
-                            localStorage.removeItem(localStorageKeyR);
-                        }
-                    });
-                    if (localStorage.getItem(localStorageKeyR)) {
-                        detailsR.open = true;
+                        this.gradesAll.push({
+                            grade: recentgrades[l].MarkText,
+                            weight: recentgrades[l].Weight,
+                            description: recentgrades[l].Caption,
+                            subject: subject,
+                            date: date.toLocaleString(undefined, {
+                                year: "numeric",
+                                month: "numeric",
+                                day: "numeric",
+                            }),
+                        });
                     }
                 }
-
-                const chevron = document.getElementsByClassName("chevron");
-                for (let asdf = 0; asdf < chevron.length; asdf++) {
-                    chevron[asdf].innerHTML =
-                        `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/></svg>`;
-                }
-
-                // hide spinner after content is loaded
-                const spinner = document.getElementsByClassName("spinner");
-                spinner[0].classList.add("hidden");
             }
+        },
+        showAlert() {
+            this.alertVisible = true;
         },
     },
 };
 </script>
 
+<style scoped>
+@media (min-width: 1420px) {
+    #app .page-container {
+        max-width: 1024px;
+    }
+}
+</style>
+
 <style>
-#marksList summary {
-    display: flex;
-    background: aliceblue;
-    background: var(--btr-gradient);
-    color: var(--vt-c-indigo);
-    padding: 0.5em 1em;
-    font-size: 150%;
-    border-radius: var(--rounded-common);
-    align-items: center;
-    transition: all 0.1s ease-out;
-}
-
-#marksList [open] summary,
-#recentList [open] summary {
-    filter: saturate(200%) contrast(120%) hue-rotate(20deg);
-}
-
-[open] {
-    background-color: var(--color-background-darker);
-    border-radius: var(--rounded-common);
-    box-shadow: 0 0 0 1px var(--color-background-mute);
-}
-
-#recentList summary {
-    display: flex;
-    background: aliceblue;
-    background: color-mix(in srgb, var(--btr-ab) 65%, aliceblue);
-    color: var(--vt-c-indigo);
-    padding: 0.5em 1em;
-    font-size: 150%;
-    border-radius: var(--rounded-common);
-    align-items: center;
-    transition: all 0.1s ease-out;
-}
-
-#marksList summary:hover,
-#recentList summary:hover {
-    box-shadow: 0 0 0em 0.2em color-mix(in srgb, var(--btr-ab) 30%, #ffffff50);
-    cursor: pointer;
-}
-
-#marksList summary .subject-title,
-#recentList summary .subject-title {
-    font-weight: bold;
-    max-width: fit-content;
-
-    span {
-        font-size: small;
-        font-weight: normal;
-        display: block;
-    }
-}
-
-#marksList summary .subject-details {
-    margin-left: auto;
-    line-height: 1;
-    min-width: 1.5em;
-    text-align: right;
-    display: flex;
-    align-items: center;
-}
-
-#marksList,
-#recentList {
-    min-width: 75%;
-
-    ul {
-        padding: 0 1.25rem;
-    }
-    li span:first-child {
-        border-radius: var(--rounded-uncommon) 0 0 var(--rounded-uncommon);
-    }
-    li {
-        border-radius: var(--rounded-uncommon);
-    }
-}
-
-#recentList select {
-    background-color: var(--color-background);
-    color: var(--color-text);
-    border: none;
-    border-radius: 5rem;
-    padding: 0.25rem 0.1rem 0.25rem 0.75rem;
-    margin: 0 0.5rem 0 auto;
-    font-size: 12pt;
-}
-
-#recentList summary .subject-details {
-    margin-left: 0.1rem;
-    line-height: 1;
-    text-align: right;
-    display: flex;
-    align-items: center;
-}
-
-details,
-summary {
-    margin: 0.5em 0 0.5em 0;
-    padding-bottom: 0.5em;
-}
-
-details summary {
-    cursor: pointer;
-    transition: margin 0.1s ease-out;
-}
-
-details[open] summary {
-    margin-bottom: 1.25em;
-}
-
-summary {
-    user-select: none;
-    list-style-type: none;
-}
-
-span.gradeText {
-    background-color: var(--color-background-mute);
-    color: var(--color-text);
-    padding: 0.5em;
-    min-width: 2em;
-    text-align: center;
-    align-self: stretch;
-    align-content: center;
-}
-
-span.gradeWeight {
-    min-width: fit-content;
-    background-color: var(--color-background-soft);
-    align-self: stretch;
-    align-content: center;
-}
-
-span.gradeSubject {
-    color: var(--color-text);
-    padding: 0.5em;
-    min-width: 3.25em;
-    text-align: center;
-    align-self: stretch;
-    align-content: center;
-}
-
-span.grades-amount {
-    margin: 0 0.25em;
-    font-size: 150%;
-}
-
-.chevron {
-    path {
-        stroke: currentColor;
-        stroke-width: 1.5px;
-        stroke-linejoin: round;
-    }
-}
-
-li {
-    list-style-type: none;
-    margin: 0.75rem 0;
-    display: flex;
-    background-color: rgba(0, 0, 0, 0.1);
-    align-items: center;
-
-    span {
-        padding: 0.5em;
-    }
-}
-
-#loginstatus {
-    margin-bottom: 2rem;
+#app .subject-panel .v-expansion-panel-text__wrapper {
+    padding: 0.5rem;
 }
 </style>

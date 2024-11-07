@@ -1,87 +1,122 @@
+<template>
+    <v-app>
+        <v-navigation-drawer v-model="drawer">
+            <div class="d-flex justify-center my-8">
+                <img
+                    alt="btrbaka"
+                    class="w-50"
+                    src="@/assets/logo.svg"
+                    @click="nicemusic"
+                />
+            </div>
+            <v-divider></v-divider>
+
+            <div class="sidebar-links">
+                <router-link to="/" class="text-decoration-none">
+                    <v-list-item link class="pa-4 px-8 text-h5"
+                        >Home</v-list-item
+                    >
+                </router-link>
+                <router-link to="/grades" class="text-decoration-none">
+                    <v-list-item link class="pa-4 px-8 text-h5"
+                        >Grades</v-list-item
+                    >
+                </router-link>
+                <router-link to="/schedule" class="text-decoration-none">
+                    <v-list-item link class="pa-4 px-8 text-h5"
+                        >Schedule</v-list-item
+                    >
+                </router-link>
+                <router-link to="/absences" class="text-decoration-none">
+                    <v-list-item link class="pa-4 px-8 text-h5"
+                        >Absences</v-list-item
+                    >
+                </router-link>
+                <router-link to="/messages" class="text-decoration-none">
+                    <v-list-item link class="pa-4 px-8 text-h5"
+                        >Messages</v-list-item
+                    >
+                </router-link>
+                <router-link to="/account" class="text-decoration-none">
+                    <v-list-item link class="pa-4 px-8 text-h5"
+                        >Account</v-list-item
+                    >
+                </router-link>
+            </div>
+
+            <v-divider></v-divider>
+
+            <ThemeSwitch />
+        </v-navigation-drawer>
+
+        <v-main class="mb-16">
+            <router-view />
+        </v-main>
+
+        <v-fab
+            icon="mdi-menu"
+            size="x-large"
+            @click="drawer = !drawer"
+            location="bottom start"
+            absolute
+            app
+            appear
+            class="position-fixed ma-2"
+            elevation="12"
+        ></v-fab>
+    </v-app>
+</template>
+
 <script setup>
-import { RouterView } from "vue-router";
-import SideNav from "./components/SideNav.vue";
+import { ref } from "vue";
 
-import "@fontsource/inter";
-import "@fontsource/poppins";
+import ThemeSwitch from "./components/ThemeSwitch.vue";
 
-const themePreference = localStorage.getItem("theme");
-const fontPreference = localStorage.getItem("font");
+const drawer = ref(null);
 
-document.body.classList.add(themePreference);
+let clicks = 0;
 
-if (fontPreference === "poppins") {
-    document.body.classList.add("poppins");
+function nicemusic() {
+    clicks++;
+    console.log(clicks);
+    if (clicks == 21) {
+        window
+            .open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank")
+            .focus();
+        return (clicks = 0);
+    }
 }
 </script>
 
-<template>
-    <header>
-        <SideNav />
-    </header>
-
-    <RouterView />
-</template>
+<script>
+export default {
+    data: () => ({ drawer: null }),
+};
+</script>
 
 <style>
-body {
-    font-family: -apple-system, BlinkMacSystemFont, Inter, system-ui;
-}
+.v-theme--dark .sidebar-links {
+    a {
+        color: #cccccc;
+    }
 
-body.poppins {
-    font-family: Poppins, system-ui;
-}
-
-input,
-textarea,
-button {
-    font-family: inherit;
-}
-
-details > summary {
-    list-style: none;
-}
-details > summary::-webkit-details-marker {
-    display: none;
-}
-</style>
-
-<style scoped>
-header {
-    line-height: 1.5;
-    max-height: 100vh;
-    min-width: 250px;
-}
-
-.logo {
-    display: block;
-    margin: 0 auto 2rem;
-}
-
-@media (max-width: 1024px) {
-    .wrap,
-    main {
-        margin-bottom: 5.5em;
+    .router-link-active {
+        color: white;
     }
 }
 
-@media (min-width: 1024px) {
-    header {
-        display: flex;
-        place-items: center;
-        padding-right: calc(var(--section-gap) / 2);
-        flex-direction: column;
-        margin-top: 3rem;
-        max-width: fit-content;
-        align-items: start;
+.v-theme--light .sidebar-links {
+    a {
+        color: #444444;
     }
 
-    #sideNav {
-        display: none;
+    .router-link-active {
+        color: black;
     }
+}
 
-    .wrap {
-        margin-bottom: 2.5em;
-    }
+.backdrop-blur {
+    backdrop-filter: blur(1rem);
+    -webkit-backdrop-filter: blur(1rem);
 }
 </style>

@@ -1,118 +1,122 @@
 <template>
-    <label for="url">Server URL:</label>
-    <input type="text" id="url" name="url" />
+    <v-container class="d-flex flex-column justify-center page-container">
+        <v-text-field
+            :rules="rules"
+            hide-details="auto"
+            v-model="url"
+            label="School URL"
+            type="text"
+            class="ma-2"
+        ></v-text-field>
 
-    <label for="usrnm">Username:</label>
-    <input type="text" id="usrnm" name="usrnm" />
+        <v-text-field
+            :rules="rules"
+            hide-details="auto"
+            v-model="username"
+            label="Username"
+            type="text"
+            class="ma-2"
+        ></v-text-field>
 
-    <label for="pswd">Password:</label>
-    <input type="password" id="pswd" name="pswd" />
+        <v-text-field
+            :rules="rules"
+            v-model="password"
+            hide-details="auto"
+            label="Password"
+            type="password"
+            class="ma-2"
+        ></v-text-field>
 
-    <label for="rfrsh" id="rfrshlabel">Refresh token (optional):</label>
-    <input type="password" id="rfrsh" name="rfrsh" />
+        <v-text-field
+            label="Refresh token (Optional)"
+            v-model="refreshtoken"
+            type="password"
+            :class="['ma-2', { 'd-none': !debugmodecheck }]"
+        ></v-text-field>
 
-    <p id="loginstatuselem"></p>
+        <p class="login-status-notice ma-2"></p>
 
-    <button type="button" @click="loginFunc">Login</button>
+        <v-btn @click="loginFunc" size="large" class="ma-2" rounded="pill"
+            >Login</v-btn
+        >
 
-    <div>
-        <input
-            type="checkbox"
-            id="debugmode"
-            name="debugmode"
-            value="debugmode"
-        />
-        <label for="debugmode"> Debug mode</label>
-    </div>
+        <v-checkbox label="Debug mode" v-model="debugmodecheck"></v-checkbox>
+    </v-container>
 </template>
 
 <script>
 export default {
+    data: () => ({
+        rules: [(value) => !!value || "Required."],
+        url: "",
+        username: "",
+        password: "",
+        refreshtoken: "",
+        debugmodecheck: false,
+    }),
     mounted() {
         // plop url and username in input boxes if saved in localstorage
-        const urlbox = document.getElementById("url");
-        const usrnmbox = document.getElementById("usrnm");
-        if (localStorage.getItem("url") != null) {
-            urlbox.value = localStorage.getItem("url").slice(0, -1);
-        }
-        if (localStorage.getItem("usrnm") != null) {
-            usrnmbox.value = localStorage.getItem("usrnm");
-        }
+        const storedUrl = localStorage.getItem("url").slice(0, -1);
+        const storedUsername = localStorage.getItem("usrnm");
 
-        // if debug mode is on, show refresh token field
-        if (document.getElementById("debugmode").checked != true) {
-            document.getElementById("rfrshlabel").classList.add("hidden");
-            document.getElementById("rfrsh").classList.add("hidden");
+        if (storedUrl) {
+            this.url = storedUrl;
         }
-        document
-            .getElementById("debugmode")
-            .addEventListener("change", function () {
-                if (this.checked != true) {
-                    document
-                        .getElementById("rfrshlabel")
-                        .classList.add("hidden");
-                    document.getElementById("rfrsh").classList.add("hidden");
-                } else {
-                    document
-                        .getElementById("rfrshlabel")
-                        .classList.remove("hidden");
-                    document.getElementById("rfrsh").classList.remove("hidden");
-                }
-            });
+        if (storedUsername) {
+            this.username = storedUsername;
+        }
     },
     methods: {
         async loginFunc() {
-            const urlbox = document.getElementById("url");
-            const usrnmbox = document.getElementById("usrnm");
-            const pswdbox = document.getElementById("pswd");
-            const rfrshbox = document.getElementById("rfrsh");
-            let url = urlbox.value;
+            let urlVal = this.url;
             const now = new Date();
-            if (url.startsWith("https") == true) {
-                url = `${url}/`;
+
+            if (urlVal.startsWith("https") == true) {
+                urlVal = `${urlVal}/`;
             } else {
-                url = `https://${url}/`;
+                urlVal = `https://${urlVal}/`;
             }
 
-            const usrnm = usrnmbox.value;
-            const pswd = pswdbox.value;
-            const rfrsh = rfrshbox.value;
-            console.log(url);
-            console.log(usrnm);
-            console.log(pswd);
+            const usernameVal = this.username;
+            const passwordVal = this.password;
+            const refreshTokenVal = this.refreshtoken;
+            console.log(urlVal);
+            console.log(usernameVal);
+            console.log(passwordVal);
 
             let head = { "Content-Type": "application/x-www-form-urlencoded" };
-            if (rfrsh != "") {
-                body = `client_id=ANDR&grant_type=refresh_token&refresh_token=${rfrsh}`;
+            if (refreshTokenVal != "") {
+                body = `client_id=ANDR&grant_type=refresh_token&refresh_token=${refreshTokenVal}`;
             }
-            let body = `client_id=ANDR&grant_type=password&username=${usrnm}&password=${pswd}`;
-            var response = await fetch(`${url}api/login/`, {
+            let body = `client_id=ANDR&grant_type=password&username=${usernameVal}&password=${passwordVal}`;
+            var response = await fetch(`${urlVal}api/login/`, {
                 method: "POST",
                 headers: head,
                 body: body,
             });
 
-            const loginstatus = document.getElementById("loginstatuselem");
+            const loginstatus = document.querySelector("p.login-status-notice");
 
             var responseJson = await response.json();
             console.log(response.ok);
+
             if (response.ok == false) {
                 alert("Login failure. Wrong password? Try again.");
             } else {
                 let token = responseJson.access_token;
                 let refresh = responseJson.refresh_token;
                 console.log(token);
-                if (document.getElementById("debugmode").checked) {
+
+                if (this.debugmodecheck) {
                     alert(token);
                 }
                 if (token.startsWith("undef") == false) {
                     let expirytime = now.getTime();
                     localStorage.setItem("expirytime", expirytime);
-                    localStorage.setItem("url", url);
-                    localStorage.setItem("usrnm", usrnm);
+                    localStorage.setItem("url", urlVal);
+                    localStorage.setItem("usrnm", usernameVal);
                     localStorage.setItem("token", token);
                     localStorage.setItem("refresh", refresh);
-                    alert(`Successfully logged in!`);
                 }
                 loginstatus.innerHTML = "Successfully logged in!";
             }
@@ -122,29 +126,9 @@ export default {
 </script>
 
 <style scoped>
-button {
-    margin: 1em;
-    padding: 1em 2em;
-    background-color: var(--btr-ad);
-    color: var(--vt-c-indigo);
-    border: none;
-    cursor: pointer;
-    border-radius: var(--rounded-rare);
-    transition: all 0.1s ease-out;
-    box-shadow: 0 0.25em 1em #00000015;
-}
-
-button:hover {
-    background-color: var(--btr-a);
-}
-
-[type="text"],
-[type="password"] {
-    margin: 1em;
-    padding: 1em;
-    border-radius: var(--rounded-common);
-    border: 1px solid var(--color-border);
-    background-color: var(--color-background-mute);
-    color: var(--color-heading);
+@media (min-width: 1420px) {
+    #app .page-container {
+        max-width: 1024px;
+    }
 }
 </style>

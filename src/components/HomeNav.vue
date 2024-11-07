@@ -1,113 +1,62 @@
-<script setup>
-import { RouterLink } from "vue-router";
-
-import Icon123 from "./icons/Icon123.vue";
-import IconTable from "./icons/IconTable.vue";
-import IconAbsence from "./icons/IconAbsence.vue";
-import IconMessages from "./icons/IconMessages.vue";
-</script>
-
 <template>
-    <div class="homeNav">
-        <div class="homeItem">
-            <RouterLink to="/grades">
-                <i>
-                    <Icon123 />
-                </i>
-                <h3>Grades</h3>
-            </RouterLink>
-        </div>
-        <div class="homeItem">
-            <RouterLink to="/schedule">
-                <i>
-                    <IconTable />
-                </i>
-                <h3>Schedule</h3>
-            </RouterLink>
-        </div>
-        <div class="homeItem">
-            <RouterLink to="/absences">
-                <i>
-                    <IconAbsence />
-                </i>
-                <h3>Absences</h3>
-            </RouterLink>
-        </div>
-        <div class="homeItem">
-            <RouterLink to="/messages">
-                <i>
-                    <IconMessages />
-                </i>
-                <h3>Messages</h3>
-            </RouterLink>
-        </div>
-    </div>
+    <v-container
+        class="d-flex ga-4 justify-center justify-lg-start flex-column flex-lg-row"
+    >
+        <router-link to="/grades">
+            <v-btn
+                link
+                title="Grades"
+                prepend-icon="mdi-numeric"
+                stacked
+                class="w-100 pa-lg-8"
+                >Grades</v-btn
+            >
+        </router-link>
+        <router-link to="/schedule">
+            <v-btn
+                link
+                title="Schedule"
+                prepend-icon="mdi-calendar-arrow-right"
+                stacked
+                class="w-100 pa-lg-8"
+                >Schedule</v-btn
+            >
+        </router-link>
+        <router-link to="/absences">
+            <v-btn
+                link
+                title="Absences"
+                prepend-icon="mdi-account-alert"
+                stacked
+                class="w-100 pa-lg-8"
+                >Absences</v-btn
+            >
+        </router-link>
+        <router-link to="/messages">
+            <v-btn
+                link
+                title="Messages"
+                prepend-icon="mdi-message-draw"
+                stacked
+                class="w-100 pa-lg-8"
+                >Messages</v-btn
+            >
+        </router-link>
+    </v-container>
 </template>
 
+<script setup></script>
+
 <style scoped>
-.homeNav {
-    margin: 1em 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    user-select: none;
-}
-
-@media (max-width: 1024px) {
-    .homeNav {
-        grid-template-columns: 1fr 1fr 1fr;
-    }
-}
-@media (max-width: 724px) {
-    .homeNav {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-@media (max-width: 364px) {
-    .homeNav {
-        grid-template-columns: 1fr;
-    }
-}
-
-.homeItem {
-    margin: 0.5em;
-    display: flex;
-    position: relative;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    border-radius: var(--rounded-common);
-
+.v-theme--dark {
     a {
-        width: 100%;
-        height: 100%;
-        background-color: var(--color-background-soft);
-        border-radius: var(--rounded-common);
-        border: 1px solid var(--color-border);
-        padding: 0.25em 1.5em;
-    }
-    a:hover {
-        background-color: var(--btr-at);
+        color: #f8bbd0;
     }
 }
 
-i {
-    display: flex;
-    place-items: center;
-    place-content: center;
-    height: 5em;
-
-    color: var(--color-text);
-
-    svg {
-        height: 60%;
-        width: auto;
+.v-theme--light {
+    a {
+        color: #880e4f;
     }
-}
-
-h3 {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin-bottom: 0.4rem;
-    color: var(--color-heading);
 }
 </style>

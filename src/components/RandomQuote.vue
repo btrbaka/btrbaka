@@ -1,25 +1,26 @@
 <template>
-    <div id="quotediv"></div>
+    <blockquote class="opacity-70 ma-4">"{{ quote }}"</blockquote>
 </template>
 
 <script>
 export default {
+    data: () => ({
+        quote: "",
+    }),
     mounted() {
-        this.pickquote();
+        this.pickQuote();
     },
     methods: {
-        async pickquote() {
-            const quotes = [`Real women test in production`, `Komens coming soon, maybe`, `Better than the official app, trust me`];
-            const quotediv = document.getElementById("quotediv");
-            var currentquote = quotes[this.randomint(0, quotes.length)];
-            quotediv.innerHTML = `<blockquote>"${currentquote}"</blockquote>`
+        async pickQuote() {
+            const quotes = [
+                `Real women test in production`,
+                `Better than the official app, trust me`,
+                `Made by egirls, for egirls`,
+                `Trump should've caught the bullet`,
+                `Stay safe out there`,
+            ];
+            this.quote = quotes[Math.floor(Math.random() * quotes.length)];
         },
-        randomint(min, max) {
-            const mincieled = Math.ceil(min);
-            const maxfloored = Math.floor(max);
-            return Math.floor(Math.random() * (maxfloored - mincieled) + mincieled);
-        }
-
-    }
+    },
 };
 </script>

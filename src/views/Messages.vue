@@ -3,10 +3,6 @@ import Messages from "../components/Messages.vue";
 </script>
 
 <template>
-    <div class="wrap">
-        <h1>Messages</h1>
-        <Messages />
-    </div>
+    <v-toolbar title="Messages" class="bg-transparent"></v-toolbar>
+    <Messages />
 </template>
-
-<style></style>

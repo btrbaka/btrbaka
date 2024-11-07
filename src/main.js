@@ -1,12 +1,47 @@
-import './assets/main.css'
+import { createApp } from "vue";
+import App from "./App.vue";
 
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import { VueSpinnersPlugin } from 'vue3-spinners';
+import "vuetify/styles";
+import { createVuetify } from "vuetify";
+import * as components from "vuetify/components";
+import * as directives from "vuetify/directives";
+import { aliases, mdi } from "vuetify/iconsets/mdi";
+import "@mdi/font/css/materialdesignicons.css";
 
-const app = createApp(App)
+import router from "./router";
 
-app.use(router, VueSpinnersPlugin)
+import colors from "vuetify/util/colors";
 
-app.mount('#app')
+const vuetify = createVuetify({
+  components,
+  directives,
+  theme: {
+    defaultTheme: "dark",
+    themes: {
+      dark: {
+        dark: true,
+        colors: {
+          "surface-light": "#352E40",
+          surface: "#201C27",
+          background: "#131118",
+          primary: colors.pink.darken2,
+          accent: colors.pink.lighten4,
+        },
+      },
+    },
+  },
+  icons: {
+    defaultSet: "mdi",
+    aliases,
+    sets: {
+      mdi,
+    },
+  },
+});
+
+const app = createApp(App);
+
+app.use(vuetify);
+app.use(router);
+
+app.mount("#app");

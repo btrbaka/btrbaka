@@ -1,173 +1,168 @@
-<script setup>
-import { render, h, createVNode } from "vue";
-
-import Spinner from "./Spinner.vue";
-</script>
-
 <template>
-    <p id="unreads"></p>
+    <v-container class="d-flex flex-column justify-center page-container">
+        <p v-if="isRefreshing" class="opacity-50 font-italic">
+            Refreshing login token...
+        </p>
+        <v-tabs v-model="tab" grow>
+            <v-tab v-for="tab in tabs" :key="tab.value" :value="tab.value">
+                {{ tab.text }}
+            </v-tab>
+        </v-tabs>
 
-    <div id="messageselector">
-        <div class="btn-container">
-            <button @click="received" id="received" class="selected">
-                Received
-            </button>
-            <button @click="noticeboard" id="noticeboard">Noticeboard</button>
-        </div>
-    </div>
+        <v-tabs-window v-model="tab">
+            <v-tabs-window-item
+                v-for="tab in tabs"
+                :key="tab.value"
+                :value="tab.value"
+            >
+                <p class="ma-2 my-4">{{ tab.unreads }} unread messages</p>
+                <v-alert v-if="alertVisible" :type="alertType">
+                    {{ alertMessage }}
+                </v-alert>
+                <v-card
+                    v-for="(message, index) in tab.content"
+                    :key="index"
+                    class="ma-4"
+                >
+                    <v-card-item class="bg-surface-light">
+                        <v-card-title>{{ message.title }}</v-card-title>
+                        <v-card-subtitle>
+                            From: {{ message.author }}</v-card-subtitle
+                        >
+                        <v-card-subtitle
+                            ><v-icon>mdi-inbox</v-icon>
+                            {{ message.date }}</v-card-subtitle
+                        >
+                    </v-card-item>
 
-    <Spinner />
-
-    <div id="messagesDiv"></div>
+                    <v-card-text
+                        v-html="unwrapSpans(message.content)"
+                        class="pt-4"
+                    >
+                    </v-card-text>
+                </v-card>
+            </v-tabs-window-item>
+        </v-tabs-window>
+    </v-container>
 </template>
 
+<script setup></script>
+
 <script>
+import { useRefreshLogin } from "@/composables/useRefreshLogin";
+const { isRefreshing, refreshLogin } = useRefreshLogin();
+
 export default {
+    data: () => ({
+        alertVisible: false,
+        alertMessage: "Meow",
+        alertType: "info",
+        tab: "received",
+        tabs: [
+            { value: "received", text: "Received", unreads: 0, content: [] },
+            {
+                value: "noticeboard",
+                text: "Noticeboard",
+                unreads: 0,
+                content: [],
+            },
+        ],
+    }),
     mounted() {
-        this.getmessages();
+        this.getMessages();
     },
     methods: {
-        async getmessages() {
+        async getMessages() {
             const token = localStorage.getItem("token");
             const url = localStorage.getItem("url");
+
             if (localStorage.getItem("messagetype") == null) {
                 localStorage.setItem("messagetype", "received");
             }
-            var messagetype = localStorage.getItem("messagetype");
+
             if (localStorage.getItem("url") == null) {
-                document.getElementById("loginstatus").innerHTML =
+                this.alertType = "error";
+                this.alertMessage =
                     "Not logged in! Go to the Account page to log in first.";
+                this.showAlert();
             } else {
-                let head = {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    Authorization: `Bearer ${token}`,
-                };
-                var response = await fetch(
-                    `${url}api/3/komens/messages/${messagetype}/`,
-                    {
-                        method: "POST",
-                        headers: head,
-                    },
-                );
-                var unreads = await fetch(
-                    `${url}api/3/komens/messages/${messagetype}/unread/`,
-                    {
-                        method: "GET",
-                        headers: head,
-                    },
-                );
-                var unreadsNumber = await unreads.json();
-                var responseJson = await response.json();
-                var messagesDiv = document.getElementById("messagesDiv");
-                if (response.ok == false) {
-                    alert(
-                        "Authentication failure. Go to the Home tab to refresh login.",
+                for (let j = 0; j < this.tabs.length; j++) {
+                    // assigning the message type in this block
+                    // using the tab's value from tabs array
+                    let messagetype = this.tabs[j].value;
+
+                    let head = {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        Authorization: `Bearer ${token}`,
+                    };
+                    let response = await fetch(
+                        `${url}api/3/komens/messages/${messagetype}/`,
+                        {
+                            method: "POST",
+                            headers: head,
+                        },
                     );
-                } else {
-                    var response = Object.values(responseJson);
+                    let unreads = await fetch(
+                        `${url}api/3/komens/messages/${messagetype}/unread/`,
+                        {
+                            method: "GET",
+                            headers: head,
+                        },
+                    );
+                    let unreadsNumber = await unreads.json();
+                    let responseJson = await response.json();
 
-                    const unreadsElem = document.getElementById("unreads");
-
-                    if (unreadsNumber == 0) {
-                        unreadsElem.innerHTML = `No unread messages`;
+                    if (isNaN(unreadsNumber) || unreadsNumber == 0) {
+                        this.tabs[j].unreads = "No";
                     } else {
-                        unreadsElem.innerHTML = `${unreadsNumber} unread messages`;
+                        this.tabs[j].unreads = unreadsNumber;
                     }
 
-                    for (let i = response[0].length - 1; i >= 0; i--) {
-                        console.log(response[0][i].Text);
-                        let messageTitle = response[0][i].Title;
-                        if (messageTitle == "") {
-                            messageTitle = "No title";
-                        }
-                        let messageText = response[0][i].Text;
-                        let messageSender = response[0][i].RelevantName;
-                        let senderType = response[0][i].RelevantPersonType;
-                        let sentDateUnix = Date.parse(response[0][i].SentDate);
-                        var sentDate = new Date(sentDateUnix);
+                    if (response.ok == false) {
+                        await refreshLogin();
+                        await this.getMessages();
+                    } else {
+                        let response = Object.values(responseJson);
 
-                        const messageContent = document.createElement("div");
+                        for (let i = response[0].length - 1; i >= 0; i--) {
+                            let messageTitle = response[0][i].Title;
+                            if (messageTitle == "") {
+                                messageTitle = "No title";
+                            }
+                            let messageText = response[0][i].Text;
+                            let messageSender = response[0][i].RelevantName;
+                            let senderType = response[0][i].RelevantPersonType;
 
-                        const messageTitleElem = document.createElement("h2");
-                        const messageDateElem = document.createElement("h5");
-                        const messageSenderElem = document.createElement("h4");
-                        const messageProseElem = document.createElement("p");
+                            let sentDateUnix = Date.parse(
+                                response[0][i].SentDate,
+                            );
+                            var sentDate = new Date(sentDateUnix);
 
-                        messageContent.classList.add("message-card");
-
-                        messageTitleElem.innerHTML = messageTitle;
-                        messageDateElem.innerHTML = sentDate.toLocaleString();
-                        messageSenderElem.innerHTML =
-                            messageSender + " (" + senderType + ")";
-                        messageProseElem.innerHTML = messageText;
-
-                        messageContent.appendChild(messageTitleElem);
-                        messageContent.appendChild(messageDateElem);
-                        messageContent.appendChild(messageSenderElem);
-                        messageContent.appendChild(messageProseElem);
-
-                        messageProseElem
-                            .querySelectorAll("span")
-                            .forEach((spanElem) => {
-                                spanElem.outerHTML = spanElem.innerHTML;
+                            this.tabs[j].content.push({
+                                title: `${messageTitle}`,
+                                date: `${sentDate.toLocaleString()}`,
+                                author: `${messageSender} (${senderType})`,
+                                content: `${messageText}`,
                             });
-
-                        messagesDiv.appendChild(messageContent);
+                        }
                     }
                 }
             }
-            const spinner = document.getElementsByClassName("spinner");
-            spinner[0].classList.add("hidden");
         },
-        async killChildren() {
-            var messagesDiv = document.getElementById("messagesDiv");
-            while (messagesDiv.firstChild)
-                messagesDiv.removeChild(messagesDiv.firstChild);
+        unwrapSpans(html) {
+            return html.replace(/<\/?span[^>]*>/g, "");
         },
-        async noticeboard() {
-            localStorage.setItem("messagetype", "noticeboard");
-            this.killChildren();
-            document.getElementById("received").classList.remove("selected");
-            document.getElementById("noticeboard").classList.add("selected");
-            this.getmessages();
-        },
-        async received() {
-            localStorage.setItem("messagetype", "received");
-            this.killChildren();
-            document.getElementById("received").classList.add("selected");
-            document.getElementById("noticeboard").classList.remove("selected");
-            this.getmessages();
+        showAlert() {
+            this.alertVisible = true;
         },
     },
 };
 </script>
 
-<style>
-.message-card {
-    background-color: var(--color-background-soft);
-    margin: 1rem 0em;
-    border-radius: var(--rounded-common);
-    border: 1px solid var(--color-border);
-    box-shadow: 0 0.25rem 1.5rem #00000015;
-
-    h2 {
-        color: var(--color-heading);
-        font-weight: bold;
-        padding: 1rem 1.25rem 0em;
-        background-color: var(--color-background-mute);
-        border-radius: var(--rounded-common) var(--rounded-common) 0 0;
-    }
-    h5,
-    h4 {
-        padding: 0em 1.25rem;
-        background-color: var(--color-background-mute);
-    }
-    h4 {
-        border-bottom: 1px solid var(--color-border);
-        padding-bottom: 0.5em;
-    }
-    p {
-        padding: 0.75rem 1.25rem 1.25rem;
+<style scoped>
+@media (min-width: 1420px) {
+    #app .page-container {
+        max-width: 1024px;
     }
 }
 </style>
