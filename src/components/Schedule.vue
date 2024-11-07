@@ -1,60 +1,126 @@
-<script setup>
-import { useRouter } from "vue-router";
-
-import Spinner from "./Spinner.vue";
-
-const router = useRouter();
-
-const refreshPage = () => {
-    router.go();
-};
-</script>
-
 <template>
-    <p id="loginstatus"></p>
-
-    <Spinner />
-
-    <div id="schedulenav" class="hidden">
-        <p id="currentweek">Viewing current week</p>
-        <div class="btn-container">
-            <button @click="lessIForgotTheWordDate" id="previous">
-                Previous
-            </button>
-            <button @click="currentDate" id="current" class="selected">
-                Current
-            </button>
-            <button @click="advanceDate" id="next">Next</button>
-        </div>
-    </div>
-    <div id="schedule"></div>
+    <v-container class="d-flex flex-column justify-center page-container">
+        <p v-if="isRefreshing" class="opacity-50 font-italic">
+            Refreshing login token...
+        </p>
+        <v-tabs v-model="tab" grow class="mb-4">
+            <v-tab v-for="tab in tabs" :key="tab.value" :value="tab.value">
+                {{ tab.text }}
+            </v-tab>
+        </v-tabs>
+        <v-alert v-if="alertVisible" :type="alertType">
+            {{ alertMessage }}
+        </v-alert>
+        <v-tabs-window v-model="tab">
+            <v-tabs-window-item
+                v-for="tab in tabs"
+                :key="tab"
+                :value="tab.value"
+            >
+                <v-table class="rounded">
+                    <thead>
+                        <tr>
+                            <th
+                                class="position-sticky left-0 bg-surface-light"
+                            ></th>
+                            <th
+                                v-for="slot in timeSlots"
+                                :key="slot.title"
+                                class="bg-surface-light"
+                            >
+                                <div class="text-center text-h6">
+                                    {{ slot.title }}
+                                </div>
+                                <div
+                                    class="text-no-wrap text-subtitle-2 text-center text-medium-emphasis"
+                                >
+                                    {{ slot.range }}
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(day, dayIndex) in days">
+                            <td
+                                class="position-sticky left-0 bg-surface-light text-center pa-2"
+                            >
+                                {{ day.substring(0, 3).toUpperCase() }}
+                            </td>
+                            <td
+                                v-for="period in tab.content[dayIndex]"
+                                :class="['pa-2 subject-cell', period.change]"
+                            >
+                                <div class="text-h6 text-bold">
+                                    {{ period.className }}
+                                </div>
+                                <div>{{ period.teacher }}</div>
+                                <div class="text-break text-medium-emphasis">
+                                    {{ period.room }}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </v-table>
+            </v-tabs-window-item>
+        </v-tabs-window>
+    </v-container>
 </template>
 
+<script setup></script>
+
 <script>
+import { useRefreshLogin } from "@/composables/useRefreshLogin";
+const { isRefreshing, refreshLogin } = useRefreshLogin();
+
 export default {
+    data: () => ({
+        alertVisible: false,
+        alertMessage: "Meow",
+        alertType: "info",
+        days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        timeSlots: [
+            //{ title: "1", range: "6:00 - 9:00" },
+        ],
+        tab: "current",
+        tabs: [
+            { value: "previous", text: "Previous", content: [] },
+            {
+                value: "current",
+                text: "Current",
+                content: [
+                    //[{className: "aaa",teacher: "NPC",teacherFull: "Bitch McFuck",room: "666",change: null,},],
+                ],
+            },
+            { value: "next", text: "Next", content: [] },
+        ],
+    }),
     mounted() {
         let now = new Date();
-        let unix = now.getTime();
-        this.getschedule(unix);
+        let unixCurrent = now.getTime();
+        let unixPrevious = unixCurrent - 608400000;
+        let unixNext = unixCurrent + 608400000;
+
+        this.getSchedule(this.tabs[0].content, unixPrevious, false);
+        this.getSchedule(this.tabs[1].content, unixCurrent, true);
+        this.getSchedule(this.tabs[2].content, unixNext, false);
     },
     methods: {
-        async getschedule(now) {
+        async getSchedule(dataArray, now, constCheck) {
             const today = new Date(parseInt(now)).toISOString().split("T")[0];
             const token = localStorage.getItem("token");
             const url = localStorage.getItem("url");
+
             if (localStorage.getItem("url") == null) {
-                //alert("Not logged in! Go to the Account page to log in first.")
-                document.getElementById("loginstatus").innerHTML =
+                this.alertType = "error";
+                this.alertMessage =
                     "Not logged in! Go to the Account page to log in first.";
+                this.showAlert();
             } else {
-                document
-                    .getElementById("schedulenav")
-                    .classList.remove("hidden");
                 let head = {
                     "Content-Type": "application/x-www-form-urlencoded",
                     Authorization: `Bearer ${token}`,
                 };
-                var response = await fetch(
+                let response = await fetch(
                     `${url}api/3/timetable/actual?date=${today}`,
                     {
                         method: "GET",
@@ -63,81 +129,64 @@ export default {
                 );
                 var responseJson = await response.json();
                 if (response.ok == false) {
-                    alert(
-                        "Authentication failure. Go to the Home tab to refresh login.",
-                    );
+                    await refreshLogin();
+                    await this.getSchedule(dataArray, now);
                 } else {
-                    var response = Object.values(responseJson);
-                    var scheduleDiv = document.getElementById("schedule");
+                    let response = Object.values(responseJson);
 
                     let iterator = response.values();
                     for (const value of iterator) {
                         console.log(value);
                     }
-                    const scheduleTable = document.createElement("table");
-                    scheduleTable.innerHTML = "<tr>";
-                    scheduleDiv.appendChild(scheduleTable);
 
-                    const scheduleTimeHeader = document.createElement("tr");
-                    scheduleTable.appendChild(scheduleTimeHeader);
+                    // appending time ranges
+                    //
+                    // response[0][k].Caption
+                    // response[0][k].BeginTime
+                    // response[0][k].EndTime
 
-                    const scheduleEmptyCell = document.createElement("td");
-                    scheduleEmptyCell.classList.add("timetable-days");
-                    scheduleTimeHeader.appendChild(scheduleEmptyCell); // empty cell
-
-                    for (let k = 0; k < response[0].length; k++) {
-                        const timeCell = document.createElement("th");
-                        timeCell.innerHTML =
-                            response[0][k].Caption +
-                            "<span class='timerange'>" +
-                            response[0][k].BeginTime +
-                            " - " +
-                            response[0][k].EndTime +
-                            "</span>";
-                        scheduleTimeHeader.appendChild(timeCell);
+                    if (constCheck != false) {
+                        for (let k = 0; k < response[0].length; k++) {
+                            this.timeSlots.push({
+                                title: response[0][k].Caption,
+                                range:
+                                    response[0][k].BeginTime +
+                                    " - " +
+                                    response[0][k].EndTime,
+                            });
+                        }
                     }
 
                     for (let i = 0; i < response[1].length; i++) {
-                        const scheduleRow = document.createElement("tr");
-                        scheduleTable.appendChild(scheduleRow);
+                        let rowArray = [];
 
-                        const scheduleDay = document.createElement("td");
-                        scheduleDay.classList.add("timetable-days");
-                        const weekday = [
-                            "MON",
-                            "TUE",
-                            "WED",
-                            "THU",
-                            "FRI",
-                            "SAT",
-                            "SUN",
-                        ];
-                        scheduleDay.innerHTML =
-                            weekday[response[1][i].DayOfWeek - 1];
-                        scheduleRow.appendChild(scheduleDay);
-
+                        // is the day a holiday?
                         if (response[1][i].DayType == "Holiday") {
                             for (let ii = 0; ii < response[0].length; ii++) {
-                                const scheduleRowItem =
-                                    document.createElement("td");
-                                scheduleRowItem.innerHTML =
-                                    "<span class='subject'>Holiday</span>";
-                                scheduleRowItem.classList.add("holiday");
-                                scheduleRow.appendChild(scheduleRowItem);
+                                rowArray.push({
+                                    className: "Holiday",
+                                    classNameFull: "Holiday",
+                                    teacher: "",
+                                    teacherFull: "N/A",
+                                    room: "",
+                                    change: "holiday",
+                                });
                             }
                         } else {
+                            // append subjects in schedule
                             for (
                                 let j = 0;
                                 j < response[1][i].Atoms.length;
                                 j++
                             ) {
-                                const scheduleRowItem =
-                                    document.createElement("td");
-                                const scheduleRowItemEmpty =
-                                    document.createElement("td");
+                                // define basic variables
                                 let room;
                                 let subject;
+                                let subjectFull;
                                 let teacher;
+                                let teacherFull;
+                                let change = null;
+
                                 if (response[1][i].Atoms[j].Change == null) {
                                     room = response[6].find(
                                         (z) =>
@@ -152,14 +201,55 @@ export default {
                                         response[1][i].Atoms[j].Change
                                             .ChangeType != "Canceled"
                                     ) {
-                                        scheduleRowItem.classList.add(
-                                            "change-cancel",
-                                        );
+                                        change = "canceled";
                                     } else {
-                                        scheduleRowItem.classList.add(
-                                            "change-other",
-                                        );
+                                        change = "other";
                                     }
+                                }
+
+                                // do various magics and curses to check if the
+                                // current time is within the time range of the period
+                                // and assign an "active" change
+                                const now = new Date();
+                                const hours = now.getHours();
+                                const minutes = String(
+                                    now.getMinutes(),
+                                ).padStart(2, "0");
+                                const currentTime = `${hours}:${minutes}`;
+                                console.log(currentTime);
+
+                                const startTime = response[0].find(
+                                    (z) =>
+                                        z.Id === response[1][i].Atoms[j].HourId,
+                                ).BeginTime;
+                                const endTime = response[0].find(
+                                    (z) =>
+                                        z.Id === response[1][i].Atoms[j].HourId,
+                                ).EndTime;
+
+                                const [currentHours, currentMinutes] =
+                                    currentTime.split(":").map(Number);
+                                const currentTimeInMinutes =
+                                    currentHours * 60 + currentMinutes;
+
+                                const [startHours, startMinutes] = startTime
+                                    .split(":")
+                                    .map(Number);
+                                const startTimeInMinutes =
+                                    startHours * 60 + startMinutes;
+
+                                const [endHours, endMinutes] = endTime
+                                    .split(":")
+                                    .map(Number);
+                                const endTimeInMinutes =
+                                    endHours * 60 + endMinutes;
+
+                                if (
+                                    currentTimeInMinutes >=
+                                        startTimeInMinutes &&
+                                    currentTimeInMinutes <= endTimeInMinutes
+                                ) {
+                                    change += " active";
                                 }
 
                                 if (response[1][i].Atoms[j].SubjectId == null) {
@@ -170,198 +260,92 @@ export default {
                                             x.Id ===
                                             response[1][i].Atoms[j].SubjectId,
                                     ).Abbrev;
+                                    subjectFull = response[4].find(
+                                        (x) =>
+                                            x.Id ===
+                                            response[1][i].Atoms[j].SubjectId,
+                                    ).Name;
                                 }
                                 if (response[1][i].Atoms[j].TeacherId == null) {
                                     teacher = "N/A";
+                                    teacherFull = "N/A";
                                 } else {
                                     teacher = response[5].find(
                                         (y) =>
                                             y.Id ===
                                             response[1][i].Atoms[j].TeacherId,
                                     ).Abbrev;
+                                    teacherFull = response[5].find(
+                                        (y) =>
+                                            y.Id ===
+                                            response[1][i].Atoms[j].TeacherId,
+                                    ).Name;
                                 }
-                                scheduleRowItem.innerHTML =
-                                    "<span class='subject'>" +
-                                    subject +
-                                    "</span><br>" +
-                                    teacher +
-                                    "<br>" +
-                                    room;
 
+                                // should there be a gap? append empty cell
                                 if (j > 0) {
                                     if (
                                         response[1][i].Atoms[j - 1].HourId !=
                                         response[1][i].Atoms[j].HourId - 1
                                     ) {
-                                        scheduleRow.appendChild(
-                                            scheduleRowItemEmpty,
-                                        );
+                                        rowArray.push({
+                                            className: "",
+                                            classNameFull: "",
+                                            teacher: "",
+                                            teacherFull: "No information",
+                                            room: "",
+                                            change: "",
+                                        });
                                     }
                                 }
-                                scheduleRow.appendChild(scheduleRowItem);
+
+                                // append actual cell data here, BUT to its own array to use in a higher level
+                                rowArray.push({
+                                    className: subject,
+                                    classNameFull: subjectFull,
+                                    teacher: teacher,
+                                    teacherFull: teacherFull,
+                                    room: room,
+                                    change: change,
+                                });
                             }
                         }
+
+                        //console.log(rowArray);
+                        //console.log(dataArray);
+
+                        dataArray.push(rowArray);
                     }
                 }
-
-                // hide spinner after content is loaded
-                const spinner = document.getElementsByClassName("spinner");
-                spinner[0].classList.add("hidden");
             }
-        },
-        async lessIForgotTheWordDate() {
-            let now = new Date();
-            let unix = now.getTime();
-            unix = unix - 608400000;
-            this.killChildren();
-            this.getschedule(unix);
-            document.getElementById("currentweek").innerHTML =
-                "Viewing previous week";
-            document.getElementById("previous").classList.add("selected");
-            document.getElementById("current").classList.remove("selected");
-            document.getElementById("next").classList.remove("selected");
-        },
-        async advanceDate() {
-            let now = new Date();
-            let unix = now.getTime();
-            unix = unix + 608400000;
-            this.killChildren();
-            this.getschedule(unix);
-            document.getElementById("currentweek").innerHTML =
-                "Viewing next week";
-            document.getElementById("previous").classList.remove("selected");
-            document.getElementById("current").classList.remove("selected");
-            document.getElementById("next").classList.add("selected");
-        },
-        async currentDate() {
-            let now = new Date();
-            let unix = now.getTime();
-            this.killChildren();
-            this.getschedule(unix);
-            document.getElementById("currentweek").innerHTML =
-                "Viewing current week";
-            document.getElementById("previous").classList.remove("selected");
-            document.getElementById("current").classList.add("selected");
-            document.getElementById("next").classList.remove("selected");
-        },
-        async killChildren() {
-            var sched = document.getElementById("schedule");
-            while (sched.firstChild) sched.removeChild(sched.firstChild);
         },
     },
 };
 </script>
 
-<style>
-#schedulenav {
-    width: 100%;
-    text-align: center;
+<style scoped>
+@media (min-width: 1420px) {
+    #app .page-container {
+        max-width: 1024px;
+    }
 }
 
-#schedule {
-    overflow-x: scroll;
-    scrollbar-width: thin;
-    border-radius: var(--rounded-common);
-    border: 1px solid var(--color-border);
-    background-color: var(--color-background-soft);
-}
-
-.subject {
-    font-size: larger;
-    font-weight: bold;
-}
-
-#schedule .change-cancel {
-    background-color: rgba(255, 137, 137, 0.1);
-}
-
-#schedule .change-other {
-    background-color: rgba(160, 255, 160, 0.1);
-}
-
-#schedule .holiday {
-    background-color: rgba(69, 196, 255, 0.1);
-    text-align: center;
-}
-
-.timerange {
-    font-weight: normal;
-    font-size: smaller;
-    display: block;
-    min-width: max-content;
-}
-
-#schedule td {
-    box-shadow:
-        inset 0 0 0 1px var(--color-background-mute),
-        0 0 0 1px var(--color-background-mute);
-    background-color: var(--color-background);
-}
-
-#schedule th,
-#schedule td {
+.subject-cell {
     vertical-align: top;
-    padding: 0.5em;
-    min-width: min-content;
 }
 
-#schedule th {
-    font-weight: bold;
-    background-color: var(--color-background-soft);
-    min-width: 7em;
-
+.subject-cell.canceled {
+    background-color: #ff174416;
+}
+.subject-cell.other {
+    background-color: #69f0ae16;
+}
+.subject-cell.holiday {
+    background-color: #4dd0e116;
+}
+.subject-cell.active {
     box-shadow:
-        inset 0 0 0 1px var(--color-background-soft),
-        0 0 0 1px var(--color-background-soft);
-}
-
-#schedule table tr td:first-child {
-    text-align: center;
-    vertical-align: middle;
-}
-
-#schedule table {
-    border-collapse: collapse;
-}
-
-#schedule .timetable-days {
-    background-color: var(--color-background-mute);
-    position: sticky;
-    left: -1px;
-}
-
-.btn-container {
-    display: flex;
-    margin: 1em 0;
-    width: 100%;
-    padding: 0.35rem;
-    background-color: var(--color-background-soft);
-    border-radius: var(--rounded-rare);
-    gap: 0.35em;
-    border: 1px solid var(--color-background-mute);
-}
-
-.btn-container button {
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: var(--color-text);
-    background-color: var(--color-background-soft);
-    padding: 0.85rem 1.25rem;
-    flex: 1 1 0;
-    transition: all 0.1s ease-out;
-    cursor: pointer;
-    border: none;
-    border-radius: var(--rounded-rare);
-}
-
-.btn-container button:not(.selected):hover {
-    background-color: var(--color-background-mute);
-}
-
-.btn-container .selected {
-    background: color-mix(in srgb, var(--btr-ab) 45%, rgb(153, 157, 161));
-    color: var(--color-background);
-    font-weight: 600;
+        inset 0 0 0 1px #e91e63,
+        0 0 0 1px #e91e63;
 }
 </style>
