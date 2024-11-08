@@ -145,7 +145,7 @@ export default {
                     // response[0][k].BeginTime
                     // response[0][k].EndTime
 
-                    if (constCheck != false) {
+                    if (constCheck) {
                         for (let k = 0; k < response[0].length; k++) {
                             this.timeSlots.push({
                                 title: response[0][k].Caption,
@@ -161,11 +161,24 @@ export default {
                         let rowArray = [];
 
                         // is the day a holiday?
+                        //
+                        // make new design l8r: push a single cell and span it till the end of table
                         if (response[1][i].DayType == "Holiday") {
                             for (let ii = 0; ii < response[0].length; ii++) {
                                 rowArray.push({
                                     className: "Holiday",
                                     classNameFull: "Holiday",
+                                    teacher: "",
+                                    teacherFull: "N/A",
+                                    room: "", //response[1][i].DayDescription
+                                    change: "holiday",
+                                });
+                            }
+                        } else if (response[1][i].DayType == "Celebration") {
+                            for (let ii = 0; ii < response[0].length; ii++) {
+                                rowArray.push({
+                                    className: "Celebration",
+                                    classNameFull: "Celebration",
                                     teacher: "",
                                     teacherFull: "N/A",
                                     room: "",
@@ -216,7 +229,6 @@ export default {
                                     now.getMinutes(),
                                 ).padStart(2, "0");
                                 const currentTime = `${hours}:${minutes}`;
-                                console.log(currentTime);
 
                                 const startTime = response[0].find(
                                     (z) =>
@@ -244,7 +256,13 @@ export default {
                                 const endTimeInMinutes =
                                     endHours * 60 + endMinutes;
 
+                                const today = now.toISOString().split("T")[0];
+                                const dateSchedule =
+                                    response[1][i].Date.split("T")[0];
+
                                 if (
+                                    today === dateSchedule &&
+                                    constCheck &&
                                     currentTimeInMinutes >=
                                         startTimeInMinutes &&
                                     currentTimeInMinutes <= endTimeInMinutes
