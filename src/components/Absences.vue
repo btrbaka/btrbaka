@@ -1,7 +1,8 @@
 <template>
     <v-container class="d-flex flex-column justify-center page-container">
-        <p v-if="isRefreshing" class="opacity-50 font-italic">
-            Refreshing login token...
+        <p v-if="isRefreshing" class="opacity-50 font-italic ms-4">
+            <v-progress-circular indeterminate :size="24"></v-progress-circular>
+            <span class="ms-4">Refreshing login token...</span>
         </p>
         <v-alert v-if="alertVisible" :type="alertType">
             {{ alertMessage }}
@@ -23,11 +24,14 @@
     </v-container>
 </template>
 
-<script setup></script>
+<script setup>
+import { useRefreshLogin } from "@/composables/useRefreshLogin";
+const { isRefreshing } = useRefreshLogin();
+</script>
 
 <script>
 import { useRefreshLogin } from "@/composables/useRefreshLogin";
-const { isRefreshing, refreshLogin } = useRefreshLogin();
+const { refreshLogin } = useRefreshLogin();
 
 export default {
     data: () => ({

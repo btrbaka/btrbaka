@@ -35,8 +35,9 @@ refreshLogin();
             <p>With ❤️ from btrbaka contributors 🏳️‍⚧️🏳️‍🌈</p>
         </div>
 
-        <p v-if="isRefreshing" class="opacity-50 font-italic">
-            Refreshing login token...
+        <p v-if="isRefreshing" class="opacity-50 font-italic ms-4">
+            <v-progress-circular indeterminate :size="24"></v-progress-circular>
+            <span class="ms-4">Refreshing login token...</span>
         </p>
     </v-container>
 </template>
