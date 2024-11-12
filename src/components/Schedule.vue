@@ -204,16 +204,30 @@ export default {
                                 let teacherFull;
                                 let change = null;
 
-                                if (response[1][i].Atoms[j].Change == null) {
+                                if (!response[1][i].Atoms[j].Change) {
                                     room = response[6].find(
                                         (z) =>
                                             z.Id ===
                                             response[1][i].Atoms[j].RoomId,
                                     ).Abbrev;
                                 } else {
-                                    room =
-                                        response[1][i].Atoms[j].Change
-                                            .Description;
+                                    if (response[1][i].Atoms[j].RoomId) {
+                                        room =
+                                            response[6].find(
+                                                (z) =>
+                                                    z.Id ===
+                                                    response[1][i].Atoms[j]
+                                                        .RoomId,
+                                            ).Abbrev +
+                                            "; " +
+                                            response[1][i].Atoms[j].Change
+                                                .Description;
+                                    } else {
+                                        room =
+                                            response[1][i].Atoms[j].Change
+                                                .Description;
+                                    }
+
                                     if (
                                         response[1][i].Atoms[j].Change
                                             .ChangeType != "Canceled"
@@ -366,8 +380,6 @@ export default {
     background-color: #4dd0e116;
 }
 .subject-cell.active {
-    box-shadow:
-        inset 0 0 0 1px #e91e63,
-        0 0 0 1px #e91e63;
+    box-shadow: inset 0 0 0 2px #e91e63;
 }
 </style>
