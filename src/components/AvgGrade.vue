@@ -45,8 +45,10 @@ export default {
                     let count = 0;
                     for (const item of response[0]) {
                         const value = parseFloat(item.AverageText);
-                        sum += value;
-                        count++;
+                        if (value != NaN) {
+                            sum += value;
+                            count++;
+                        }
                     }
                     console.log("Sum:", sum);
                     console.log("Count:", count);
