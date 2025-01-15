@@ -7,7 +7,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - id: Build-Vue
-      uses: nvkomata/VuePagesAction@1.1
+      uses: liliththecatpire/VuePagesAction@1.1
       with:
         username: 'btrbaka'
         reponame: 'btrbaka'
