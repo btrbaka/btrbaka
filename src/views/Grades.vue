@@ -5,6 +5,6 @@ import AvgGrade from "../components/AvgGrade.vue";
 
 <template>
     <v-toolbar title="Grades" class="bg-transparent"></v-toolbar>
-    <AvgGrade />
+    <!-- <AvgGrade /> -->
     <Grades />
 </template>
