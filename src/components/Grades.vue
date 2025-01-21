@@ -1,4 +1,9 @@
 <template>
+    <v-row class="justify-center align-center">
+        <v-chip class="mb-2">
+            Average Grade: {{ averageOverall }}
+        </v-chip>
+    </v-row>
     <v-container class="d-flex flex-column justify-center page-container">
         <p v-if="isRefreshing" class="opacity-50 font-italic ms-4">
             <v-progress-circular indeterminate :size="24"></v-progress-circular>
@@ -12,7 +17,6 @@
         <v-alert v-if="alertVisible" :type="alertType">
             {{ alertMessage }}
         </v-alert>
-
         <v-tabs-window v-model="tab">
             <v-tabs-window-item key="recent" value="recent">
                 <v-list lines="two" rounded>
@@ -213,7 +217,8 @@ export default {
         editEnabled: false,
         editGradeId: "",
         initGradeValue: 0,
-        newGradeValue: 0
+        newGradeValue: 0,
+        averageOverall: 0
     }),
     mounted() {
         this.getGrades();
@@ -251,7 +256,8 @@ export default {
                     }
 
                     let allgrades = [];
-                    
+                    let subjectsGradeCount = 0;
+
                     // for loop for each subject definition
                     for (let i = 0; i < response[0].length; i++) {
                         // pushing all grades from each subject
@@ -280,7 +286,7 @@ export default {
 
                         // pushing grades into an array for a subject
                         let subjectGrades = [];
-                        
+
                         for (
                             let j = response[0][i].Marks.length - 1;
                             j >= 0;
@@ -290,7 +296,7 @@ export default {
                                 response[0][i].Marks[j].MarkDate,
                             );
                             let date = new Date(unixDate);
-                            
+
                             subjectGrades.push({
                                 Id: response[0][i].Marks[j].Id,
                                 grade: response[0][i].Marks[j].MarkText,
@@ -302,14 +308,11 @@ export default {
                                     day: "numeric",
                                 }),
                             });
-                            
-                            
-
                         }
-                        //console.log(gradeSum);
                         let averagegrade = Math.round(((gradeSum / weightSum) + Number.EPSILON) * 100) / 100;
-                        
+                        subjectsGradeCount = subjectsGradeCount + averagegrade;
                         // pushing a subject item into "by subject" grades
+
                         this.gradesSubjects.push({
                             title: response[0][i].Subject.Name,
                             average: averagegrade,
@@ -351,6 +354,7 @@ export default {
                             }),
                         });
                     }
+                    this.averageOverall = subjectsGradeCount / this.gradesSubjects.length;
                 }
             }
         },
@@ -363,16 +367,7 @@ export default {
         },
         updateGrade() {
             const result = this.findIndex(this.editGradeId);
-            /*
-            if (result) {
-                console.log(`Found in subject at index ${result.subjectIndex}, mark at index ${result.markIndex}`);
-            } else {
-                console.log("Mark ID not found.");
-            }
-            */
 
-            //console.log(JSON.stringify(this.gradesSubjects[result.subjectIndex].content[result.markIndex].grade));
-            
             this.gradesSubjects[result.subjectIndex].content[result.markIndex].grade = this.newGradeValue;
             this.gradesSubjects[result.subjectIndex].content[result.markIndex].weight = this.newWeightValue;
 
@@ -392,7 +387,7 @@ export default {
         updateAverage(i) {
             let gradeSum = 0;
             let weightSum = 0;
-
+            
                 for (let j = 0; j < this.gradesSubjects[i].content.length; j++) {
                     if (/\d/.test(this.gradesSubjects[i].content[j].grade)) {
                         if (this.gradesSubjects[i].content[j].grade.endsWith('-')) {
@@ -408,7 +403,11 @@ export default {
                 //console.log(weightSum);
                 let averagegrade = Math.round(((gradeSum / weightSum) + Number.EPSILON) * 100) / 100;
                 //console.log(this.gradesSubjects[i].average);
+                this.averageOverall = Math.round(((this.averageOverall * this.gradesSubjects.length) - this.gradesSubjects[i].average + averagegrade) / this.gradesSubjects.length * 100) / 100;
+                
                 this.gradesSubjects[i].average = averagegrade;
+
+                //console.log(this.gradesSubjects);
         },
         addGrade(subjectIndex) {
             //console.log(subjectIndex);
