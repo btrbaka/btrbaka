@@ -354,7 +354,7 @@ export default {
                             }),
                         });
                     }
-                    this.averageOverall = Math.round((subjectsGradeCount / this.gradesSubjects.length) + Number.EPSILON) * 100) / 100;
+                    this.averageOverall = Math.round(((subjectsGradeCount / this.gradesSubjects.length) + Number.EPSILON) * 100) / 100;
                 }
             }
         },
