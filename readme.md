@@ -7,22 +7,39 @@ the better baka experience, in a nice little webapp.
 
 </div>
 
-### features
+### 🌟 Features 🌟
 
-- clean home page with everything you need
-- grades page with tabs for recent and by subject view
-- schedule
-- absences
-- messages (komens)
-- no legal name in sight. ever.
-- PWA; add btrbaka to your homescreen as an app!
-- faster than b*kaláři's official apps
+- **Streamlined Dashboard:** All mandatory info at a quick glance.
+- **Grades & Schedule:** Organised for minimalistic look and simplicity.
+- **Integrated Grades Predictor:** Focus on studying different subjects efficiently with a built-in predictor right inside the Grades tab.
+- **Messages(Komens) & Absences:** Easy access to the latest administrative notes.
+- **Privacy:** Legal name-free interface with user-side password encryption.
+- **PWA Ready:** Install it on any device for instant access.
+- **Efficiency:** Focused on providing seamless user experience.
 
 ### screenshots
 
 | | | |
 | :-: | :-: | :-: |
 | ![](/public/screenshots/home.png) | ![](/public/screenshots/grades.png) | ![](/public/screenshots/schedule.png) |
+
+### 🛠️ Built With 🛠️
+
+- **Vuetify** & **Material Design Icons** for a polished UI.
+- Cutting-edge web technologies for **speed** and **reliability**.
+
+### 💡 Getting Started 💡
+
+- **Web Browser:**
+    1. Visit https://btrbaka.github.io/
+    2. Login with your school's credentials
+    3. Enjoy!
+</br>
+
+- **PWA:**
+    1. Download a PWA client app on your device
+    2. Set it up with https://btrbaka.github.io/ link
+    3. Enjoy!
 
 ### want to contribute? is there a bug?
 
