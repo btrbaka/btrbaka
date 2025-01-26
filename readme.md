@@ -30,27 +30,24 @@ the better baka experience, in a nice little webapp.
 
 ### 💡 Getting Started 💡
 
-- **Web Browser:**
-    1. Visit https://btrbaka.github.io/
-    2. Login with your school's credentials
-    3. Enjoy!
-</br>
+**Web Browser:**
+- Visit https://btrbaka.github.io/
+- Login with your school's credentials
+- Enjoy!
 
-- **PWA:**
-    1. Download a PWA client app on your device
-    2. Set it up with https://btrbaka.github.io/ link
-    3. Enjoy!
+**PWA:**
+- Download a PWA client app on your device
+- Set it up with https://btrbaka.github.io/ link
+- Enjoy!
 
-### want to contribute? is there a bug?
+### 🤝 Want To Contribute? Is There A Bug? 🤝
 
-please make an issue or PR the change you would like to see <3
+We’re open to collaboration! Submit issues or pull requests to help improve btrbaka <3
 
-### licensing
+### 📝 Licensing 📝
 
-btrbaka under [MIT](https://github.com/btrbaka/btrbaka/blob/main/LICENSE)
+This project is licensed under the MIT license.
+Feel free to use, modify, and distribute it. See the [LICENSE](https://github.com/btrbaka/btrbaka/blob/main/LICENSE) file for details.
 
-made with vuetify and built-in material design icons
-
-### disclaimer
-
-btrbaka is not affiliated with or endorsed by BAKALÁŘI software s.r.o.
+### ⚠️ Disclaimer ⚠️ 
+btrbaka is not affiliated with or endorsed by BAKALÁŘI Software s.r.o.
