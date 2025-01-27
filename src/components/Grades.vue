@@ -412,7 +412,7 @@ export default {
         addGrade(subjectIndex) {
             //console.log(subjectIndex);
             this.newGradeId = "predictor_" + window.crypto.randomUUID();
-            this.newGradeDesc = "Custom";1140
+            this.newGradeDesc = "Custom";
             this.newGradeValue = "N";
             this.newGradeWeight = 1;
 
