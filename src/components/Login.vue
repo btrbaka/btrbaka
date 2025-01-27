@@ -36,6 +36,22 @@
 
         <p class="login-status-notice ma-2"></p>
 
+        <v-btn
+            @click="logOut"
+            size="large"
+            class="ma-2"
+            rounded="pill"
+            color="error"
+            v-if="
+                this.url &&
+                this.username &&
+                this.stored_url &&
+                this.stored_username
+            "
+        >
+            Clear & Log out
+        </v-btn>
+
         <v-btn @click="loginFunc" size="large" class="ma-2" rounded="pill"
             >Login</v-btn
         >
@@ -53,17 +69,21 @@ export default {
         password: "",
         refreshtoken: "",
         debugmodecheck: false,
+        stored_url: false,
+        stored_username: false,
     }),
     mounted() {
         // plop url and username in input boxes if saved in localstorage
-        const storedUrl = localStorage.getItem("url").slice(0, -1);
+        const storedUrl = localStorage.getItem("url");
         const storedUsername = localStorage.getItem("usrnm");
 
         if (storedUrl) {
-            this.url = storedUrl;
+            this.url = storedUrl.slice(0, -1);
+            this.stored_url = true;
         }
         if (storedUsername) {
             this.username = storedUsername;
+            this.stored_username = true;
         }
     },
     methods: {
@@ -120,6 +140,13 @@ export default {
                 }
                 loginstatus.innerHTML = "Successfully logged in!";
             }
+        },
+        logOut() {
+            localStorage.removeItem("url");
+            localStorage.removeItem("usrnm");
+
+            this.url = null;
+            this.username = null;
         },
     },
 };
