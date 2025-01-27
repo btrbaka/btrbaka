@@ -126,7 +126,7 @@
                                             </v-list-item-subtitle>
                                         </v-col>
                                         <v-col
-                                            cols="2"
+                                            cols="3"
                                             class="d-flex align-end align-lg-center ga-lg-2 flex-lg-row-reverse flex-column mb-lg-2"
                                         >
                                             <v-chip
@@ -151,14 +151,14 @@
                                                 >{{ grade.date }}
                                             </v-list-item-subtitle>
                                         </v-col>
-                                            <v-col cols="auto">
+                                            <v-col cols="2">
                                                 <!-- id={{ grade.Id }}-->
                                                 <v-btn 
                                                         color="light-green"
                                                         class="mb-2"
                                                         variant="tonal"
                                                         icon="mdi-pencil-outline"
-                                                        size="large"
+                                                        size="small"
                                                         
                                                         @click.native="editGrade(grade.Id, grade.grade, grade.weight)"></v-btn>
                                             </v-col>
@@ -412,7 +412,7 @@ export default {
         addGrade(subjectIndex) {
             //console.log(subjectIndex);
             this.newGradeId = "predictor_" + window.crypto.randomUUID();
-            this.newGradeDesc = "Známka z předvídače";
+            this.newGradeDesc = "Custom";1140
             this.newGradeValue = "N";
             this.newGradeWeight = 1;
 
