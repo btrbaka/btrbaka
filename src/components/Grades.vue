@@ -154,6 +154,15 @@
                                             <v-col cols="2">
                                                 <!-- id={{ grade.Id }}-->
                                                 <v-btn 
+                                                        v-if="grade.Id.includes('predictor')"
+                                                        color="red"
+                                                        class="mb-2"
+                                                        variant="tonal"
+                                                        icon="mdi-trash-can-outline"
+                                                        size="small"
+                                                        
+                                                        @click.native="deleteGrade(grade.Id, index)"></v-btn>
+                                                <v-btn 
                                                         color="light-green"
                                                         class="mb-2"
                                                         variant="tonal"
@@ -270,10 +279,22 @@ export default {
                             if (/\d/.test(response[0][i].Marks[j].MarkText)) {
                                 if (response[0][i].Marks[j].MarkText.endsWith('-')) {
                                     gradeSum = gradeSum + (parseInt(response[0][i].Marks[j].MarkText.slice(0, -1)) + 0.5) * parseInt(response[0][i].Marks[j].Weight);
+                                    if (isNaN(response[0][i].Marks[j].MarkText.slice(0, -1))) {
+                                        console.log("invalid mark: " + response[0][i].Marks[j].MarkText.slice(0, -1));
+                                    }
+                                    if (isNaN(response[0][i].Marks[j].Weight)) {
+                                        console.log("invalid weight: " + response[0][i].Marks[j].Weight);
+                                    } 
                                     weightSum = weightSum + parseInt(response[0][i].Marks[j].Weight);
                                     //console.log(parseInt(response[0][i].Marks[j].MarkText.slice(0, -1)) + 0.5);
                                 } else {
                                     gradeSum = gradeSum + parseInt(response[0][i].Marks[j].MarkText) * parseInt(response[0][i].Marks[j].Weight);
+                                    if (isNaN(response[0][i].Marks[j].MarkText.slice(0, -1))) {
+                                        console.log("invalid mark: " + response[0][i].Marks[j].MarkText.slice(0, -1));
+                                    }
+                                    if (isNaN(response[0][i].Marks[j].Weight)) {
+                                        console.log("invalid weight: " + response[0][i].Marks[j].Weight);
+                                    }
                                     weightSum = weightSum + parseInt(response[0][i].Marks[j].Weight);
                                 }
                             }
@@ -438,6 +459,11 @@ export default {
         },
         showAlert() {
             this.alertVisible = true;
+        },
+        deleteGrade(id, subjectIndex) {
+            const result = this.findIndex(id);
+            this.gradesSubjects[subjectIndex].content.splice(result.markIndex, 1);
+            this.updateAverage(subjectIndex);
         }
     },
 };
