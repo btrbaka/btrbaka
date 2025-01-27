@@ -330,6 +330,11 @@ export default {
                                 }),
                             });
                         }
+
+                        if (weightSum == 0) {
+                            weightSum = 1 // make sure we dont divide by 0
+                        }
+                        
                         let averagegrade = Math.round(((gradeSum / weightSum) + Number.EPSILON) * 100) / 100;
                         subjectsGradeCount = subjectsGradeCount + averagegrade;
                         // pushing a subject item into "by subject" grades
