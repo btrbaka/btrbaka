@@ -279,22 +279,10 @@ export default {
                             if (/\d/.test(response[0][i].Marks[j].MarkText)) {
                                 if (response[0][i].Marks[j].MarkText.endsWith('-')) {
                                     gradeSum = gradeSum + (parseInt(response[0][i].Marks[j].MarkText.slice(0, -1)) + 0.5) * parseInt(response[0][i].Marks[j].Weight);
-                                    if (isNaN(response[0][i].Marks[j].MarkText.slice(0, -1))) {
-                                        console.log("invalid mark: " + response[0][i].Marks[j].MarkText.slice(0, -1));
-                                    }
-                                    if (isNaN(response[0][i].Marks[j].Weight)) {
-                                        console.log("invalid weight: " + response[0][i].Marks[j].Weight);
-                                    } 
                                     weightSum = weightSum + parseInt(response[0][i].Marks[j].Weight);
                                     //console.log(parseInt(response[0][i].Marks[j].MarkText.slice(0, -1)) + 0.5);
                                 } else {
                                     gradeSum = gradeSum + parseInt(response[0][i].Marks[j].MarkText) * parseInt(response[0][i].Marks[j].Weight);
-                                    if (isNaN(response[0][i].Marks[j].MarkText.slice(0, -1))) {
-                                        console.log("invalid mark: " + response[0][i].Marks[j].MarkText.slice(0, -1));
-                                    }
-                                    if (isNaN(response[0][i].Marks[j].Weight)) {
-                                        console.log("invalid weight: " + response[0][i].Marks[j].Weight);
-                                    }
                                     weightSum = weightSum + parseInt(response[0][i].Marks[j].Weight);
                                 }
                             }
