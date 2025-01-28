@@ -10,7 +10,7 @@ the better baka experience, in a nice little webapp.
 ### features
 
 - clean home page with everything you need
-- grades page with tabs for recent and by subject view
+- grades page with tabs for recent and by subject view (+ predictor)
 - schedule
 - absences
 - messages (komens)
