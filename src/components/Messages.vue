@@ -23,7 +23,7 @@
                 <v-card
                     v-for="(message, index) in tab.content"
                     :key="index"
-                    class="ma-4"
+                    class="my-4"
                 >
                     <v-card-item class="bg-surface-light">
                         <v-card-title>{{ message.title }}</v-card-title>
