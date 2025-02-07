@@ -26,9 +26,6 @@ importers:
       pnpm:
         specifier: ^9.12.3
         version: 9.12.3
-      sharp:
-        specifier: ^0.33.5
-        version: 0.33.5
       typescript:
         specifier: ^5.6.3
         version: 5.6.3
@@ -66,6 +63,12 @@ importers:
       material-design-icons-iconfont:
         specifier: ^6.7.0
         version: 6.7.0
+      sharp:
+        specifier: ^0.33.5
+        version: 0.33.5
+      sharp-ico:
+        specifier: ^0.1.5
+        version: 0.1.5
       vite:
         specifier: ^5.4.10
         version: 5.4.10(@types/node@20.14.8)(terser@5.36.0)

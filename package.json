@@ -15,7 +15,6 @@
     "@vue/language-server": "^2.1.10",
     "pinia": "^2.2.5",
     "pnpm": "^9.12.3",
-    "sharp": "^0.33.5",
     "typescript": "^5.6.3",
     "vite-plugin-vuetify": "^2.0.4",
     "vue": "^3.5.12",
@@ -30,6 +29,8 @@
     "@vitejs/plugin-vue": "^5.1.4",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
     "material-design-icons-iconfont": "^6.7.0",
+    "sharp": "^0.33.5",
+    "sharp-ico": "^0.1.5",
     "vite": "^5.4.10",
     "vite-plugin-pwa": "^0.20.5",
     "workbox-window": "^7.3.0"
