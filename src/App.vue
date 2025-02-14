@@ -58,10 +58,10 @@
             size="x-large"
             @click="drawer = !drawer"
             location="bottom start"
-            absolute
+            fixed
             app
             appear
-            class="position-fixed ma-2"
+            class="nav-button ma-2"
             elevation="12"
         ></v-fab>
     </v-app>
