@@ -133,7 +133,7 @@ export default {
                             if (messageTitle == "") {
                                 messageTitle = "No title";
                             }
-                            let messageText = response[0][i].Text;
+                            let messageText = response[0][i].Text.trim();
                             let messageSender = response[0][i].RelevantName;
                             let senderType = response[0][i].RelevantPersonType;
 
@@ -154,7 +154,7 @@ export default {
             }
         },
         unwrapSpans(html) {
-            return html.replace(/<\/?span[^>]*>/g, "");
+            return html.replace(/<\/?span[^>]*>/g, "").replace(/^(<br \/>)+|(<br \/>)+$/g, "");
         },
         showAlert() {
             this.alertVisible = true;
