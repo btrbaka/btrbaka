@@ -154,7 +154,7 @@ export default {
             }
         },
         unwrapSpans(html) {
-            return html.replace(/<\/?span[^>]*>/g, "").replace(/^(<br \/>)+|(<br \/>)+$/g, "");
+            return html.replace(/<\/?span[^>]*>/g, "").replace(/^(<br \/>)+|(<br \/>)+$/g, "").replace(/<(\w+)[^>]*>/g, '<$1>');;
         },
         showAlert() {
             this.alertVisible = true;

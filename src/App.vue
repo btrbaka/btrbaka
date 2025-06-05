@@ -72,6 +72,16 @@ import { ref } from "vue";
 
 import ThemeSwitch from "./components/ThemeSwitch.vue";
 
+import '@fontsource/roboto/100.css';
+import '@fontsource/roboto/200.css';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/600.css';
+import '@fontsource/roboto/700.css';
+import '@fontsource/roboto/800.css';
+import '@fontsource/roboto/900.css';
+
 const drawer = ref(null);
 
 let clicks = 0;
