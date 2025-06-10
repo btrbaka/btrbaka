@@ -189,7 +189,8 @@
                                                   <template v-slot:default="{ isActive }">
                                                     <v-card title="Details">
                                                       <v-card-text>
-                                                          stuff here
+                                                          <p><strong>Theme:</strong> {{ grade.theme }}</p>
+                                                          <p><strong>Class Rank:</strong> {{ grade.classRank }}</p>
                                                       </v-card-text>
                                                 
                                                       <v-card-actions>
@@ -285,12 +286,13 @@ export default {
                     headers: head,
                 });
                 let responseJson = await response.json();
+                console.log(responseJson);
                 if (response.ok == false) {
                     await refreshLogin();
                     await this.getGrades();
                 } else {
                     let response = Object.values(responseJson);
-
+                    
                     let iterator = response.values();
                     for (const value of iterator) {
                         //console.log(value);
@@ -344,6 +346,8 @@ export default {
                                 grade: response[0][i].Marks[j].MarkText,
                                 weight: response[0][i].Marks[j].Weight,
                                 description: response[0][i].Marks[j].Caption,
+                                classRank: response[0][i].Marks[j].ClassRankText,
+                                theme: response[0][i].Marks[j].Theme,
                                 date: date.toLocaleString(undefined, {
                                     year: "numeric",
                                     month: "numeric",
