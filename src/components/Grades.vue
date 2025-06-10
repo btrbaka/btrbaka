@@ -189,8 +189,8 @@
                                                   <template v-slot:default="{ isActive }">
                                                     <v-card title="Details">
                                                       <v-card-text>
-                                                          <p><strong>Theme:</strong> {{ grade.theme }}</p>
-                                                          <p><strong>Class Rank:</strong> {{ grade.classRank }}</p>
+                                                          <p><strong>Theme:</strong> {{ grade.theme && grade.theme.length > 1 ? grade.theme : 'N/A' }}</p>
+                                                          <p><strong>Class Rank:</strong> {{ grade.classRank && grade.classRank.length > 1 ? grade.classRank : 'N/A' }}</p>
                                                       </v-card-text>
                                                 
                                                       <v-card-actions>
