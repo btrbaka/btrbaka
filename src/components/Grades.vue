@@ -88,9 +88,11 @@
                                 <v-list-item
                                     v-for="grade in subject.content"
                                     :key="grade"
+                                    class="grade-item"
                                 >
                                     <v-row
-                                        class="align-center mb-1 flex-nowrap"
+                                        class="align-center mb-1 flex-nowrap position-relative"
+                                        @click="grade.showActions = !grade.showActions"
                                     >
                                         <v-col
                                             cols="auto"
@@ -151,14 +153,20 @@
                                                 >{{ grade.date }}
                                             </v-list-item-subtitle>
                                         </v-col>
-                                            <v-col cols="1">
+                                    </v-row>
+                                    <div v-if="grade.showActions" class="action-buttons d-flex w-100">
+                                        <v-row no-gutters>
+                                            <v-col class="pa-1">
                                                 <v-menu>
                                                     <template v-slot:activator="{ props }">
                                                         <v-btn
                                                             v-bind="props"
                                                             icon="mdi-pencil-outline"
-                                                            variant="text"
-                                                            size="small"
+                                                            rounded
+                                                            block
+                                                            variant="tonal"
+                                                            color="light-green"
+                                                            class="pa-1"
                                                         ></v-btn>
                                                     </template>
                                                     <v-list>
@@ -175,27 +183,28 @@
                                                         ></v-list-item>
                                                     </v-list>
                                                 </v-menu>
+                                            </v-col>
+                                            <v-col class="pa-1">
                                                 <v-dialog max-width="500">
                                                   <template v-slot:activator="{ props: detailsActivator }">
                                                     <v-btn
                                                       v-bind="detailsActivator"
                                                       icon="mdi-menu"
-                                                      size="small"
-                                                      variant="text"
-                                                      color="gray"
+                                                      rounded
+                                                      block
+                                                      variant="tonal"
+                                                      color="light-green"
+                                                      class="pa-1"
                                                     ></v-btn>
                                                   </template>
-                                                
                                                   <template v-slot:default="{ isActive }">
                                                     <v-card title="Details">
                                                       <v-card-text>
                                                           <p><strong>Theme:</strong> {{ grade.theme && grade.theme.length > 1 ? grade.theme : 'N/A' }}</p>
                                                           <p><strong>Class Rank:</strong> {{ grade.classRank && grade.classRank.length > 1 ? grade.classRank : 'N/A' }}</p>
                                                       </v-card-text>
-                                                
                                                       <v-card-actions>
                                                         <v-spacer></v-spacer>
-                                                
                                                         <v-btn
                                                           text="Close"
                                                           @click="isActive.value = false"
@@ -205,13 +214,14 @@
                                                   </template>
                                                 </v-dialog>
                                             </v-col>
-                                    </v-row>
+                                        </v-row>
+                                    </div>
                                     <v-divider></v-divider>
                                 </v-list-item>
                                 <v-row no-gutters class="justify-center align-center">
                                     <v-col cols="5" color="light-green">
                                         <!-- id={{ grade.Id }}-->
-                                        <v-btn 
+                                        <v-btn    
                                             color="light-blue"
                                             variant="tonal"
                                             append-icon="mdi-text-box-plus-outline"
