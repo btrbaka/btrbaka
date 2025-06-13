@@ -88,9 +88,11 @@
                                 <v-list-item
                                     v-for="grade in subject.content"
                                     :key="grade"
+                                    class="grade-item"
                                 >
                                     <v-row
-                                        class="align-center mb-1 flex-nowrap"
+                                        class="align-center mb-1 flex-nowrap position-relative"
+                                        @click="grade.showActions = !grade.showActions"
                                     >
                                         <v-col
                                             cols="auto"
@@ -151,33 +153,75 @@
                                                 >{{ grade.date }}
                                             </v-list-item-subtitle>
                                         </v-col>
-                                            <v-col cols="2">
-                                                <!-- id={{ grade.Id }}-->
-                                                <v-btn 
-                                                        v-if="grade.Id.includes('predictor')"
-                                                        color="red"
-                                                        class="mb-2"
-                                                        variant="tonal"
-                                                        icon="mdi-trash-can-outline"
-                                                        size="small"
-                                                        
-                                                        @click.native="deleteGrade(grade.Id, index)"></v-btn>
-                                                <v-btn 
-                                                        color="light-green"
-                                                        class="mb-2"
-                                                        variant="tonal"
-                                                        icon="mdi-pencil-outline"
-                                                        size="small"
-                                                        
-                                                        @click.native="editGrade(grade.Id, grade.grade, grade.weight)"></v-btn>
-                                            </v-col>
                                     </v-row>
+                                    <div v-if="grade.showActions" class="action-buttons d-flex w-100">
+                                        <v-row no-gutters>
+                                            <v-col class="pa-1">
+                                                <v-menu>
+                                                    <template v-slot:activator="{ props }">
+                                                        <v-btn
+                                                            v-bind="props"
+                                                            icon="mdi-pencil-outline"
+                                                            rounded
+                                                            block
+                                                            variant="tonal"
+                                                            color="light-green"
+                                                            class="pa-1"
+                                                        ></v-btn>
+                                                    </template>
+                                                    <v-list>
+                                                        <v-list-item
+                                                            prepend-icon="mdi-pencil-outline"
+                                                            title="Edit Grade"
+                                                            @click="editGrade(grade.Id, grade.grade, grade.weight)"
+                                                        ></v-list-item>
+                                                        <v-list-item
+                                                            v-if="grade.Id.includes('predictor')"
+                                                            prepend-icon="mdi-trash-can-outline"
+                                                            title="Delete Grade"
+                                                            @click="deleteGrade(grade.Id, index)"
+                                                        ></v-list-item>
+                                                    </v-list>
+                                                </v-menu>
+                                            </v-col>
+                                            <v-col class="pa-1">
+                                                <v-dialog max-width="500">
+                                                  <template v-slot:activator="{ props: detailsActivator }">
+                                                    <v-btn
+                                                      v-bind="detailsActivator"
+                                                      icon="mdi-menu"
+                                                      rounded
+                                                      block
+                                                      variant="tonal"
+                                                      color="light-green"
+                                                      class="pa-1"
+                                                    ></v-btn>
+                                                  </template>
+                                                  <template v-slot:default="{ isActive }">
+                                                    <v-card title="Details">
+                                                      <v-card-text>
+                                                          <p><strong>Theme:</strong> {{ grade.theme && grade.theme.length > 1 ? grade.theme : 'N/A' }}</p>
+                                                          <p><strong>Class Rank:</strong> {{ grade.classRank && grade.classRank.length > 1 ? grade.classRank : 'N/A' }}</p>
+                                                      </v-card-text>
+                                                      <v-card-actions>
+                                                        <v-spacer></v-spacer>
+                                                        <v-btn
+                                                          text="Close"
+                                                          @click="isActive.value = false"
+                                                        ></v-btn>
+                                                      </v-card-actions>
+                                                    </v-card>
+                                                  </template>
+                                                </v-dialog>
+                                            </v-col>
+                                        </v-row>
+                                    </div>
                                     <v-divider></v-divider>
                                 </v-list-item>
                                 <v-row no-gutters class="justify-center align-center">
                                     <v-col cols="5" color="light-green">
                                         <!-- id={{ grade.Id }}-->
-                                        <v-btn 
+                                        <v-btn    
                                             color="light-blue"
                                             variant="tonal"
                                             append-icon="mdi-text-box-plus-outline"
@@ -252,12 +296,13 @@ export default {
                     headers: head,
                 });
                 let responseJson = await response.json();
+                console.log(responseJson);
                 if (response.ok == false) {
                     await refreshLogin();
                     await this.getGrades();
                 } else {
                     let response = Object.values(responseJson);
-
+                    
                     let iterator = response.values();
                     for (const value of iterator) {
                         //console.log(value);
@@ -311,6 +356,8 @@ export default {
                                 grade: response[0][i].Marks[j].MarkText,
                                 weight: response[0][i].Marks[j].Weight,
                                 description: response[0][i].Marks[j].Caption,
+                                classRank: response[0][i].Marks[j].ClassRankText,
+                                theme: response[0][i].Marks[j].Theme,
                                 date: date.toLocaleString(undefined, {
                                     year: "numeric",
                                     month: "numeric",
