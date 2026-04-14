@@ -1,0 +1,1 @@
+var e=`/btrbaka/assets/logo-DUbCt9xw.svg`;export{e as t};
